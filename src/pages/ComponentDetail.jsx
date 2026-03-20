@@ -14,7 +14,14 @@ const fmtDate = (d) => {
 };
 const fmtDateTime = (d) => {
   const date = new Date(d);
-  return date.toLocaleString("en-US", { timeZone: "America/New_York", month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit", hour12: true });
+  return new Intl.DateTimeFormat("en-US", { 
+    month: "short", 
+    day: "numeric", 
+    year: "numeric", 
+    hour: "numeric", 
+    minute: "2-digit", 
+    hour12: true 
+  }).format(date);
 };
 
 const CATEGORY_COLORS = {
