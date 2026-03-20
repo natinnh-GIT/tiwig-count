@@ -35,15 +35,19 @@ export default function Inventory() {
 
   useEffect(() => { load(); }, []);
 
-  const filtered = components.filter((c) => {
-    const matchCat = activeCategory === "all" || c.category === activeCategory;
-    const matchSearch =
-      !search ||
-      c.name?.toLowerCase().includes(search.toLowerCase()) ||
-      c.caliber?.toLowerCase().includes(search.toLowerCase()) ||
-      c.brand?.toLowerCase().includes(search.toLowerCase());
-    return matchCat && matchSearch;
-  });
+  const categoryOrder = { brass: 0, bullets: 1, powder: 2, primers: 3 };
+  
+  const filtered = components
+    .filter((c) => {
+      const matchCat = activeCategory === "all" || c.category === activeCategory;
+      const matchSearch =
+        !search ||
+        c.name?.toLowerCase().includes(search.toLowerCase()) ||
+        c.caliber?.toLowerCase().includes(search.toLowerCase()) ||
+        c.brand?.toLowerCase().includes(search.toLowerCase());
+      return matchCat && matchSearch;
+    })
+    .sort((a, b) => categoryOrder[a.category] - categoryOrder[b.category]);
 
   const handleAdd = () => { setEditingItem(null); setShowModal(true); };
   const handleEdit = (item) => { setEditingItem(item); setShowModal(true); };
