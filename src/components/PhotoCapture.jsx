@@ -47,13 +47,13 @@ export default function PhotoCapture({ onCapture, onClose }) {
 
       <div className="flex-1 flex flex-col items-center justify-center gap-5 p-6">
         {preview ? (
-          <div className="w-full max-w-xs">
-            <img src={preview} alt="Preview" className="w-full rounded-2xl shadow-lg object-cover max-h-72" />
+          <div className="w-full">
+            <img src={preview} alt="Preview" className="w-full rounded-2xl shadow-lg object-cover max-h-[60vh]" />
           </div>
         ) : (
-          <div className="w-40 h-40 rounded-2xl border-2 border-dashed border-border bg-muted flex flex-col items-center justify-center gap-2">
-            <Camera className="w-10 h-10 text-muted-foreground/40" />
-            <p className="text-xs text-muted-foreground">No photo selected</p>
+          <div className="w-full h-64 rounded-2xl border-2 border-dashed border-border bg-muted flex flex-col items-center justify-center gap-2">
+            <Camera className="w-14 h-14 text-muted-foreground/40" />
+            <p className="text-sm text-muted-foreground">No photo selected</p>
           </div>
         )}
 
