@@ -111,7 +111,13 @@ export default function ComponentModal({ item, onClose, onSaved }) {
             )}
           </button>
           <div className="flex-1 space-y-2">
-            {form.photo_url && (
+            {aiLoading && (
+              <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                <Loader2 className="w-3 h-3 animate-spin" />
+                AI identifying...
+              </div>
+            )}
+            {form.photo_url && !aiLoading && (
               <Button
                 type="button"
                 variant="outline"
@@ -120,8 +126,8 @@ export default function ComponentModal({ item, onClose, onSaved }) {
                 onClick={handleAILookup}
                 disabled={aiLoading}
               >
-                {aiLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <Sparkles className="w-3 h-3" />}
-                {aiLoading ? "Identifying..." : "AI Identify"}
+                <Sparkles className="w-3 h-3" />
+                Re-identify with AI
               </Button>
             )}
             <div>
@@ -197,6 +203,18 @@ export default function ComponentModal({ item, onClose, onSaved }) {
                 <SelectItem value="grains">Grains</SelectItem>
               </SelectContent>
             </Select>
+          </div>
+        </div>
+
+        {/* Cost */}
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <Label className="text-xs">Cost Per Unit ($)</Label>
+            <Input type="number" min="0" step="0.01" value={form.cost_per_unit} onChange={(e) => set("cost_per_unit", e.target.value)} placeholder="0.00" className="mt-1" />
+          </div>
+          <div>
+            <Label className="text-xs">Total Cost ($)</Label>
+            <Input type="number" min="0" step="0.01" value={form.total_cost} onChange={(e) => set("total_cost", e.target.value)} placeholder="0.00" className="mt-1" />
           </div>
         </div>
 
