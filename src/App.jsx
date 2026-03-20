@@ -6,8 +6,8 @@ import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 // Add page imports here
-import Inventory from "./pages/Inventory";
-import ComponentDetail from "./pages/ComponentDetail";
+import Inventory from "./pages/Inventory.jsx";
+import ComponentDetail from "./pages/ComponentDetail.jsx";
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
