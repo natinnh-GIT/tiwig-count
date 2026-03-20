@@ -82,7 +82,29 @@ export default function ComponentModal({ item, onClose, onSaved }) {
 
   const handleSave = async () => {
     setSaving(true);
-    if (item?.id) {
+    // Only check for duplicates when creating a new item
+    if (!item?.id) {
+      const all = await base44.entities.Component.list();
+      const match = all.find((c) => {
+        const sameName = c.name?.toLowerCase().trim() === form.name?.toLowerCase().trim();
+        const sameBrand = (c.brand || "").toLowerCase().trim() === (form.brand || "").toLowerCase().trim();
+        const sameCaliber = (c.caliber || "").toLowerCase().trim() === (form.caliber || "").toLowerCase().trim();
+        return sameName && sameBrand && sameCaliber;
+      });
+      if (match) {
+        setSaving(false);
+        setDuplicate(match);
+        return;
+      }
+    }
+    await saveItem();
+  };
+
+  const saveItem = async (overrideId) => {
+    setSaving(true);
+    if (overrideId) {
+      await base44.entities.Component.update(overrideId, form);
+    } else if (item?.id) {
       await base44.entities.Component.update(item.id, form);
     } else {
       await base44.entities.Component.create(form);
