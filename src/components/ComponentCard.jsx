@@ -15,7 +15,10 @@ const CATEGORY_LABELS = {
   primers: "Primers",
 };
 
+import { useNavigate } from "react-router-dom";
+
 export default function ComponentCard({ item, onEdit, onRefresh }) {
+  const navigate = useNavigate();
   const handleDelete = async () => {
     if (!confirm("Delete this item?")) return;
     await base44.entities.Component.delete(item.id);
