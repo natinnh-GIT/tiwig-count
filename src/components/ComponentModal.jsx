@@ -141,6 +141,14 @@ export default function ComponentModal({ item, onClose, onSaved }) {
 
   return (
     <div className="fixed inset-0 z-50 bg-background flex flex-col">
+      {duplicate && (
+        <DuplicateDialog
+          existing={duplicate}
+          onAddNew={() => { setDuplicate(null); saveItem(); }}
+          onEditExisting={() => { setDuplicate(null); saveItem(duplicate.id); }}
+          onCancel={() => setDuplicate(null)}
+        />
+      )}
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-border">
         <button onClick={onClose}><X className="w-5 h-5 text-muted-foreground" /></button>
