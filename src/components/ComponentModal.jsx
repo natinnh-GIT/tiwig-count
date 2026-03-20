@@ -12,7 +12,7 @@ import PhotoCapture from "@/components/PhotoCapture";
 const EMPTY = {
   name: "", description: "", category: "brass", caliber: "",
   brand: "", quantity: 0, unit: "count", purchased_from: "",
-  barcode: "", photo_url: "", notes: ""
+  barcode: "", photo_url: "", notes: "", cost_per_unit: "", total_cost: ""
 };
 
 export default function ComponentModal({ item, onClose, onSaved }) {
