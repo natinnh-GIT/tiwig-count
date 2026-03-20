@@ -58,10 +58,15 @@ export default function ComponentCard({ item, onEdit, onRefresh }) {
         {item.brand && <p className="text-xs text-muted-foreground truncate">{item.brand}</p>}
         {item.caliber && <p className="text-xs text-muted-foreground">{item.caliber}</p>}
         <div className="flex items-center justify-between mt-1">
-          <p className="text-base font-bold text-foreground">
-            {item.quantity ?? 0}
-            <span className="text-xs font-normal text-muted-foreground ml-1">{item.unit || "count"}</span>
-          </p>
+          <div>
+            <p className="text-base font-bold text-foreground">
+              {item.quantity ?? 0}
+              <span className="text-xs font-normal text-muted-foreground ml-1">{item.unit || "count"}</span>
+            </p>
+            {item.total_cost ? (
+              <p className="text-xs text-muted-foreground">${Number(item.total_cost).toFixed(2)}</p>
+            ) : null}
+          </div>
           <div className="flex gap-1">
             <button
               onClick={handleEdit}
