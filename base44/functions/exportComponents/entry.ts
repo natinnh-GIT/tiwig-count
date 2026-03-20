@@ -72,9 +72,13 @@ Deno.serve(async (req) => {
       XLSX.utils.book_append_sheet(wb, ws, 'Components');
 
       const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-      const binaryString = String.fromCharCode.apply(null, wbout);
-      const base64 = btoa(binaryString);
-      return Response.json({ data: base64, type: 'base64' });
+      return new Response(new Uint8Array(wbout), {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          'Content-Disposition': 'attachment; filename=components.xlsx'
+        }
+      });
     }
 
     return Response.json({ error: 'Invalid format' }, { status: 400 });

@@ -56,19 +56,7 @@ export default function Inventory() {
 
   const handleExportConfirm = async (filename) => {
     const response = await base44.functions.invoke('exportComponents', { format: exportFormat });
-    let blobData = response.data;
-    
-    if (exportFormat === 'xlsx' && response.data.type === 'base64') {
-      // Decode base64 for Excel files
-      const binaryString = atob(response.data.data);
-      const bytes = new Uint8Array(binaryString.length);
-      for (let i = 0; i < binaryString.length; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
-      }
-      blobData = bytes;
-    }
-    
-    const blob = new Blob([blobData], {
+    const blob = new Blob([response.data], {
       type: exportFormat === 'csv' ? 'text/csv' : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     });
     const url = window.URL.createObjectURL(blob);
