@@ -1,5 +1,6 @@
 import { Pencil, Trash2 } from "lucide-react";
 import { base44 } from "@/api/base44Client";
+import { useNavigate } from "react-router-dom";
 
 const CATEGORY_COLORS = {
   brass: "bg-amber-100 text-amber-700",
@@ -15,18 +16,26 @@ const CATEGORY_LABELS = {
   primers: "Primers",
 };
 
-import { useNavigate } from "react-router-dom";
-
 export default function ComponentCard({ item, onEdit, onRefresh }) {
   const navigate = useNavigate();
-  const handleDelete = async () => {
+
+  const handleDelete = async (e) => {
+    e.stopPropagation();
     if (!confirm("Delete this item?")) return;
     await base44.entities.Component.delete(item.id);
     onRefresh();
   };
 
+  const handleEdit = (e) => {
+    e.stopPropagation();
+    onEdit(item);
+  };
+
   return (
-    <div className="flex gap-3 bg-card rounded-2xl p-3 border border-border shadow-sm">
+    <div
+      className="flex gap-3 bg-card rounded-2xl p-3 border border-border shadow-sm cursor-pointer active:opacity-70 transition-opacity"
+      onClick={() => navigate(`/component/${item.id}`)}
+    >
       {/* Photo */}
       <div className="w-16 h-16 rounded-xl overflow-hidden bg-muted flex-shrink-0">
         {item.photo_url ? (
@@ -55,7 +64,7 @@ export default function ComponentCard({ item, onEdit, onRefresh }) {
           </p>
           <div className="flex gap-1">
             <button
-              onClick={() => onEdit(item)}
+              onClick={handleEdit}
               className="p-1.5 rounded-lg bg-muted text-muted-foreground hover:text-foreground transition-colors"
             >
               <Pencil className="w-3.5 h-3.5" />
