@@ -186,7 +186,7 @@ export default function ComponentModal({ item, onClose, onSaved }) {
         {/* Category */}
         <div>
           <Label className="text-xs">Category *</Label>
-          <Select value={form.category} onValueChange={(v) => set("category", v)}>
+          <Select value={form.category} onValueChange={handleCategoryChange}>
             <SelectTrigger className="mt-1">
               <SelectValue />
             </SelectTrigger>
@@ -221,11 +221,11 @@ export default function ComponentModal({ item, onClose, onSaved }) {
         <div className="grid grid-cols-2 gap-3">
           <div>
             <Label className="text-xs">Quantity</Label>
-            <Input type="number" value={form.quantity} onChange={(e) => set("quantity", Number(e.target.value))} className="mt-1" />
+            <Input type="number" value={form.quantity} onChange={(e) => handleQuantityChange(e.target.value)} className="mt-1" />
           </div>
           <div>
             <Label className="text-xs">Unit</Label>
-            <Select value={form.unit} onValueChange={(v) => set("unit", v)}>
+            <Select value={form.unit} onValueChange={handleUnitChange}>
               <SelectTrigger className="mt-1">
                 <SelectValue />
               </SelectTrigger>
@@ -242,16 +242,28 @@ export default function ComponentModal({ item, onClose, onSaved }) {
         {/* Cost */}
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <Label className="text-xs">Cost Per Unit ($)</Label>
-            <Input type="number" min="0" step="0.01" value={form.cost_per_unit} onChange={(e) => set("cost_per_unit", e.target.value)} placeholder="0.00" className="mt-1" />
+            <Label className="text-xs">Total Cost ($)</Label>
+            <Input type="number" min="0" step="0.01" value={form.total_cost} onChange={(e) => handleTotalCostChange(e.target.value)} placeholder="0.00" className="mt-1" />
           </div>
           <div>
-            <Label className="text-xs">Total Cost ($)</Label>
-            <Input type="number" min="0" step="0.01" value={form.total_cost} onChange={(e) => set("total_cost", e.target.value)} placeholder="0.00" className="mt-1" />
+            <Label className="text-xs">Cost Per Unit ($) <span className="text-muted-foreground font-normal">auto</span></Label>
+            <Input type="number" min="0" step="0.0001" value={form.cost_per_unit} onChange={(e) => set("cost_per_unit", e.target.value)} placeholder="0.00" className="mt-1" />
           </div>
         </div>
 
-        {/* Purchased From */}
+        {/* Purchase Date + Purchased From */}
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <Label className="text-xs">Purchase Date</Label>
+            <Input type="date" value={form.purchase_date || ""} onChange={(e) => set("purchase_date", e.target.value)} className="mt-1" />
+          </div>
+          <div>
+            <Label className="text-xs">Purchased From</Label>
+            <Input value={form.purchased_from} onChange={(e) => set("purchased_from", e.target.value)} placeholder="Store or website" className="mt-1" />
+          </div>
+        </div>
+
+        {/* Purchased From (removed standalone) */}
         <div>
           <Label className="text-xs">Purchased From</Label>
           <Input value={form.purchased_from} onChange={(e) => set("purchased_from", e.target.value)} placeholder="Store or website" className="mt-1" />
