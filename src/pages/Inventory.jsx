@@ -57,9 +57,12 @@ export default function Inventory() {
             <h1 className="text-xl font-bold text-foreground tracking-tight">ReloadTrack</h1>
             <p className="text-xs text-muted-foreground">{components.length} items</p>
           </div>
-          <Button size="icon" onClick={handleAdd} className="rounded-full w-10 h-10">
-            <Plus className="w-5 h-5" />
-          </Button>
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <Button size="icon" onClick={handleAdd} className="rounded-full w-10 h-10">
+              <Plus className="w-5 h-5" />
+            </Button>
+          </div>
         </div>
         <div className="relative mb-3">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
