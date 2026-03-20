@@ -24,8 +24,10 @@ export default function BarcodeScanner({ onDetected, onClose }) {
       onDetected(decodedText);
     };
 
-    const onScanError = () => {
-      // Errors are expected, ignore them
+    const onScanError = (errorMessage) => {
+      console.error("Barcode scanner error:", errorMessage);
+      setError("Failed to start camera: " + errorMessage);
+      setScanning(false);
     };
 
     scanner.render(onScanSuccess, onScanError);
