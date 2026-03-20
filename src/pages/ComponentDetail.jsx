@@ -4,7 +4,8 @@ import { base44 } from "@/api/base44Client";
 import { ArrowLeft, Pencil, Trash2, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ComponentModal from "@/components/ComponentModal";
-import { format } from "date-fns";
+const fmtDate = (d) => new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", month: "short", day: "numeric", year: "numeric" }).format(new Date(d));
+const fmtDateTime = (d) => new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit", hour12: true }).format(new Date(d));
 
 const CATEGORY_COLORS = {
   brass: "bg-amber-100 text-amber-700",
