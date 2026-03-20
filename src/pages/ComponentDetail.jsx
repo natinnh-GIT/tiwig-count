@@ -12,7 +12,10 @@ const fmtDate = (d) => {
   }
   return new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", month: "short", day: "numeric", year: "numeric" }).format(new Date(d));
 };
-const fmtDateTime = (d) => new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit", hour12: true }).format(new Date(d));
+const fmtDateTime = (d) => {
+  const date = new Date(d);
+  return date.toLocaleString("en-US", { timeZone: "America/New_York", month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit", hour12: true });
+};
 
 const CATEGORY_COLORS = {
   brass: "bg-amber-100 text-amber-700",
