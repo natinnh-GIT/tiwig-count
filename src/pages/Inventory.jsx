@@ -136,6 +136,14 @@ export default function Inventory() {
           onSaved={handleSaved}
         />
       )}
+
+      {exportFormat && (
+        <ExportDialog
+          format={exportFormat}
+          onExport={handleExportConfirm}
+          onCancel={() => setExportFormat(null)}
+        />
+      )}
     </div>
   );
 }
