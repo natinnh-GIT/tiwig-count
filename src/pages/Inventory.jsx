@@ -81,11 +81,11 @@ export default function Inventory() {
           </div>
           <div className="flex items-center gap-2">
             <ThemeToggle />
-            <Button size="sm" variant="outline" onClick={() => handleExport('csv')} className="gap-1 h-10">
+            <Button size="sm" variant="outline" onClick={() => handleExportStart('csv')} className="gap-1 h-10">
               <Download className="w-4 h-4" />
               CSV
             </Button>
-            <Button size="sm" variant="outline" onClick={() => handleExport('xlsx')} className="gap-1 h-10">
+            <Button size="sm" variant="outline" onClick={() => handleExportStart('xlsx')} className="gap-1 h-10">
               <Download className="w-4 h-4" />
               XLSX
             </Button>
