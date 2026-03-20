@@ -39,8 +39,10 @@ export default function BarcodeScanner({ onDetected, onClose }) {
           };
           scan();
         } else {
-          setError("Camera scanning not supported on this browser. Please enter manually.");
+          // BarcodeDetector not supported (e.g. iOS Safari) — stop camera, show manual entry
+          stopCamera();
           setScanning(false);
+          setError(null); // no error shown, just manual entry
         }
       } catch (e) {
         setError("Camera access denied. Please enter barcode manually.");

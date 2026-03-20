@@ -56,8 +56,31 @@ export default function ComponentModal({ item, onClose, onSaved }) {
     onSaved();
   };
 
+  const handlePhotoCaptured = async (url) => {
+    set("photo_url", url);
+    setShowPhoto(false);
+    // Auto AI identify after photo
+    setAiLoading(true);
+    const result = await base44.integrations.Core.InvokeLLM({
+      prompt: `You are an expert in ammunition reloading components. Analyze this image and identify the reloading component shown. Return the product name, brand, caliber (if applicable), category (one of: brass, bullets, powder, primers), and a short description. Be specific and accurate.`,
+      file_urls: [url],
+      response_json_schema: {
+        type: "object",
+        properties: {
+          name: { type: "string" },
+          brand: { type: "string" },
+          caliber: { type: "string" },
+          category: { type: "string", enum: ["brass", "bullets", "powder", "primers"] },
+          description: { type: "string" }
+        }
+      }
+    });
+    if (result?.name) setForm((f) => ({ ...f, ...result, photo_url: url }));
+    setAiLoading(false);
+  };
+
   if (showBarcode) return <BarcodeScanner onDetected={(code) => { set("barcode", code); setShowBarcode(false); }} onClose={() => setShowBarcode(false)} />;
-  if (showPhoto) return <PhotoCapture onCapture={(url) => { set("photo_url", url); setShowPhoto(false); }} onClose={() => setShowPhoto(false)} />;
+  if (showPhoto) return <PhotoCapture onCapture={handlePhotoCaptured} onClose={() => setShowPhoto(false)} />;
 
   return (
     <div className="fixed inset-0 z-50 bg-background flex flex-col">
