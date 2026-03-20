@@ -1,65 +1,41 @@
 import { useEffect, useRef, useState } from "react";
-import { X, Loader2 } from "lucide-react";
+import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Html5QrcodeScanner } from "html5-qrcode";
 
 export default function BarcodeScanner({ onDetected, onClose }) {
-  const videoRef = useRef();
+  const scannerRef = useRef(null);
   const [error, setError] = useState(null);
   const [manual, setManual] = useState("");
   const [scanning, setScanning] = useState(true);
-  const streamRef = useRef(null);
 
   useEffect(() => {
-    let barcodeDetector;
-    let animFrame;
+    const scanner = new Html5QrcodeScanner(
+      "barcode-scanner-container",
+      { fps: 10, qrbox: { width: 250, height: 250 } },
+      false
+    );
 
-    const startCamera = async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: "environment" }
-        });
-        streamRef.current = stream;
-        videoRef.current.srcObject = stream;
-        await videoRef.current.play();
+    scannerRef.current = scanner;
 
-        if ("BarcodeDetector" in window) {
-          barcodeDetector = new BarcodeDetector({ formats: ["qr_code", "ean_13", "ean_8", "code_128", "code_39", "upc_a", "upc_e"] });
-
-          const scan = async () => {
-            if (videoRef.current && videoRef.current.readyState === 4) {
-              const barcodes = await barcodeDetector.detect(videoRef.current);
-              if (barcodes.length > 0) {
-                stopCamera();
-                onDetected(barcodes[0].rawValue);
-                return;
-              }
-            }
-            animFrame = requestAnimationFrame(scan);
-          };
-          scan();
-        } else {
-          // BarcodeDetector not supported (e.g. iOS Safari) — stop camera, show manual entry
-          stopCamera();
-          setScanning(false);
-          setError(null); // no error shown, just manual entry
-        }
-      } catch (e) {
-        setError("Camera access denied. Please enter barcode manually.");
-        setScanning(false);
-      }
+    const onScanSuccess = (decodedText) => {
+      scanner.clear();
+      onDetected(decodedText);
     };
 
-    const stopCamera = () => {
-      cancelAnimationFrame(animFrame);
-      if (streamRef.current) {
-        streamRef.current.getTracks().forEach((t) => t.stop());
-      }
+    const onScanError = () => {
+      // Errors are expected, ignore them
     };
 
-    startCamera();
-    return () => stopCamera();
-  }, []);
+    scanner.render(onScanSuccess, onScanError);
+
+    return () => {
+      if (scannerRef.current) {
+        scannerRef.current.clear();
+      }
+    };
+  }, [onDetected]);
 
   const handleClose = () => {
     if (streamRef.current) streamRef.current.getTracks().forEach((t) => t.stop());
