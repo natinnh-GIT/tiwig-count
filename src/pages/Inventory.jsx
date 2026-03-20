@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import CategoryFilter from "@/components/CategoryFilter";
 import ComponentCard from "@/components/ComponentCard";
 import ComponentModal from "@/components/ComponentModal";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const CATEGORIES = [
   { id: "all", label: "All" },
