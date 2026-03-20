@@ -32,9 +32,18 @@ export default function ComponentModal({ item, onClose, onSaved }) {
 
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
 
+  const CATEGORY_DEFAULT_UNIT = {
+    powder: "grains",
+    bullets: "count",
+    brass: "count",
+    primers: "count",
+  };
+
   const handleCategoryChange = (v) => {
     localStorage.setItem("rt_last_category", v);
-    set("category", v);
+    const defaultUnit = CATEGORY_DEFAULT_UNIT[v] || "count";
+    localStorage.setItem("rt_last_unit", defaultUnit);
+    setForm((f) => ({ ...f, category: v, unit: defaultUnit }));
   };
   const handleUnitChange = (v) => {
     localStorage.setItem("rt_last_unit", v);
