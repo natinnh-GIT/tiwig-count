@@ -48,6 +48,21 @@ export default function Inventory() {
   const handleClose = () => { setShowModal(false); setEditingItem(null); };
   const handleSaved = () => { handleClose(); load(); };
 
+  const handleExport = async (format) => {
+    const response = await base44.functions.invoke('exportComponents', { format });
+    const blob = new Blob([response.data], {
+      type: format === 'csv' ? 'text/csv' : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `components.${format}`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
