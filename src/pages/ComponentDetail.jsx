@@ -141,8 +141,8 @@ export default function ComponentDetail() {
 
           {/* Timestamps */}
           <div className="bg-card rounded-2xl border border-border px-4 mb-4">
-            <Row label="Created" value={item.created_date ? format(new Date(item.created_date), "MMM d, yyyy h:mm a") : null} />
-            <Row label="Last Modified" value={item.updated_date ? format(new Date(item.updated_date), "MMM d, yyyy h:mm a") : null} />
+            <Row label="Created" value={item.created_date ? fmtDateTime(item.created_date) : null} />
+            <Row label="Last Modified" value={item.updated_date ? fmtDateTime(item.updated_date) : null} />
           </div>
         </div>
       </div>
