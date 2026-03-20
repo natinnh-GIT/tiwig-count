@@ -24,6 +24,7 @@ export default function Inventory() {
   const [activeCategory, setActiveCategory] = useState("all");
   const [showModal, setShowModal] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
+  const [exportFormat, setExportFormat] = useState(null);
 
   const load = async () => {
     setLoading(true);
