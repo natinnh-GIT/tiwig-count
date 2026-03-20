@@ -36,7 +36,8 @@ const AuthenticatedApp = () => {
   // Render the main app
   return (
     <Routes>
-      <Route path="/" element={<Inventory />} />
+      <Route path="/" element={<Splash />} />
+      <Route path="/inventory" element={<Inventory />} />
       <Route path="/component/:id" element={<ComponentDetail />} />
       {/* Add your page Route elements here */}
       <Route path="*" element={<PageNotFound />} />
