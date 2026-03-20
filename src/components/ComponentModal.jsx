@@ -9,20 +9,53 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import BarcodeScanner from "@/components/BarcodeScanner";
 import PhotoCapture from "@/components/PhotoCapture";
 
-const EMPTY = {
-  name: "", description: "", category: "brass", caliber: "",
-  brand: "", quantity: 0, unit: "count", purchased_from: "",
-  barcode: "", photo_url: "", notes: "", cost_per_unit: "", total_cost: ""
-};
+const getDefaults = () => ({
+  name: "", description: "",
+  category: localStorage.getItem("rt_last_category") || "brass",
+  caliber: "",
+  brand: "",
+  quantity: 0,
+  unit: localStorage.getItem("rt_last_unit") || "count",
+  purchased_from: "",
+  barcode: "", photo_url: "", notes: "", cost_per_unit: "", total_cost: "",
+  purchase_date: ""
+});
 
 export default function ComponentModal({ item, onClose, onSaved }) {
-  const [form, setForm] = useState(item ? { ...item } : { ...EMPTY });
+  const [form, setForm] = useState(item ? { ...item } : getDefaults());
   const [saving, setSaving] = useState(false);
   const [aiLoading, setAiLoading] = useState(false);
   const [showBarcode, setShowBarcode] = useState(false);
   const [showPhoto, setShowPhoto] = useState(false);
 
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
+
+  const handleCategoryChange = (v) => {
+    localStorage.setItem("rt_last_category", v);
+    set("category", v);
+  };
+  const handleUnitChange = (v) => {
+    localStorage.setItem("rt_last_unit", v);
+    set("unit", v);
+  };
+
+  // Auto-calculate cost_per_unit when total_cost or quantity changes
+  const handleTotalCostChange = (v) => {
+    setForm((f) => {
+      const qty = Number(f.quantity);
+      const total = Number(v);
+      const cpu = qty > 0 && total > 0 ? (total / qty).toFixed(4) : f.cost_per_unit;
+      return { ...f, total_cost: v, cost_per_unit: cpu };
+    });
+  };
+  const handleQuantityChange = (v) => {
+    setForm((f) => {
+      const qty = Number(v);
+      const total = Number(f.total_cost);
+      const cpu = qty > 0 && total > 0 ? (total / qty).toFixed(4) : f.cost_per_unit;
+      return { ...f, quantity: Number(v), cost_per_unit: cpu };
+    });
+  };
 
   const handleAILookup = async () => {
     if (!form.photo_url) return;
