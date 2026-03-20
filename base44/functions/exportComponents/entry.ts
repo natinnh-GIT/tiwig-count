@@ -47,7 +47,7 @@ Deno.serve(async (req) => {
     }
 
     if (format === 'xlsx') {
-      const { write } = await import('npm:xlsx@0.18.5');
+      const XLSX = await import('npm:xlsx@0.18.5');
 
       const headers = ['Name', 'Category', 'Brand', 'Caliber', 'Quantity', 'Unit', 'Cost Per Unit', 'Total Cost', 'Lot Number', 'Purchase Date', 'Purchased From', 'Barcode', 'Description'];
       const rows = components.map(c => [
@@ -66,29 +66,13 @@ Deno.serve(async (req) => {
         c.description || ''
       ]);
 
-      const wb = { SheetNames: ['Components'], Sheets: {} };
-      const ws = {};
+      const data = [headers, ...rows];
+      const ws = XLSX.utils.aoa_to_sheet(data);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Components');
 
-      // Set headers
-      headers.forEach((h, i) => {
-        const col = String.fromCharCode(65 + i);
-        ws[`${col}1`] = { t: 's', v: h };
-      });
-
-      // Set data rows
-      rows.forEach((row, rowIdx) => {
-        row.forEach((cell, colIdx) => {
-          const col = String.fromCharCode(65 + colIdx);
-          const cellRef = `${col}${rowIdx + 2}`;
-          ws[cellRef] = { t: typeof cell === 'number' ? 'n' : 's', v: cell };
-        });
-      });
-
-      ws['!ref'] = `A1:${String.fromCharCode(65 + headers.length - 1)}${rows.length + 1}`;
-      wb.Sheets['Components'] = ws;
-
-      const wbout = write(wb, { bookType: 'xlsx', type: 'array' });
-      return new Response(wbout, {
+      const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+      return new Response(new Uint8Array(wbout), {
         status: 200,
         headers: {
           'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
