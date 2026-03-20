@@ -9,10 +9,24 @@ export default function PhotoCapture({ onCapture, onClose }) {
   const [preview, setPreview] = useState(null);
   const [file, setFile] = useState(null);
 
-  const handleFile = (f) => {
+  const handleFile = async (f) => {
     if (!f) return;
-    setFile(f);
-    setPreview(URL.createObjectURL(f));
+    // Convert any image (including HEIC) to JPEG via canvas
+    const img = new Image();
+    const objectUrl = URL.createObjectURL(f);
+    img.src = objectUrl;
+    await new Promise((res) => { img.onload = res; img.onerror = res; });
+    const canvas = document.createElement("canvas");
+    canvas.width = img.naturalWidth || 800;
+    canvas.height = img.naturalHeight || 600;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+    URL.revokeObjectURL(objectUrl);
+    canvas.toBlob((blob) => {
+      const jpeg = new File([blob], "photo.jpg", { type: "image/jpeg" });
+      setFile(jpeg);
+      setPreview(URL.createObjectURL(jpeg));
+    }, "image/jpeg", 0.9);
   };
 
   const handleUpload = async () => {
