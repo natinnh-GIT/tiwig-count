@@ -217,6 +217,12 @@ export default function ComponentModal({ item, onClose, onSaved }) {
           </div>
         </div>
 
+        {/* Lot Number */}
+        <div>
+          <Label className="text-xs">Lot #</Label>
+          <Input value={form.lot_number || ""} onChange={(e) => set("lot_number", e.target.value)} placeholder="Lot or batch number" className="mt-1" />
+        </div>
+
         {/* Quantity + Unit */}
         <div className="grid grid-cols-2 gap-3">
           <div>
