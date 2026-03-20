@@ -102,12 +102,17 @@ export default function ComponentModal({ item, onClose, onSaved }) {
 
   const saveItem = async (overrideId) => {
     setSaving(true);
+    const payload = {
+      ...form,
+      total_cost: form.total_cost !== "" && form.total_cost !== undefined ? Number(form.total_cost) : undefined,
+      cost_per_unit: form.cost_per_unit !== "" && form.cost_per_unit !== undefined ? Number(form.cost_per_unit) : undefined,
+    };
     if (overrideId) {
-      await base44.entities.Component.update(overrideId, form);
+      await base44.entities.Component.update(overrideId, payload);
     } else if (item?.id) {
-      await base44.entities.Component.update(item.id, form);
+      await base44.entities.Component.update(item.id, payload);
     } else {
-      await base44.entities.Component.create(form);
+      await base44.entities.Component.create(payload);
     }
     setSaving(false);
     onSaved();
