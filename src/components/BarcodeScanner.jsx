@@ -13,7 +13,14 @@ export default function BarcodeScanner({ onDetected, onClose }) {
   useEffect(() => {
     const scanner = new Html5QrcodeScanner(
       "barcode-scanner-container",
-      { fps: 10, qrbox: { width: 250, height: 250 } },
+      {
+        fps: 15,
+        qrbox: { width: 300, height: 300 },
+        aspectRatio: 1.0,
+        disableFlip: false,
+        rememberLastUsedCamera: true,
+        supportedScanTypes: ["QR_CODE", "CODABAR", "CODE_39", "CODE_93", "CODE_128", "EAN_8", "EAN_13", "ITF", "UPCA", "UPCE"]
+      },
       false
     );
 
@@ -26,8 +33,6 @@ export default function BarcodeScanner({ onDetected, onClose }) {
 
     const onScanError = (errorMessage) => {
       console.error("Barcode scanner error:", errorMessage);
-      setError("Failed to start camera: " + errorMessage);
-      setScanning(false);
     };
 
     scanner.render(onScanSuccess, onScanError);
