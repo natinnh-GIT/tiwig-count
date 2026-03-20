@@ -130,6 +130,7 @@ export default function ComponentDetail() {
           <div className="bg-card rounded-2xl border border-border px-4 mb-4">
             <Row label="Brand" value={item.brand} />
             <Row label="Caliber / Type" value={item.caliber} />
+            <Row label="Lot #" value={item.lot_number} />
             <Row label="Cost Per Unit" value={item.cost_per_unit ? `$${Number(item.cost_per_unit).toFixed(2)}` : null} />
             <Row label="Total Cost" value={item.total_cost ? `$${Number(item.total_cost).toFixed(2)}` : null} />
             <Row label="Purchase Date" value={item.purchase_date ? format(new Date(item.purchase_date), "MMM d, yyyy") : null} />
