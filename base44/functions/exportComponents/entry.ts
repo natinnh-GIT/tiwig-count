@@ -72,11 +72,7 @@ Deno.serve(async (req) => {
       XLSX.utils.book_append_sheet(wb, ws, 'Components');
 
       const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-      let binaryString = '';
-      for (let i = 0; i < wbout.length; i++) {
-        binaryString += String.fromCharCode(wbout[i]);
-      }
-      const base64 = btoa(binaryString);
+      const base64 = btoa(String.fromCharCode.apply(null, new Uint8Array(wbout)));
       return Response.json({ file: base64 });
     }
 
