@@ -12,7 +12,9 @@ Deno.serve(async (req) => {
     const { format } = await req.json();
 
     // Fetch all components
-    const components = await base44.entities.Component.list();
+    const allComponents = await base44.entities.Component.list();
+    const categoryOrder = { brass: 0, bullets: 1, powder: 2, primers: 3 };
+    const components = allComponents.sort((a, b) => categoryOrder[a.category] - categoryOrder[b.category]);
 
     if (format === 'csv') {
       // Generate CSV
