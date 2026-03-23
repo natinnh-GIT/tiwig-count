@@ -118,7 +118,7 @@ export default function Inventory() {
       <div className="sticky top-0 z-10 bg-background border-b border-border px-4 pt-safe-top pb-3">
         <div className="flex items-center justify-between mb-3 pt-3">
           <div>
-            <h1 className="text-foreground mx-1 text-lg font-bold text-center normal-case tracking-tight">TIWIG Count</h1>
+            <h1 className="text-foreground text-lg font-bold text-center normal-case tracking-tight">TIWIG Count</h1>
             <p className="text-xs text-muted-foreground">{components.length} items</p>
           </div>
           <div className="flex items-center gap-2">
