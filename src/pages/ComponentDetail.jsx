@@ -97,7 +97,7 @@ export default function ComponentDetail() {
     <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
       <div className="sticky top-0 z-10 bg-background border-b border-border px-4 py-3 flex items-center justify-between">
-        <button onClick={() => navigate(-1)} className="p-1">
+        <button onClick={() => navigate(`/inventory?highlight=${id}`)} className="p-1">
           <ArrowLeft className="w-5 h-5 text-muted-foreground" />
         </button>
         <h1 className="font-semibold text-sm truncate max-w-[60%]">{item.name}</h1>
