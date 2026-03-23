@@ -55,6 +55,13 @@ export default function Dashboard() {
           <ArrowLeft className="w-5 h-5" />
         </button>
         <h1 className="text-xl font-bold">Dashboard</h1>
+        <button
+          onClick={() => setDark((d) => !d)}
+          className="ml-auto p-2 rounded-full bg-muted text-muted-foreground hover:text-foreground transition-colors"
+          aria-label="Toggle theme"
+        >
+          {dark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+        </button>
       </div>
 
       {/* Search */}
