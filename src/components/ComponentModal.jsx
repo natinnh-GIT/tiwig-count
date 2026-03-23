@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import BarcodeScanner from "@/components/BarcodeScanner";
+import SuggestInput from "@/components/SuggestInput";
 import PhotoCapture from "@/components/PhotoCapture";
 import DuplicateDialog from "@/components/DuplicateDialog";
 import PhotoEnhancer from "@/components/PhotoEnhancer";
