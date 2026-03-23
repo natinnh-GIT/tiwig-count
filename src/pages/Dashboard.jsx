@@ -58,7 +58,7 @@ export default function Dashboard() {
       </div>
 
       {/* Total value */}
-      <div className="rounded-2xl bg-primary text-primary-foreground p-5 mb-6 shadow-sm">
+      <div className="rounded-2xl bg-primary text-primary-foreground p-5 mb-6 shadow-sm text-center">
         <p className="text-sm opacity-75 mb-1">Total Inventory Value</p>
         <p className="text-3xl font-bold">${totalValue.toFixed(2)}</p>
         <p className="text-xs opacity-60 mt-1">{filtered.length} item{filtered.length !== 1 ? "s" : ""} across all categories</p>
