@@ -18,7 +18,7 @@ Deno.serve(async (req) => {
 
     if (format === 'csv') {
       // Generate CSV
-      const headers = ['Name', 'Category', 'Brand', 'Caliber', 'Quantity', 'Unit', 'Cost Per Unit', 'Total Cost', 'Lot Number', 'Purchase Date', 'Purchased From', 'Barcode', 'Description'];
+      const headers = ['Name', 'Category', 'Brand', 'Caliber', 'Quantity', 'Unit', 'Cost Per Unit', 'Total Cost', 'Lot Number', 'Purchase Date', 'Purchased From', 'Barcode', 'Description', 'Photo URL'];
       const rows = components.map(c => [
         c.name || '',
         c.category || '',
@@ -32,7 +32,8 @@ Deno.serve(async (req) => {
         c.purchase_date || '',
         c.purchased_from || '',
         c.barcode || '',
-        c.description || ''
+        c.description || '',
+        c.photo_url || ''
       ]);
 
       const csv = [headers, ...rows]
