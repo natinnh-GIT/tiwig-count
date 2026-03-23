@@ -285,25 +285,45 @@ export default function ComponentModal({ item, onClose, onSaved }) {
         {/* Name */}
         <div>
           <Label className="text-xs">Name *</Label>
-          <Input value={form.name} onChange={(e) => set("name", e.target.value)} placeholder="e.g. Hornady FMJ .308" className="mt-1" />
+          <SuggestInput
+            value={form.name}
+            onChange={(v) => set("name", v)}
+            suggestions={nameSuggestions}
+            placeholder="e.g. Hornady FMJ .308"
+          />
         </div>
 
         {/* Brand + Caliber */}
         <div className="grid grid-cols-2 gap-3">
           <div>
             <Label className="text-xs">Brand</Label>
-            <Input value={form.brand} onChange={(e) => set("brand", e.target.value)} placeholder="Brand" className="mt-1" />
+            <SuggestInput
+              value={form.brand}
+              onChange={(v) => set("brand", v)}
+              suggestions={brandSuggestions}
+              placeholder="Brand"
+            />
           </div>
           <div>
             <Label className="text-xs">Caliber / Type</Label>
-            <Input value={form.caliber} onChange={(e) => set("caliber", e.target.value)} placeholder=".308, 9mm..." className="mt-1" />
+            <SuggestInput
+              value={form.caliber}
+              onChange={(v) => set("caliber", v)}
+              suggestions={caliberSuggestions}
+              placeholder=".308, 9mm..."
+            />
           </div>
         </div>
 
         {/* Lot Number */}
         <div>
           <Label className="text-xs">Lot #</Label>
-          <Input value={form.lot_number || ""} onChange={(e) => set("lot_number", e.target.value)} placeholder="Lot or batch number" className="mt-1" />
+          <SuggestInput
+            value={form.lot_number || ""}
+            onChange={(v) => set("lot_number", v)}
+            suggestions={lotSuggestions}
+            placeholder="Lot or batch number"
+          />
         </div>
 
         {/* Quantity + Unit */}
