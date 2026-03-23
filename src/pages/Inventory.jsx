@@ -142,9 +142,18 @@ export default function Inventory() {
           <Input
             placeholder="Search components..."
             value={search}
-            onChange={(e) => setSearch(e.target.value)} className="bg-muted px-10 text-sm rounded-lg flex w-full border-input shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm h-9 border-0" />
-          
-          
+            onChange={(e) => setSearch(e.target.value)}
+            onFocus={(e) => e.target.select()}
+            onKeyDown={(e) => { if (e.key === "Enter") { e.target.blur(); setSearch(""); } }}
+            className="bg-muted px-10 text-sm rounded-lg flex w-full border-input shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm h-9 border-0" />
+          {search && (
+            <button
+              onClick={() => setSearch("")}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
         </div>
         <CategoryFilter
           categories={CATEGORIES}
