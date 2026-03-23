@@ -105,7 +105,7 @@ export default function Dashboard() {
               {filtered.map((c) => (
                 <button
                   key={c.id}
-                  onClick={() => navigate(`/component/${c.id}`)}
+                  onClick={() => navigate(`/inventory?q=${encodeURIComponent(search.trim())}`)}
                   className="w-full text-left rounded-xl border border-border bg-card px-4 py-3 flex items-center gap-3 active:bg-muted transition-colors"
                 >
                   {c.photo_url ? (
