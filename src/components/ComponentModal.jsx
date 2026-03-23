@@ -34,6 +34,20 @@ export default function ComponentModal({ item, onClose, onSaved }) {
   const [showEnhancer, setShowEnhancer] = useState(false);
   const [duplicate, setDuplicate] = useState(null);
 
+  useEffect(() => {
+    base44.entities.Component.list().then(setAllComponents);
+  }, []);
+
+  // Suggestions filtered by current category (exclude the item being edited)
+  const catItems = allComponents.filter(
+    (c) => c.category === form.category && c.id !== item?.id
+  );
+  const unique = (arr) => [...new Set(arr.filter(Boolean))].sort();
+  const nameSuggestions = unique(catItems.map((c) => c.name));
+  const brandSuggestions = unique(catItems.map((c) => c.brand));
+  const caliberSuggestions = unique(catItems.map((c) => c.caliber));
+  const lotSuggestions = unique(catItems.map((c) => c.lot_number));
+
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
 
   const CATEGORY_DEFAULT_UNIT = {
