@@ -52,7 +52,7 @@ Deno.serve(async (req) => {
     if (format === 'xlsx') {
       const XLSX = await import('npm:xlsx@0.18.5');
 
-      const headers = ['Name', 'Category', 'Brand', 'Caliber', 'Quantity', 'Unit', 'Cost Per Unit', 'Total Cost', 'Lot Number', 'Purchase Date', 'Purchased From', 'Barcode', 'Description'];
+      const headers = ['Name', 'Category', 'Brand', 'Caliber', 'Quantity', 'Unit', 'Cost Per Unit', 'Total Cost', 'Lot Number', 'Purchase Date', 'Purchased From', 'Barcode', 'Description', 'Photo URL'];
       const rows = components.map(c => [
         c.name || '',
         c.category || '',
@@ -66,7 +66,8 @@ Deno.serve(async (req) => {
         c.purchase_date || '',
         c.purchased_from || '',
         c.barcode || '',
-        c.description || ''
+        c.description || '',
+        c.photo_url || ''
       ]);
 
       const data = [headers, ...rows];
