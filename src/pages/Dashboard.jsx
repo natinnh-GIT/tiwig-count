@@ -15,6 +15,17 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const [components, setComponents] = useState([]);
   const [search, setSearch] = useState("");
+  const [dark, setDark] = useState(() => localStorage.getItem("theme") === "dark");
+
+  useEffect(() => {
+    if (dark) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+  }, [dark]);
 
   useEffect(() => {
     base44.entities.Component.list().then(setComponents);
