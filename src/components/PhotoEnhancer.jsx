@@ -41,13 +41,6 @@ export default function PhotoEnhancer({ originalUrl, onSelect, onCancel }) {
     setLoading(false);
   };
 
-  // Auto-generate on mount
-  useState(() => { generate(); }, []);
-  // Use useEffect pattern via inline call
-  if (!loading && variants.length === 0 && !error) {
-    generate();
-  }
-
   const handleConfirm = () => {
     if (selected !== null) onSelect(variants[selected]);
   };
