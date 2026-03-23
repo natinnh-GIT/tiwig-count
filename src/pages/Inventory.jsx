@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Plus, Search, Package, Download } from "lucide-react";
+import { Plus, Search, Package, Download, LayoutDashboard } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import CategoryFilter from "@/components/CategoryFilter";
@@ -18,10 +19,14 @@ const CATEGORIES = [
 ];
 
 export default function Inventory() {
+  const navigate = useNavigate();
   const [components, setComponents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const [activeCategory, setActiveCategory] = useState("all");
+  const [activeCategory, setActiveCategory] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get("category") || "all";
+  });
   const [showModal, setShowModal] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
   const [exportFormat, setExportFormat] = useState(null);
@@ -117,6 +122,9 @@ export default function Inventory() {
             <p className="text-xs text-muted-foreground">{components.length} items</p>
           </div>
           <div className="flex items-center gap-2">
+            <button onClick={() => navigate("/dashboard")} className="p-2 rounded-lg text-muted-foreground hover:bg-muted">
+              <LayoutDashboard className="w-5 h-5" />
+            </button>
             <ThemeToggle />
             <Button size="sm" variant="outline" onClick={() => handleExportStart('csv')} className="gap-1 h-10">
               <Download className="w-4 h-4" />
