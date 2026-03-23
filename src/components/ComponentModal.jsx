@@ -132,6 +132,7 @@ export default function ComponentModal({ item, onClose, onSaved }) {
   const handlePhotoCaptured = async (url) => {
     set("photo_url", url);
     setShowPhoto(false);
+    setShowEnhancer(true);
     // Auto AI identify after photo
     setAiLoading(true);
     const result = await base44.integrations.Core.InvokeLLM({
