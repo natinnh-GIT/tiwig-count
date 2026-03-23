@@ -134,9 +134,7 @@ export default function Inventory() {
               <Download className="w-4 h-4" />
               XLSX
             </Button>
-            <Button size="icon" onClick={handleAdd} className="rounded-full w-10 h-10">
-              <Plus className="w-5 h-5" />
-            </Button>
+
           </div>
         </div>
         <div className="relative mb-3">
