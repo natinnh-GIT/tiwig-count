@@ -45,7 +45,7 @@ export default function Splash() {
         {/* CTA Button */}
         <Button 
           size="lg"
-          onClick={() => navigate("/inventory")}
+          onClick={() => navigate("/dashboard")}
           className="w-full md:w-auto px-8"
         >
           Get Started
