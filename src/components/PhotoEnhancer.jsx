@@ -26,7 +26,6 @@ export default function PhotoEnhancer({ originalUrl, onSelect, onCancel }) {
     const prompts = [
       "Remove the background completely and place this reloading component on a clean pure white background. Keep the object sharp and well-lit, enhance image clarity and sharpness. Professional product photo style.",
       "Remove the background and place this reloading component on a clean pure white background. Apply a subtle soft shadow beneath the object for depth. Enhance sharpness and color vibrancy. Clean product photo.",
-      "Remove the background and place this reloading component centered on a pure white background. Apply a slight angle/perspective enhancement. Boost contrast and clarity for a crisp, professional catalog-style image.",
     ];
 
     const results = await Promise.all(
