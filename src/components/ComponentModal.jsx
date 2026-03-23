@@ -26,6 +26,7 @@ const getDefaults = () => ({
 
 export default function ComponentModal({ item, onClose, onSaved }) {
   const [form, setForm] = useState(item ? { ...item } : getDefaults());
+  const [allComponents, setAllComponents] = useState([]);
   const [saving, setSaving] = useState(false);
   const [aiLoading, setAiLoading] = useState(false);
   const [showBarcode, setShowBarcode] = useState(false);
