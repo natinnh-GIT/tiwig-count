@@ -149,7 +149,7 @@ export default function ComponentDetail() {
             <Row label="Brand" value={item.brand} />
             <Row label="Caliber / Type" value={item.caliber} />
             <Row label="Lot #" value={item.lot_number} />
-            <Row label="Cost Per Unit" value={item.cost_per_unit ? `$${Number(item.cost_per_unit).toFixed(2)}` : null} />
+            <Row label="Cost Per Unit" value={item.cost_per_unit ? `$${Number(item.cost_per_unit).toFixed(4)}` : null} />
             <Row label="Total Cost" value={item.total_cost ? `$${Number(item.total_cost).toFixed(2)}` : null} />
             <Row label="Purchase Date" value={item.purchase_date ? fmtDate(item.purchase_date) : null} />
             <Row label="Purchased From" value={item.purchased_from} />
