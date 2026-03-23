@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import BarcodeScanner from "@/components/BarcodeScanner";
 import PhotoCapture from "@/components/PhotoCapture";
 import DuplicateDialog from "@/components/DuplicateDialog";
+import PhotoEnhancer from "@/components/PhotoEnhancer";
 
 const getDefaults = () => ({
   name: "", description: "",

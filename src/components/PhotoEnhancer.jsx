@@ -8,6 +8,14 @@ export default function PhotoEnhancer({ originalUrl, onSelect, onCancel }) {
   const [variants, setVariants] = useState([]);
   const [selected, setSelected] = useState(null);
   const [error, setError] = useState(null);
+  const [started, setStarted] = useState(false);
+
+  useEffect(() => {
+    if (!started) {
+      setStarted(true);
+      generate();
+    }
+  }, []);
 
   const generate = async () => {
     setLoading(true);
