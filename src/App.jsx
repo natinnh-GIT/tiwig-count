@@ -9,6 +9,7 @@ import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import Splash from "./pages/Splash.jsx";
 import Inventory from "./pages/Inventory.jsx";
 import ComponentDetail from "./pages/ComponentDetail.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -39,6 +40,7 @@ const AuthenticatedApp = () => {
       <Route path="/" element={<Splash />} />
       <Route path="/inventory" element={<Inventory />} />
       <Route path="/component/:id" element={<ComponentDetail />} />
+      <Route path="/dashboard" element={<Dashboard />} />
       {/* Add your page Route elements here */}
       <Route path="*" element={<PageNotFound />} />
     </Routes>
