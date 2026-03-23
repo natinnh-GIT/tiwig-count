@@ -337,12 +337,6 @@ export default function ComponentModal({ item, onClose, onSaved }) {
           </div>
         </div>
 
-        {/* Purchased From (removed standalone) */}
-        <div>
-          <Label className="text-xs">Purchased From</Label>
-          <Input value={form.purchased_from} onChange={(e) => set("purchased_from", e.target.value)} placeholder="Store or website" className="mt-1" />
-        </div>
-
         {/* Description */}
         <div>
           <Label className="text-xs">Description</Label>
