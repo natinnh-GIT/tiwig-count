@@ -70,14 +70,23 @@ export default function Dashboard() {
         <Input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
+          onFocus={(e) => e.target.select()}
           onKeyDown={(e) => {
             if (e.key === "Enter" && search.trim()) {
               navigate(`/inventory?q=${encodeURIComponent(search.trim())}`);
+              setSearch("");
             }
           }}
           placeholder="Search all components…"
-          className="pl-9" />
-        
+          className="pl-9 pr-9" />
+        {search && (
+          <button
+            onClick={() => setSearch("")}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        )}
       </div>
 
       {/* Total value */}
