@@ -37,6 +37,18 @@ export default function Inventory() {
 
   useEffect(() => { load(); }, []);
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const hid = params.get("highlight");
+    if (hid) {
+      setHighlightId(hid);
+      setTimeout(() => {
+        cardRefs.current[hid]?.scrollIntoView({ behavior: "smooth", block: "center" });
+      }, 300);
+      setTimeout(() => setHighlightId(null), 2000);
+    }
+  }, []);
+
   const categoryOrder = { brass: 0, bullets: 1, powder: 2, primers: 3 };
   
   const filtered = components
