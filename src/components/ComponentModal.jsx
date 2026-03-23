@@ -207,17 +207,29 @@ export default function ComponentModal({ item, onClose, onSaved }) {
               </div>
             )}
             {form.photo_url && !aiLoading && (
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                className="w-full text-xs gap-1"
-                onClick={handleAILookup}
-                disabled={aiLoading}
-              >
-                <Sparkles className="w-3 h-3" />
-                Re-identify with AI
-              </Button>
+              <div className="flex flex-col gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="w-full text-xs gap-1"
+                  onClick={handleAILookup}
+                  disabled={aiLoading}
+                >
+                  <Sparkles className="w-3 h-3" />
+                  Re-identify with AI
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="w-full text-xs gap-1 border-primary/40 text-primary"
+                  onClick={() => setShowEnhancer(true)}
+                >
+                  <Sparkles className="w-3 h-3" />
+                  Enhance Photo
+                </Button>
+              </div>
             )}
             <div>
               <Label className="text-xs">Barcode</Label>
