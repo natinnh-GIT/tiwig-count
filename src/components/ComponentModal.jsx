@@ -324,16 +324,16 @@ export default function ComponentModal({ item, onClose, onSaved }) {
           </div>
         </div>
 
-        {/* Purchase Date + Purchased From */}
-        <div className="grid grid-cols-2 gap-3">
-          <div>
-            <Label className="text-xs">Purchase Date</Label>
-            <Input type="date" value={form.purchase_date || ""} onChange={(e) => set("purchase_date", e.target.value)} className="mt-1" />
-          </div>
-          <div>
-            <Label className="text-xs">Purchased From</Label>
-            <Input value={form.purchased_from} onChange={(e) => set("purchased_from", e.target.value)} placeholder="Store or website" className="mt-1" />
-          </div>
+        {/* Purchase Date */}
+        <div>
+          <Label className="text-xs">Purchase Date</Label>
+          <Input type="date" value={form.purchase_date || ""} onChange={(e) => set("purchase_date", e.target.value)} className="mt-1" />
+        </div>
+
+        {/* Purchased From */}
+        <div>
+          <Label className="text-xs">Purchased From</Label>
+          <Input value={form.purchased_from} onChange={(e) => set("purchased_from", e.target.value)} placeholder="Store or website" className="mt-1" />
         </div>
 
         {/* Description */}
