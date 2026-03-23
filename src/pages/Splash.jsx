@@ -15,8 +15,8 @@ export default function Splash() {
           </div>
         </div>
         
-        <h1 className="text-3xl md:text-5xl font-bold text-foreground tracking-tight">
-          ReloadTrack
+        <h1 className="text-3xl md:text-5xl font-bold text-foreground tracking-tight">TIWIG Count
+
         </h1>
         
         <p className="text-sm text-muted-foreground">
@@ -43,14 +43,14 @@ export default function Splash() {
         </div>
 
         {/* CTA Button */}
-        <Button 
+        <Button
           size="lg"
           onClick={() => navigate("/dashboard")}
-          className="w-full md:w-auto px-8"
-        >
+          className="w-full md:w-auto px-8">
+          
           Get Started
         </Button>
       </div>
-    </div>
-  );
+    </div>);
+
 }
