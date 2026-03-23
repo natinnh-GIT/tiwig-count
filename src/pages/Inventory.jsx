@@ -142,8 +142,8 @@ export default function Inventory() {
           <Input
             placeholder="Search components..."
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="pl-9 h-9 text-sm rounded-xl bg-muted border-0" />
+            onChange={(e) => setSearch(e.target.value)} className="bg-muted pl-9 px-3 py-1 text-sm rounded-lg flex w-full border-input shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm h-9 border-0" />
+          
           
         </div>
         <CategoryFilter
