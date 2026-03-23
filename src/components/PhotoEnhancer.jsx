@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
-import { Loader2, Check, X, Sparkles } from "lucide-react";
+import { Check, X, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import EnhancingAnimation from "@/components/EnhancingAnimation";
 
 export default function PhotoEnhancer({ originalUrl, onSelect, onCancel }) {
   const [loading, setLoading] = useState(false);
@@ -66,16 +67,7 @@ export default function PhotoEnhancer({ originalUrl, onSelect, onCancel }) {
       </div>
 
       <div className="flex-1 overflow-y-auto px-4 py-4">
-        {loading && (
-          <div className="flex flex-col items-center justify-center py-20 gap-3">
-            <Loader2 className="w-8 h-8 animate-spin text-primary" />
-            <p className="text-sm text-muted-foreground text-center">
-              Removing background & enhancing…
-              <br />
-              <span className="text-xs">Generating 3 variations</span>
-            </p>
-          </div>
-        )}
+        {loading && <EnhancingAnimation />}
 
         {error && (
           <div className="flex flex-col items-center justify-center py-20 gap-3">
