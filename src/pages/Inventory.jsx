@@ -161,7 +161,13 @@ export default function Inventory() {
           </div>
         ) : (
           filtered.map((item) => (
-            <ComponentCard key={item.id} item={item} onEdit={handleEdit} onRefresh={load} />
+            <div
+              key={item.id}
+              ref={(el) => { cardRefs.current[item.id] = el; }}
+              className={`rounded-2xl transition-all duration-500 ${highlightId === item.id ? "ring-2 ring-primary ring-offset-2 bg-primary/5" : ""}`}
+            >
+              <ComponentCard item={item} onEdit={handleEdit} onRefresh={load} />
+            </div>
           ))
         )}
       </div>
