@@ -25,6 +25,8 @@ export default function Inventory() {
   const [showModal, setShowModal] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
   const [exportFormat, setExportFormat] = useState(null);
+  const [highlightId, setHighlightId] = useState(null);
+  const cardRefs = useRef({});
 
   const load = async () => {
     setLoading(true);
