@@ -16,11 +16,15 @@ export default function PhotoCapture({ onCapture, onClose }) {
     const objectUrl = URL.createObjectURL(f);
     img.src = objectUrl;
     await new Promise((res) => { img.onload = res; img.onerror = res; });
+    const MAX_WIDTH = 800;
+    const origW = img.naturalWidth || 800;
+    const origH = img.naturalHeight || 600;
+    const scale = origW > MAX_WIDTH ? MAX_WIDTH / origW : 1;
     const canvas = document.createElement("canvas");
-    canvas.width = img.naturalWidth || 800;
-    canvas.height = img.naturalHeight || 600;
+    canvas.width = Math.round(origW * scale);
+    canvas.height = Math.round(origH * scale);
     const ctx = canvas.getContext("2d");
-    ctx.drawImage(img, 0, 0);
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
     URL.revokeObjectURL(objectUrl);
     canvas.toBlob((blob) => {
       const jpeg = new File([blob], "photo.jpg", { type: "image/jpeg" });
