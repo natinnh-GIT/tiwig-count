@@ -52,6 +52,11 @@ export default function Dashboard() {
         <Input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && search.trim()) {
+              navigate(`/inventory?q=${encodeURIComponent(search.trim())}`);
+            }
+          }}
           placeholder="Search all components…"
           className="pl-9"
         />
