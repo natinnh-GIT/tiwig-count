@@ -325,7 +325,7 @@ export default function ComponentModal({ item, onClose, onSaved }) {
         </div>
 
         {/* Purchase Date */}
-        <div>
+        <div className="w-1/2">
           <Label className="text-xs">Purchase Date</Label>
           <Input type="date" value={form.purchase_date || ""} onChange={(e) => set("purchase_date", e.target.value)} className="mt-1" />
         </div>
