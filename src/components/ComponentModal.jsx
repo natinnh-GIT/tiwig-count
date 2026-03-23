@@ -155,6 +155,13 @@ export default function ComponentModal({ item, onClose, onSaved }) {
 
   if (showBarcode) return <BarcodeScanner onDetected={(code) => { set("barcode", code); setShowBarcode(false); }} onClose={() => setShowBarcode(false)} />;
   if (showPhoto) return <PhotoCapture onCapture={handlePhotoCaptured} onClose={() => setShowPhoto(false)} />;
+  if (showEnhancer) return (
+    <PhotoEnhancer
+      originalUrl={form.photo_url}
+      onSelect={(url) => { set("photo_url", url); setShowEnhancer(false); }}
+      onCancel={() => setShowEnhancer(false)}
+    />
+  );
 
   return (
     <div className="fixed inset-0 z-50 bg-background flex flex-col">
