@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Search, Package, Layers, Flame, CircleDot, ArrowLeft, Sun, Moon } from "lucide-react";
+import { Search, Package, Layers, Flame, CircleDot, ArrowLeft, Sun, Moon, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
 const CATEGORIES = [
