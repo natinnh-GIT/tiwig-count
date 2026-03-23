@@ -19,8 +19,8 @@ export default function Splash() {
 
         </h1>
         
-        <p className="text-sm text-muted-foreground">
-          Manage your ammunition reloading inventory with precision and ease
+        <p className="text-zinc-700 text-base">Manage your ammunition reloading inventory with precision and ease
+
         </p>
 
         {/* Features */}
