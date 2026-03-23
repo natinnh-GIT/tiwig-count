@@ -29,6 +29,7 @@ export default function ComponentModal({ item, onClose, onSaved }) {
   const [aiLoading, setAiLoading] = useState(false);
   const [showBarcode, setShowBarcode] = useState(false);
   const [showPhoto, setShowPhoto] = useState(false);
+  const [showEnhancer, setShowEnhancer] = useState(false);
   const [duplicate, setDuplicate] = useState(null);
 
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
