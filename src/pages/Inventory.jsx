@@ -186,6 +186,14 @@ export default function Inventory() {
         />
       )}
 
+      {/* Floating Add Button */}
+      <button
+        onClick={handleAdd}
+        className="fixed bottom-6 right-6 z-20 w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-lg flex items-center justify-center active:scale-95 transition-transform"
+      >
+        <Plus className="w-6 h-6" />
+      </button>
+
       {exportFormat && (
         <ExportDialog
           format={exportFormat}
