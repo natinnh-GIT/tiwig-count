@@ -11,6 +11,7 @@ import SuggestInput from "@/components/SuggestInput";
 import PhotoCapture from "@/components/PhotoCapture";
 import DuplicateDialog from "@/components/DuplicateDialog";
 import PhotoEnhancer from "@/components/PhotoEnhancer";
+import LocationPicker from "@/components/LocationPicker";
 
 const getDefaults = () => ({
   name: "", description: "",
@@ -370,6 +371,17 @@ export default function ComponentModal({ item, onClose, onSaved }) {
         <div>
           <Label className="text-xs">Purchased From</Label>
           <Input value={form.purchased_from} onChange={(e) => set("purchased_from", e.target.value)} placeholder="Store or website" className="mt-1" />
+        </div>
+
+        {/* Locations */}
+        <div>
+          <Label className="text-xs">Storage Locations</Label>
+          <div className="mt-1">
+            <LocationPicker
+              value={form.location_ids || []}
+              onChange={(v) => set("location_ids", v)}
+            />
+          </div>
         </div>
 
         {/* Description */}

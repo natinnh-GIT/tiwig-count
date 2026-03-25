@@ -1,6 +1,7 @@
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2, MapPin } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 const CATEGORY_COLORS = {
   brass: "bg-amber-100 text-amber-700",
@@ -18,6 +19,15 @@ const CATEGORY_LABELS = {
 
 export default function ComponentCard({ item, onEdit, onRefresh }) {
   const navigate = useNavigate();
+  const [locationNames, setLocationNames] = useState([]);
+
+  useEffect(() => {
+    if (item.location_ids?.length) {
+      base44.entities.Location.list().then((all) => {
+        setLocationNames(all.filter((l) => item.location_ids.includes(l.id)).map((l) => l.name));
+      });
+    }
+  }, [item.location_ids]);
 
   const handleDelete = async (e) => {
     e.stopPropagation();
@@ -66,6 +76,12 @@ export default function ComponentCard({ item, onEdit, onRefresh }) {
             {item.total_cost ?
             <p className="text-xs text-muted-foreground">${Number(item.total_cost).toFixed(2)}</p> :
             null}
+            {locationNames.length > 0 && (
+              <p className="text-xs text-muted-foreground flex items-center gap-0.5 mt-0.5">
+                <MapPin className="w-3 h-3 flex-shrink-0" />
+                {locationNames.join(", ")}
+              </p>
+            )}
           </div>
           <div className="flex gap-1">
             <button
