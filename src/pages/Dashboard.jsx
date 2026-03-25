@@ -54,7 +54,7 @@ export default function Dashboard() {
         <button onClick={() => navigate("/inventory")} className="p-1 text-muted-foreground">
           <ArrowLeft className="w-5 h-5" />
         </button>
-        <h1 className="text-xl font-bold">Dashboard</h1>
+        <h1 className="text-xl font-bold">Inventory Home</h1>
         <button
           onClick={() => setDark((d) => !d)}
           className="ml-auto p-2 rounded-full bg-muted text-muted-foreground hover:text-foreground transition-colors"
