@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { ArrowLeft, Pencil, Trash2, Package } from "lucide-react";
@@ -54,12 +54,17 @@ export default function ComponentDetail() {
   const [item, setItem] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showEdit, setShowEdit] = useState(false);
+  const [locationNames, setLocationNames] = useState([]);
 
   const load = async () => {
     const data = await base44.entities.Component.list();
     const found = data.find((c) => c.id === id);
     setItem(found || null);
     setLoading(false);
+    if (found?.location_ids?.length) {
+      const allLocs = await base44.entities.Location.list();
+      setLocationNames(allLocs.filter((l) => found.location_ids.includes(l.id)).map((l) => l.name));
+    }
   };
 
   useEffect(() => { load(); }, [id]);
@@ -154,6 +159,7 @@ export default function ComponentDetail() {
             <Row label="Purchase Date" value={item.purchase_date ? fmtDate(item.purchase_date) : null} />
             <Row label="Purchased From" value={item.purchased_from} />
             <Row label="Barcode" value={item.barcode} />
+            <Row label="Storage Location" value={locationNames.length > 0 ? locationNames.join(", ") : null} />
           </div>
 
           {/* Timestamps */}
