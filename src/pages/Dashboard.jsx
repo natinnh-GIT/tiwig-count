@@ -79,14 +79,14 @@ export default function Dashboard() {
           }}
           placeholder="Search all components…"
           className="pl-9 pr-9" />
-        {search && (
-          <button
-            onClick={() => setSearch("")}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-          >
+        {search &&
+        <button
+          onClick={() => setSearch("")}
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+          
             <X className="w-4 h-4" />
           </button>
-        )}
+        }
       </div>
 
       {/* Total value */}
@@ -102,8 +102,8 @@ export default function Dashboard() {
           const Icon = cat.icon;
           return (
             <div
-              key={cat.key}
-              className={`rounded-2xl border p-4 ${cat.color} cursor-pointer active:scale-95 transition-transform`}
+              key={cat.key} className="bg-amber-50 text-amber-700 px-4 py-3 rounded-2xl border border-amber-200 cursor-pointer active:scale-95 transition-transform"
+
               onClick={() => navigate(`/inventory?category=${cat.key}${search ? `&q=${encodeURIComponent(search)}` : ""}`)}>
               
               <div className="flex items-center gap-2 mb-3">
