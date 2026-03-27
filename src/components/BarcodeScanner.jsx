@@ -2,83 +2,71 @@ import { useEffect, useRef, useState } from "react";
 import { X, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { BrowserMultiFormatReader } from "@zxing/library";
 
 export default function BarcodeScanner({ onDetected, onClose }) {
   const videoRef = useRef();
+  const readerRef = useRef(null);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [manual, setManual] = useState("");
-  const [scanning, setScanning] = useState(true);
-  const streamRef = useRef(null);
 
   useEffect(() => {
-    let barcodeDetector;
-    let animFrame;
+    const codeReader = new BrowserMultiFormatReader();
+    readerRef.current = codeReader;
 
-    const startCamera = async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: "environment" }
-        });
-        streamRef.current = stream;
-        videoRef.current.srcObject = stream;
-        await videoRef.current.play();
-
-        if ("BarcodeDetector" in window) {
-          barcodeDetector = new BarcodeDetector({ formats: ["qr_code", "ean_13", "ean_8", "code_128", "code_39", "upc_a", "upc_e"] });
-
-          const scan = async () => {
-            if (videoRef.current && videoRef.current.readyState === 4) {
-              const barcodes = await barcodeDetector.detect(videoRef.current);
-              if (barcodes.length > 0) {
-                stopCamera();
-                onDetected(barcodes[0].rawValue);
-                return;
-              }
-            }
-            animFrame = requestAnimationFrame(scan);
-          };
-          scan();
-        } else {
-          // BarcodeDetector not supported (e.g. iOS Safari) — stop camera, show manual entry
-          stopCamera();
-          setScanning(false);
-          setError(null); // no error shown, just manual entry
+    codeReader.decodeFromConstraints(
+      {
+        audio: false,
+        video: {
+          facingMode: "environment",
+        },
+      },
+      videoRef.current,
+      (result, err) => {
+        if (result) {
+          stopAndClose();
+          onDetected(result.getText());
         }
-      } catch (e) {
+        // Ignore per-frame errors (no barcode found yet)
+      }
+    )
+      .then(() => setLoading(false))
+      .catch((e) => {
         setError("Camera access denied. Please enter barcode manually.");
-        setScanning(false);
-      }
-    };
+        setLoading(false);
+      });
 
-    const stopCamera = () => {
-      cancelAnimationFrame(animFrame);
-      if (streamRef.current) {
-        streamRef.current.getTracks().forEach((t) => t.stop());
-      }
+    return () => {
+      codeReader.reset();
     };
-
-    startCamera();
-    return () => stopCamera();
   }, []);
 
-  const handleClose = () => {
-    if (streamRef.current) streamRef.current.getTracks().forEach((t) => t.stop());
+  const stopAndClose = () => {
+    if (readerRef.current) readerRef.current.reset();
     onClose();
   };
 
   return (
     <div className="fixed inset-0 z-50 bg-black flex flex-col">
       <div className="flex items-center justify-between px-4 py-3 bg-black/80">
-        <button onClick={handleClose}><X className="w-5 h-5 text-white" /></button>
+        <button onClick={stopAndClose}><X className="w-5 h-5 text-white" /></button>
         <h2 className="font-semibold text-sm text-white">Scan Barcode</h2>
         <div className="w-5" />
       </div>
 
-      {scanning && !error && (
+      {!error && (
         <div className="flex-1 relative">
           <video ref={videoRef} className="absolute inset-0 w-full h-full object-cover" playsInline muted />
+
+          {loading && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black/60">
+              <Loader2 className="w-8 h-8 text-white animate-spin" />
+            </div>
+          )}
+
           {/* Scan overlay */}
-          <div className="absolute inset-0 flex items-center justify-center">
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <div className="w-64 h-40 border-2 border-white rounded-xl relative">
               <div className="absolute top-0 left-0 w-6 h-6 border-t-4 border-l-4 border-white rounded-tl-lg" />
               <div className="absolute top-0 right-0 w-6 h-6 border-t-4 border-r-4 border-white rounded-tr-lg" />
@@ -87,6 +75,7 @@ export default function BarcodeScanner({ onDetected, onClose }) {
               <div className="absolute inset-x-0 top-1/2 h-0.5 bg-red-500 animate-pulse" />
             </div>
           </div>
+
           <p className="absolute bottom-8 inset-x-0 text-center text-white/70 text-sm">Point camera at barcode</p>
         </div>
       )}
@@ -104,7 +93,10 @@ export default function BarcodeScanner({ onDetected, onClose }) {
           />
           <Button
             disabled={!manual}
-            onClick={() => { if (streamRef.current) streamRef.current.getTracks().forEach((t) => t.stop()); onDetected(manual); }}
+            onClick={() => {
+              if (readerRef.current) readerRef.current.reset();
+              onDetected(manual);
+            }}
           >
             Use
           </Button>
