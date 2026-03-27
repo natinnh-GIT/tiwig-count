@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { Search, Package, Layers, Flame, CircleDot, ArrowLeft, Sun, Moon, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import AppHeader from "@/components/AppHeader";
 
 const CATEGORIES = [
 { key: "brass", label: "Brass / Casings", icon: Layers, color: "bg-amber-50 border-amber-200 text-amber-700", iconColor: "text-amber-500" },
@@ -48,7 +49,9 @@ export default function Dashboard() {
   });
 
   return (
-    <div className="min-h-screen bg-background px-4 pt-12 pb-8">
+    <div className="min-h-screen bg-background pb-8">
+      <AppHeader />
+      <div className="px-4 pt-6">
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
         <button onClick={() => navigate("/inventory")} className="p-1 text-muted-foreground">
@@ -154,6 +157,7 @@ export default function Dashboard() {
         }
         </div>
       }
+      </div>
     </div>);
 
 }

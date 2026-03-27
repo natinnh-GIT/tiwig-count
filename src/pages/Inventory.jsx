@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { Plus, Search, Package, Download, LayoutDashboard, X } from "lucide-react";
+import AppHeader from "@/components/AppHeader";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import CategoryFilter from "@/components/CategoryFilter";
@@ -114,6 +115,7 @@ export default function Inventory() {
 
   return (
     <div className="min-h-screen bg-background">
+      <AppHeader />
       {/* Header */}
       <div className="sticky top-0 z-10 bg-background border-b border-border px-4 pt-safe-top pb-3">
         <div className="flex items-center justify-between mb-3 pt-3">

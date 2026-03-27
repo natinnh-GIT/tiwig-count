@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { ArrowLeft, Pencil, Trash2, Package } from "lucide-react";
+import AppHeader from "@/components/AppHeader";
 import { Button } from "@/components/ui/button";
 import ComponentModal from "@/components/ComponentModal";
 const fmtDate = (d) => {
@@ -15,6 +16,7 @@ const fmtDate = (d) => {
 const fmtDateTime = (d) => {
   const date = new Date(d);
   return new Intl.DateTimeFormat("en-US", { 
+    timeZone: "America/New_York",
     month: "short", 
     day: "numeric", 
     year: "numeric", 
@@ -100,6 +102,7 @@ export default function ComponentDetail() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      <AppHeader />
       {/* Header */}
       <div className="sticky top-0 z-10 bg-background border-b border-border px-4 py-3 flex items-center justify-between">
         <button onClick={() => navigate(`/inventory?highlight=${id}`)} className="p-1">
