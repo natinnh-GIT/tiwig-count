@@ -50,6 +50,37 @@ function Row({ label, value }) {
   );
 }
 
+function BarcodeDisplay({ value }) {
+  if (!value) return null;
+
+  // Generate deterministic bar widths from the barcode string
+  const bars = [];
+  for (let i = 0; i < value.length * 4 + 20; i++) {
+    const charCode = value.charCodeAt(i % value.length) + i;
+    bars.push({ wide: (charCode + i) % 3 === 0, space: i % 2 === 0 });
+  }
+
+  return (
+    <div className="py-4 border-b border-border last:border-0">
+      <span className="text-sm text-muted-foreground block mb-3">Barcode</span>
+      <div className="flex flex-col items-center bg-white rounded-xl p-4 border border-border">
+        {/* Bars */}
+        <div className="flex items-stretch h-16 gap-px">
+          {bars.map((bar, i) =>
+            bar.space ? (
+              <div key={i} className={bar.wide ? "w-1.5" : "w-0.5"} />
+            ) : (
+              <div key={i} className={`bg-black h-full ${bar.wide ? "w-1.5" : "w-0.5"}`} />
+            )
+          )}
+        </div>
+        {/* Number */}
+        <span className="mt-2 text-xs font-mono tracking-widest text-black select-all">{value}</span>
+      </div>
+    </div>
+  );
+}
+
 export default function ComponentDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -161,7 +192,7 @@ export default function ComponentDetail() {
             <Row label="Total Cost" value={item.total_cost ? `$${Number(item.total_cost).toFixed(2)}` : null} />
             <Row label="Purchase Date" value={item.purchase_date ? fmtDate(item.purchase_date) : null} />
             <Row label="Purchased From" value={item.purchased_from} />
-            <Row label="Barcode" value={item.barcode} />
+            <BarcodeDisplay value={item.barcode} />
             <Row label="Storage Location" value={locationNames.length > 0 ? locationNames.join(", ") : null} />
           </div>
 
