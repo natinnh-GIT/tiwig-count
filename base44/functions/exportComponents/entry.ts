@@ -1,4 +1,4 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.21';
 
 Deno.serve(async (req) => {
   try {
@@ -11,8 +11,8 @@ Deno.serve(async (req) => {
 
     const { format } = await req.json();
 
-    // Fetch all components using service role so it works for all authenticated users
-    const allComponents = await base44.asServiceRole.entities.Component.filter({ created_by: user.email });
+    // Fetch all components
+    const allComponents = await base44.entities.Component.list();
     const categoryOrder = { brass: 0, bullets: 1, powder: 2, primers: 3 };
     const components = allComponents.sort((a, b) => categoryOrder[a.category] - categoryOrder[b.category]);
 
@@ -40,9 +40,13 @@ Deno.serve(async (req) => {
         .map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(','))
         .join('\n');
 
-      // Return as base64 JSON so Axios handles it correctly
-      const base64csv = btoa(unescape(encodeURIComponent(csv)));
-      return Response.json({ file: base64csv, format: 'csv' });
+      return new Response(csv, {
+        status: 200,
+        headers: {
+          'Content-Type': 'text/csv;charset=utf-8',
+          'Content-Disposition': 'attachment; filename=components.csv'
+        }
+      });
     }
 
     if (format === 'xlsx') {

@@ -52,9 +52,9 @@ export default function Dashboard() {
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
         <button onClick={() => navigate("/inventory")} className="p-1 text-muted-foreground">
-          <ArrowLeft className="w-6 h-6" />
+          <ArrowLeft className="w-5 h-5" />
         </button>
-        <h1 className="text-xl font-bold">Inventory Listing</h1>
+        <h1 className="text-xl font-bold">Dashboard</h1>
         <button
           onClick={() => setDark((d) => !d)}
           className="ml-auto p-2 rounded-full bg-muted text-muted-foreground hover:text-foreground transition-colors"
@@ -79,18 +79,18 @@ export default function Dashboard() {
           }}
           placeholder="Search all components…"
           className="pl-9 pr-9" />
-        {search &&
-        <button
-          onClick={() => setSearch("")}
-          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
-          
+        {search && (
+          <button
+            onClick={() => setSearch("")}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+          >
             <X className="w-4 h-4" />
           </button>
-        }
+        )}
       </div>
 
       {/* Total value */}
-      <div className="bg-primary text-primary-foreground mb-6 px-5 py-3 text-center rounded-lg shadow-sm">
+      <div className="bg-primary text-primary-foreground mb-6 p-5 text-center rounded-lg shadow-sm">
         <p className="text-sm opacity-75 mb-1">Total Inventory Value</p>
         <p className="text-3xl font-bold">${totalValue.toFixed(2)}</p>
         <p className="text-xs opacity-60 mt-1">{filtered.length} item{filtered.length !== 1 ? "s" : ""} across all categories</p>
