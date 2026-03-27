@@ -169,7 +169,30 @@ export default function ComponentModal({ item, onClose, onSaved }) {
     setAiLoading(false);
   };
 
-  if (showBarcode) return <BarcodeScanner onDetected={(code) => { set("barcode", code); setShowBarcode(false); }} onClose={() => setShowBarcode(false)} />;
+  const handleBarcodeDetected = async (code) => {
+    set("barcode", code);
+    setShowBarcode(false);
+    setAiLoading(true);
+    try {
+      const res = await base44.functions.invoke("lookupBarcode", { barcode: code });
+      const info = res.data?.result;
+      if (info) {
+        setForm((f) => ({
+          ...f,
+          barcode: code,
+          name: info.name || f.name,
+          brand: info.brand || f.brand,
+          caliber: info.caliber || f.caliber,
+          category: info.category || f.category,
+          description: info.description || f.description,
+        }));
+      }
+    } finally {
+      setAiLoading(false);
+    }
+  };
+
+  if (showBarcode) return <BarcodeScanner onDetected={handleBarcodeDetected} onClose={() => setShowBarcode(false)} />;
   if (showPhoto) return <PhotoCapture onCapture={handlePhotoCaptured} onClose={() => setShowPhoto(false)} />;
   if (showEnhancer) return (
     <PhotoEnhancer
