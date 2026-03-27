@@ -52,7 +52,7 @@ export default function Dashboard() {
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
         <button onClick={() => navigate("/inventory")} className="p-1 text-muted-foreground">
-          <ArrowLeft className="w-5 h-5" />
+          <ArrowLeft className="w-6 h-6" />
         </button>
         <h1 className="text-xl font-bold">Inventory Listing</h1>
         <button
