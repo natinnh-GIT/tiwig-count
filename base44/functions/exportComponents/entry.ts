@@ -11,8 +11,8 @@ Deno.serve(async (req) => {
 
     const { format } = await req.json();
 
-    // Fetch all components
-    const allComponents = await base44.entities.Component.list();
+    // Fetch all components using service role so it works for all authenticated users
+    const allComponents = await base44.asServiceRole.entities.Component.filter({ created_by: user.email });
     const categoryOrder = { brass: 0, bullets: 1, powder: 2, primers: 3 };
     const components = allComponents.sort((a, b) => categoryOrder[a.category] - categoryOrder[b.category]);
 
