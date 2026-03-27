@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Plus, Search, Package, Download, LayoutDashboard, X } from "lucide-react";
+import { Plus, Search, Package, Download, LayoutDashboard, X, Barcode } from "lucide-react";
 import AppHeader from "@/components/AppHeader";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,7 @@ import CategoryFilter from "@/components/CategoryFilter";
 import ComponentCard from "@/components/ComponentCard";
 import ComponentModal from "@/components/ComponentModal";
 import ExportDialog from "@/components/ExportDialog";
+import BarcodeScanner from "@/components/BarcodeScanner";
 import ThemeToggle from "@/components/ThemeToggle";
 
 const CATEGORIES = [
@@ -32,6 +33,7 @@ export default function Inventory() {
   const [editingItem, setEditingItem] = useState(null);
   const [exportFormat, setExportFormat] = useState(null);
   const [highlightId, setHighlightId] = useState(null);
+  const [showBarcodeScanner, setShowBarcodeScanner] = useState(false);
   const cardRefs = useRef({});
 
   const load = async () => {
@@ -68,6 +70,17 @@ export default function Inventory() {
     return matchCat && matchSearch;
   }).
   sort((a, b) => categoryOrder[a.category] - categoryOrder[b.category]);
+
+  const handleBarcodeSearch = (code) => {
+    setShowBarcodeScanner(false);
+    const existing = components.find((c) => c.barcode === code);
+    if (existing) {
+      navigate(`/component/${existing.id}`);
+    } else {
+      setEditingItem({ barcode: code });
+      setShowModal(true);
+    }
+  };
 
   const handleAdd = () => {setEditingItem(null);setShowModal(true);};
   const handleEdit = (item) => {setEditingItem(item);setShowModal(true);};
@@ -139,23 +152,32 @@ export default function Inventory() {
 
           </div>
         </div>
-        <div className="relative mb-3">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <Input
-            placeholder="Search components..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            onFocus={(e) => e.target.select()}
-            onKeyDown={(e) => { if (e.key === "Enter") { e.target.blur(); setSearch(""); } }}
-            className="bg-muted px-10 text-sm rounded-lg flex w-full border-input shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm h-9 border-0" />
-          {search && (
-            <button
-              onClick={() => setSearch("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          )}
+        <div className="flex gap-2 mb-3">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Input
+              placeholder="Search components..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onFocus={(e) => e.target.select()}
+              onKeyDown={(e) => { if (e.key === "Enter") { e.target.blur(); setSearch(""); } }}
+              className="bg-muted px-10 text-sm rounded-lg flex w-full border-input shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm h-9 border-0" />
+            {search && (
+              <button
+                onClick={() => setSearch("")}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
+          </div>
+          <button
+            onClick={() => setShowBarcodeScanner(true)}
+            className="p-2 rounded-lg bg-muted text-muted-foreground flex items-center justify-center flex-shrink-0"
+            title="Search by barcode"
+          >
+            <Barcode className="w-5 h-5" />
+          </button>
         </div>
         <CategoryFilter
           categories={CATEGORIES}
@@ -204,6 +226,10 @@ export default function Inventory() {
         
         <Plus className="w-6 h-6" />
       </button>
+
+      {showBarcodeScanner && (
+        <BarcodeScanner onDetected={handleBarcodeSearch} onClose={() => setShowBarcodeScanner(false)} />
+      )}
 
       {exportFormat &&
       <ExportDialog
