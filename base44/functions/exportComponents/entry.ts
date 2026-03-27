@@ -40,13 +40,9 @@ Deno.serve(async (req) => {
         .map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(','))
         .join('\n');
 
-      return new Response(csv, {
-        status: 200,
-        headers: {
-          'Content-Type': 'text/csv;charset=utf-8',
-          'Content-Disposition': 'attachment; filename=components.csv'
-        }
-      });
+      // Return as base64 JSON so Axios handles it correctly
+      const base64csv = btoa(unescape(encodeURIComponent(csv)));
+      return Response.json({ file: base64csv, format: 'csv' });
     }
 
     if (format === 'xlsx') {
