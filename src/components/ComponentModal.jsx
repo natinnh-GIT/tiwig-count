@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { X, Camera, Barcode, Loader2, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -26,6 +27,7 @@ const getDefaults = () => ({
 });
 
 export default function ComponentModal({ item, onClose, onSaved }) {
+  const navigate = useNavigate();
   const [form, setForm] = useState(item ? { ...item } : getDefaults());
   const [allComponents, setAllComponents] = useState([]);
   const [saving, setSaving] = useState(false);
@@ -170,8 +172,18 @@ export default function ComponentModal({ item, onClose, onSaved }) {
   };
 
   const handleBarcodeDetected = async (code) => {
-    set("barcode", code);
     setShowBarcode(false);
+
+    // 1. Check local database first
+    const existing = allComponents.find((c) => c.barcode === code);
+    if (existing) {
+      onClose();
+      navigate(`/component/${existing.id}`);
+      return;
+    }
+
+    // 2. Not found locally — search the web
+    set("barcode", code);
     setAiLoading(true);
     try {
       const res = await base44.functions.invoke("lookupBarcode", { barcode: code });
