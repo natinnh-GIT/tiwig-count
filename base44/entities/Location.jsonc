@@ -1,0 +1,22 @@
+{
+  "name": "Location",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Location name (e.g. Gun Safe, Top Shelf, Cabinet A)"
+    },
+    "description": {
+      "type": "string",
+      "description": "Optional description"
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "rls": {
+    "create": {
+      "created_by": "{{user.email}}"
+    }
+  }
+}
