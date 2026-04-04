@@ -42,7 +42,7 @@ export default function ComponentCard({ item, onEdit, onRefresh }) {
     >
       {/* Thumbnail */}
       <div style={{
-        width: 44, height: 44, flexShrink: 0, borderRadius: 2,
+        width: 44, height: 44, flexShrink: 0, borderRadius: 6,
         background: "#242424", overflow: "hidden",
         display: "flex", alignItems: "center", justifyContent: "center",
         border: `1px solid ${cat.border}33`,
