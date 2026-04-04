@@ -41,11 +41,15 @@ export default function EditableCombobox({ label, value, onChange, presetOptions
 
   const loadCustomOptions = async () => {
     if (!entityName) return;
-    const opts = await base44.entities[entityName].list();
+    const opts = await base44.entities[entityName].list('-created_date');
     setCustomOptions(opts.map(o => o.value));
   };
 
-  const allOptions = [...new Set([...presetOptions, ...customOptions])];
+  const allOptions = (() => {
+    const used = new Set(customOptions);
+    const presetOnly = presetOptions.filter(p => !used.has(p));
+    return [...customOptions, ...presetOnly];
+  })();
   const isModified = inputValue && !allOptions.includes(inputValue);
   const canSave = isModified && inputValue.trim() !== "";
 
