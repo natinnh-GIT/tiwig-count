@@ -3,6 +3,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { ArrowLeft, Pencil, Trash2, Package } from "lucide-react";
 import ComponentModal from "@/components/ComponentModal";
+import ImageLightbox from "@/components/ImageLightbox";
+
+const CAT = {
+  brass:   { bg: "#78350f", text: "#fde68a", border: "#ca8a04", label: "BRASS" },
+  bullets: { bg: "#1e3a8a", text: "#bfdbfe", border: "#2563eb", label: "BULLETS" },
+  powder:  { bg: "#7c2d12", text: "#fed7aa", border: "#c2410c", label: "POWDER" },
+  primers: { bg: "#14532d", text: "#bbf7d0", border: "#16a34a", label: "PRIMERS" },
+};
 
 const fmtDate = (d) => {
   if (typeof d === "string" && /^\d{4}-\d{2}-\d{2}$/.test(d)) {
@@ -14,7 +22,7 @@ const fmtDate = (d) => {
 
 const fmtDateTime = (d) => new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit", hour12: true }).format(new Date(d));
 
-const CAT_LABELS = { brass: "BRASS", bullets: "BULLETS", powder: "POWDER", primers: "PRIMERS" };
+
 
 function Row({ label, value }) {
   if (!value && value !== 0) return null;
@@ -56,6 +64,7 @@ export default function ComponentDetail() {
   const [loading, setLoading] = useState(true);
   const [showEdit, setShowEdit] = useState(false);
   const [locationNames, setLocationNames] = useState([]);
+  const [lightboxIndex, setLightboxIndex] = useState(null);
 
   const load = async () => {
     const data = await base44.entities.Component.list();
@@ -111,25 +120,40 @@ export default function ComponentDetail() {
 
       <div style={{ flex: 1, overflowY: "auto", paddingBottom: 24 }}>
         {/* Photos */}
-        {item.photo_url || item.photo_url_2 ? (
-          <div style={{ display: "grid", gridTemplateColumns: item.photo_url && item.photo_url_2 ? "1fr 1fr" : "1fr", maxHeight: 240, overflow: "hidden" }}>
-            {item.photo_url && <img src={item.photo_url} alt={item.name} style={{ width: "100%", aspectRatio: "1", objectFit: "cover" }} />}
-            {item.photo_url_2 && <img src={item.photo_url_2} alt="" style={{ width: "100%", aspectRatio: "1", objectFit: "cover" }} />}
-          </div>
-        ) : (
-          <div style={{ height: 120, background: "#1a1a1a", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <span style={{ color: "#f97316", fontWeight: 900, fontSize: 40 }}>{item.name?.[0]?.toUpperCase()}</span>
-          </div>
-        )}
+        {(() => {
+          const photos = [item.photo_url, item.photo_url_2].filter(Boolean);
+          return photos.length > 0 ? (
+            <div style={{ display: "grid", gridTemplateColumns: photos.length > 1 ? "1fr 1fr" : "1fr", maxHeight: 220, overflow: "hidden" }}>
+              {photos.map((url, i) => (
+                <img
+                  key={i}
+                  src={url}
+                  alt=""
+                  onClick={() => setLightboxIndex(i)}
+                  style={{ width: "100%", aspectRatio: "1", objectFit: "cover", cursor: "zoom-in" }}
+                />
+              ))}
+            </div>
+          ) : (
+            <div style={{ height: 100, background: "#1a1a1a", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <span style={{ color: "#f97316", fontWeight: 900, fontSize: 40 }}>{item.name?.[0]?.toUpperCase()}</span>
+            </div>
+          );
+        })()}
 
         <div style={{ padding: "16px 16px 0" }}>
           {/* Title + badge */}
-          <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 8, marginBottom: 4 }}>
-            <h2 style={{ color: "#f5f5f5", fontWeight: 800, fontSize: 20, margin: 0 }}>{item.name}</h2>
-            <span style={{ background: "#f97316", color: "#fff", fontSize: 9, fontWeight: 700, padding: "3px 8px", borderRadius: 2, flexShrink: 0, letterSpacing: "0.08em" }}>
-              {CAT_LABELS[item.category]}
-            </span>
-          </div>
+          {(() => {
+            const cat = CAT[item.category] || { bg: "#1a1a1a", text: "#f97316", border: "#f97316", label: (item.category||"").toUpperCase() };
+            return (
+              <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 8, marginBottom: 4 }}>
+                <h2 style={{ color: "#f5f5f5", fontWeight: 800, fontSize: 20, margin: 0 }}>{item.name}</h2>
+                <span style={{ background: cat.bg, color: cat.text, border: `1px solid ${cat.border}`, fontSize: 9, fontWeight: 700, padding: "3px 8px", borderRadius: 2, flexShrink: 0, letterSpacing: "0.08em" }}>
+                  {cat.label}
+                </span>
+              </div>
+            );
+          })()}
           {item.description && <p style={{ color: "#a3a3a3", fontSize: 13, marginBottom: 12 }}>{item.description}</p>}
 
           {/* Qty highlight */}
@@ -163,6 +187,13 @@ export default function ComponentDetail() {
       </div>
 
       {showEdit && <ComponentModal item={item} onClose={() => setShowEdit(false)} onSaved={() => { setShowEdit(false); load(); }} />}
+      {lightboxIndex !== null && (
+        <ImageLightbox
+          images={[item.photo_url, item.photo_url_2].filter(Boolean)}
+          startIndex={lightboxIndex}
+          onClose={() => setLightboxIndex(null)}
+        />
+      )}
       <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </div>
   );

@@ -50,12 +50,13 @@ export default function ComponentsTab({ search, onEdit }) {
             <button
               key={cat.id}
               onClick={() => setActiveCategory(cat.id)}
-              className="px-3 py-1 text-xs font-semibold flex-shrink-0 transition-colors"
               style={{
-                background: isActive ? "#f97316" : "#1a1a1a",
-                color: isActive ? "#fff" : "#a3a3a3",
+                padding: "4px 12px", fontSize: 11, fontWeight: 600, flexShrink: 0,
+                background: isActive ? "#f97316" : "#242424",
+                color: isActive ? "#ffffff" : "#6b7280",
                 borderRadius: "2px",
                 border: isActive ? "1px solid #f97316" : "1px solid #2a2a2a",
+                cursor: "pointer",
               }}
             >
               {cat.label}
@@ -72,7 +73,7 @@ export default function ComponentsTab({ search, onEdit }) {
       </div>
 
       {/* List */}
-      <div className="px-3 space-y-2 pb-4">
+      <div style={{ paddingBottom: 16 }}>
         {loading ? (
           <div className="flex justify-center py-16">
             <div className="w-5 h-5 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: "#f97316", borderTopColor: "transparent" }} />
@@ -84,11 +85,13 @@ export default function ComponentsTab({ search, onEdit }) {
             <p className="text-xs mt-1" style={{ color: "#737373" }}>Tap + to add your first item</p>
           </div>
         ) : (
-          filtered.map((item) => (
-            <ComponentCard key={item.id} item={item} onEdit={onEdit} onRefresh={() => {
-              base44.entities.Component.list("-created_date", 200).then(setComponents);
-            }} />
-          ))
+          <div style={{ background: "#1a1a1a", borderRadius: 3, overflow: "hidden", border: "1px solid #2a2a2a" }}>
+            {filtered.map((item, idx) => (
+              <ComponentCard key={item.id} item={item} onEdit={onEdit} onRefresh={() => {
+                base44.entities.Component.list("-created_date", 200).then(setComponents);
+              }} />
+            ))}
+          </div>
         )}
       </div>
     </div>
