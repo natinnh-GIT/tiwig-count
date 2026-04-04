@@ -1,3 +1,4 @@
+// Base44 native AI — no external API keys required
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 
 Deno.serve(async (req) => {
@@ -11,7 +12,7 @@ Deno.serve(async (req) => {
 
     if (mode === "reid") {
       const result = await base44.integrations.Core.InvokeLLM({
-        prompt: `You are an expert in ammunition reloading components. Analyze this image of a reloading component and extract all visible information from the label or packaging.
+        prompt: `You are an expert in ammunition reloading components. Analyze the image at this URL and extract all visible information from the label or packaging: ${image_url}
 
 Return a JSON object with these fields (use null for anything not visible):
 - name: full product name as shown on packaging
@@ -35,7 +36,7 @@ Return a JSON object with these fields (use null for anything not visible):
 
     } else if (mode === "enhance") {
       const description = await base44.integrations.Core.InvokeLLM({
-        prompt: `You are an expert in ammunition reloading components. Analyze this image carefully and read every visible detail on the label and packaging.
+        prompt: `You are an expert in ammunition reloading components. Analyze the image at this URL carefully and read every visible detail on the label and packaging: ${image_url}
 
 Write a detailed, accurate description of this product including:
 - Full product name and brand
