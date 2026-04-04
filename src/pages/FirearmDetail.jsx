@@ -12,7 +12,7 @@ const S = {
   iconBtn: { background: "none", border: "none", cursor: "pointer", color: "#a3a3a3", padding: 8, fontSize: 14, display: "flex", alignItems: "center" },
   deleteBtn: { ...{ background: "none", border: "none", cursor: "pointer", padding: 8, fontSize: 14, display: "flex", alignItems: "center", color: "#ef4444" } },
   body: { flex: 1, overflowY: "auto", padding: "16px" },
-  photo: { width: "75%", height: 280, borderRadius: 6, overflow: "hidden", background: "#242424", marginBottom: 16, border: "1px solid #2a2a2a", margin: "0 auto 16px auto" },
+  photo: { width: "100%", aspectRatio: "1", borderRadius: 6, overflow: "hidden", background: "#242424", marginBottom: 16, border: "1px solid #2a2a2a" },
   section: { marginBottom: 20 },
   sectionTitle: { color: "#a3a3a3", fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 8, paddingLeft: 10, borderLeft: "2px solid #f97316" },
   row: { paddingBottom: 10, display: "flex", justifyContent: "space-between", borderBottom: "1px solid #2a2a2a" },
