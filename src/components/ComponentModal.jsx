@@ -175,37 +175,58 @@ export default function ComponentModal({ item, onClose, onSaved }) {
       </div>
 
       <div style={S.body}>
-        {/* Photos row */}
-        <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
-          <div>
-            <label style={S.label}>Photo 1</label>
-            <button onClick={() => setShowPhoto(true)} style={{ width: 80, height: 80, borderRadius: 2, border: "1px dashed #2a2a2a", background: "#242424", overflow: "hidden", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
-              {form.photo_url ? <img src={form.photo_url} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : <Camera style={{ width: 22, height: 22, color: "#525252" }} />}
-            </button>
-          </div>
-          <div>
-            <label style={S.label}>Photo 2</label>
-            <button onClick={() => setShowPhoto2(true)} style={{ width: 80, height: 80, borderRadius: 2, border: "1px dashed #2a2a2a", background: "#242424", overflow: "hidden", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
-              {form.photo_url_2 ? <img src={form.photo_url_2} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : <Camera style={{ width: 22, height: 22, color: "#525252" }} />}
-            </button>
-          </div>
-          {form.photo_url && (
-            <div style={{ display: "flex", flexDirection: "column", gap: 6, justifyContent: "flex-end" }}>
-              {aiLoading ? (
-                <div style={{ display: "flex", alignItems: "center", gap: 6, color: "#a3a3a3", fontSize: 11 }}>
-                  <Loader2 style={{ width: 14, height: 14 }} className="animate-spin" /> AI…
-                </div>
-              ) : (
-                <>
-                  <button onClick={handleAILookup} style={{ background: "#242424", border: "1px solid #2a2a2a", borderRadius: 2, color: "#f97316", fontSize: 11, padding: "5px 10px", cursor: "pointer", display: "flex", alignItems: "center", gap: 4 }}>
-                    <Sparkles style={{ width: 12, height: 12 }} /> Re-ID
-                  </button>
-                  <button onClick={() => setShowEnhancer(true)} style={{ background: "#242424", border: "1px solid #2a2a2a", borderRadius: 2, color: "#a3a3a3", fontSize: 11, padding: "5px 10px", cursor: "pointer", display: "flex", alignItems: "center", gap: 4 }}>
-                    <Sparkles style={{ width: 12, height: 12 }} /> Enhance
-                  </button>
-                </>
-              )}
+        {/* Photos section */}
+        <div style={{ marginBottom: 16 }}>
+          {/* 2-column photo grid */}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 10 }}>
+            {/* Photo 1 */}
+            <div>
+              <label style={S.label}>Photo 1</label>
+              <button
+                onClick={() => setShowPhoto(true)}
+                style={{ width: "100%", aspectRatio: "1", borderRadius: 6, border: "1px dashed #2a2a2a", background: "#242424", overflow: "hidden", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", padding: 0 }}
+              >
+                {form.photo_url
+                  ? <img src={form.photo_url} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: 6 }} />
+                  : <Camera style={{ width: 24, height: 24, color: "#6b7280" }} />}
+              </button>
             </div>
+            {/* Photo 2 */}
+            <div>
+              <label style={S.label}>Photo 2</label>
+              <button
+                onClick={() => setShowPhoto2(true)}
+                style={{ width: "100%", aspectRatio: "1", borderRadius: 6, border: "1px dashed #2a2a2a", background: "#242424", overflow: "hidden", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", padding: 0 }}
+              >
+                {form.photo_url_2
+                  ? <img src={form.photo_url_2} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: 6 }} />
+                  : <Camera style={{ width: 24, height: 24, color: "#6b7280" }} />}
+              </button>
+            </div>
+          </div>
+
+          {/* AI buttons row — only shown when photo_url exists */}
+          {form.photo_url && (
+            aiLoading ? (
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, color: "#a3a3a3", fontSize: 12, padding: "6px 0" }}>
+                <Loader2 style={{ width: 14, height: 14 }} className="animate-spin" /> Analyzing…
+              </div>
+            ) : (
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                <button
+                  onClick={handleAILookup}
+                  style={{ background: "#242424", border: "1px solid #f97316", borderRadius: 3, color: "#f97316", fontSize: 12, fontWeight: 600, padding: "8px 0", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 5 }}
+                >
+                  <Sparkles style={{ width: 13, height: 13 }} /> Re-ID
+                </button>
+                <button
+                  onClick={() => setShowEnhancer(true)}
+                  style={{ background: "#242424", border: "1px solid #2a2a2a", borderRadius: 3, color: "#a3a3a3", fontSize: 12, fontWeight: 600, padding: "8px 0", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 5 }}
+                >
+                  <Sparkles style={{ width: 13, height: 13 }} /> Enhance
+                </button>
+              </div>
+            )
           )}
         </div>
 
