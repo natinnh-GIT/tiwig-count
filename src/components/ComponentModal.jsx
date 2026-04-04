@@ -88,6 +88,18 @@ export default function ComponentModal({ item, onClose, onSaved }) {
     });
   };
 
+  const getETNow = () => {
+    return new Date().toLocaleString('en-US', {
+      timeZone: 'America/New_York',
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    });
+  };
+
   const handleSave = async () => {
     setSaving(true);
     if (!item?.id) {
@@ -108,7 +120,11 @@ export default function ComponentModal({ item, onClose, onSaved }) {
       ...form,
       total_cost: form.total_cost !== "" && form.total_cost !== undefined ? Number(form.total_cost) : undefined,
       cost_per_unit: form.cost_per_unit !== "" && form.cost_per_unit !== undefined ? Number(form.cost_per_unit) : undefined,
+      modified_et: getETNow(),
     };
+    if (!item?.id) {
+      payload.created_et = getETNow();
+    }
     if (overrideId) await base44.entities.Component.update(overrideId, payload);
     else if (item?.id) await base44.entities.Component.update(item.id, payload);
     else await base44.entities.Component.create(payload);

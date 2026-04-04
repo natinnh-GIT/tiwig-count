@@ -78,6 +78,14 @@
         "type": "string"
       },
       "description": "IDs of storage locations where this component is kept"
+    },
+    "created_et": {
+      "type": "string",
+      "description": "Created timestamp in Eastern Time"
+    },
+    "modified_et": {
+      "type": "string",
+      "description": "Modified timestamp in Eastern Time"
     }
   },
   "required": [

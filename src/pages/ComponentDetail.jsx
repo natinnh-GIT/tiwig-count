@@ -172,8 +172,8 @@ export default function ComponentDetail() {
 
           {/* Timestamps */}
           <div style={{ background: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: 3, padding: "0 14px" }}>
-            <Row label="Created" value={formatET(item.created_date)} />
-            <Row label="Modified" value={formatET(item.updated_date)} />
+            <Row label="Created" value={item.created_et} />
+            <Row label="Modified" value={item.modified_et} />
           </div>
         </div>
       </div>
