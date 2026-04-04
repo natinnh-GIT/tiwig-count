@@ -1,0 +1,13 @@
+{
+  "name": "BarrelContourOption",
+  "type": "object",
+  "properties": {
+    "value": {
+      "type": "string",
+      "description": "Barrel contour option value"
+    }
+  },
+  "required": [
+    "value"
+  ]
+}

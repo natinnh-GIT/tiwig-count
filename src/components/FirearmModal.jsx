@@ -4,7 +4,7 @@ import { X, Camera } from "lucide-react";
 import SuggestInput from "@/components/SuggestInput";
 import PhotoCapture from "@/components/PhotoCapture";
 import OpticPicker from "@/components/OpticPicker";
-import StockInput from "@/components/StockInput";
+import EditableCombobox from "@/components/EditableCombobox";
 
 const S = {
   overlay: { position: "fixed", inset: 0, zIndex: 50, background: "#0f0f0f", display: "flex", flexDirection: "column" },
@@ -156,7 +156,13 @@ export default function FirearmModal({ item, onClose, onSaved }) {
 
         {/* Stock */}
         <div style={S.section}>
-          <StockInput value={form.stock} onChange={(v) => set("stock", v)} />
+          <EditableCombobox
+            label="Stock"
+            value={form.stock}
+            onChange={(v) => set("stock", v)}
+            presetOptions={["Factory", "Wood", "Chassis", "Laminate", "Thumbhole", "Folding", "Other"]}
+            entityName="StockOption"
+          />
         </div>
 
         {/* Barrel Length + Contour */}
@@ -166,16 +172,13 @@ export default function FirearmModal({ item, onClose, onSaved }) {
             <SuggestInput value={form.barrel_length} onChange={(v) => set("barrel_length", v)} suggestions={barrelLengthSuggestions} placeholder="24" darkStyle />
           </div>
           <div>
-            <label style={S.label}>Barrel Contour</label>
-            <select value={form.barrel_contour} onChange={(e) => set("barrel_contour", e.target.value)} style={S.select}>
-              <option value="Sporter">Sporter</option>
-              <option value="Bull">Bull</option>
-              <option value="Varmint">Varmint</option>
-              <option value="Sendero">Sendero</option>
-              <option value="Palma">Palma</option>
-              <option value="Fluted">Fluted</option>
-              <option value="Other">Other</option>
-            </select>
+            <EditableCombobox
+              label="Barrel Contour"
+              value={form.barrel_contour}
+              onChange={(v) => set("barrel_contour", v)}
+              presetOptions={["Sporter", "Bull", "Varmint", "Sendero", "Palma", "Fluted", "Other"]}
+              entityName="BarrelContourOption"
+            />
           </div>
         </div>
 
