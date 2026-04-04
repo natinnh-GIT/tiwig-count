@@ -33,6 +33,19 @@
       "type": "number",
       "default": 0
     },
+    "sleeve_count": {
+      "type": "number",
+      "description": "Number of sleeves entered by user (primers only)"
+    },
+    "units_per_sleeve": {
+      "type": "number",
+      "default": 100,
+      "description": "Units per sleeve (primers default 100)"
+    },
+    "total_unit_count": {
+      "type": "number",
+      "description": "Calculated total unit count (sleeve_count \u00d7 units_per_sleeve)"
+    },
     "unit": {
       "type": "string",
       "enum": [

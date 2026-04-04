@@ -160,8 +160,21 @@ export default function ComponentDetail() {
             <Row label="Brand" value={item.brand} />
             <Row label="Caliber / Type" value={item.caliber} />
             <Row label="Lot #" value={item.lot_number} />
-            <Row label="Cost Per Unit" value={item.cost_per_unit ? formatCurrency(item.cost_per_unit) : null} />
-            <Row label="Total Cost" value={item.total_cost ? formatCurrency(item.total_cost) : null} />
+            {item.category === "primers" ? (
+              <>
+                <Row label="Sleeves" value={item.sleeve_count ? `${item.sleeve_count}` : null} />
+                <Row label="Units Per Sleeve" value={item.units_per_sleeve ? `${item.units_per_sleeve}` : null} />
+                <Row label="Total Count" value={item.total_unit_count ? `${item.total_unit_count.toLocaleString()}` : null} />
+                <Row label="Cost Per Unit" value={item.cost_per_unit ? `$${Number(item.cost_per_unit).toFixed(4)}/ea` : null} />
+                <Row label="Total Cost" value={item.total_cost ? formatCurrency(item.total_cost) : null} />
+              </>
+            ) : (
+              <>
+                <Row label="Quantity" value={item.quantity ? `${item.quantity} ${item.unit || "count"}` : null} />
+                <Row label="Cost Per Unit" value={item.cost_per_unit ? formatCurrency(item.cost_per_unit) : null} />
+                <Row label="Total Cost" value={item.total_cost ? formatCurrency(item.total_cost) : null} />
+              </>
+            )}
             <Row label="Purchase Date" value={item.purchase_date ? formatET(item.purchase_date) : null} />
             <Row label="Purchased From" value={item.purchased_from} />
             <BarcodeDisplay value={item.barcode} />

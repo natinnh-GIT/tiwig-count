@@ -57,11 +57,19 @@ export default function ComponentCard({ item }) {
         {/* Row 3: cost left, qty right */}
         <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between" }}>
           <span style={{ color: "#6b7280", fontSize: 11 }}>
-            {item.cost_per_unit ? `${formatCurrency(item.cost_per_unit)}/ea` : ""}
+            {item.cost_per_unit ? `$${Number(item.cost_per_unit).toFixed(4)}/ea` : ""}
           </span>
           <div style={{ display: "flex", alignItems: "baseline", gap: 3 }}>
-            <span style={{ color: "#f97316", fontWeight: 800, fontSize: 18, lineHeight: 1 }}>{item.quantity ?? 0}</span>
-            <span style={{ color: "#6b7280", fontSize: 11 }}>{item.unit || "count"}</span>
+            {item.category === "primers" ? (
+              <span style={{ color: "#f97316", fontWeight: 600, fontSize: 12 }}>
+                {item.sleeve_count || 0} Sleeves · {(item.total_unit_count || 0).toLocaleString()} count
+              </span>
+            ) : (
+              <>
+                <span style={{ color: "#f97316", fontWeight: 800, fontSize: 18, lineHeight: 1 }}>{item.quantity ?? 0}</span>
+                <span style={{ color: "#6b7280", fontSize: 11 }}>{item.unit || "count"}</span>
+              </>
+            )}
           </div>
         </div>
       </div>

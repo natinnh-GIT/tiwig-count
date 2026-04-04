@@ -15,6 +15,9 @@ const getDefaults = () => ({
   category: localStorage.getItem("rt_last_category") || "brass",
   caliber: "", brand: "",
   quantity: 0,
+  sleeve_count: 0,
+  units_per_sleeve: 100,
+  total_unit_count: 0,
   unit: localStorage.getItem("rt_last_unit") || "count",
   purchased_from: "", barcode: "", photo_url: "", photo_url_2: "", notes: "",
   cost_per_unit: "", total_cost: "", purchase_date: "", location_ids: [],
@@ -88,6 +91,37 @@ export default function ComponentModal({ item, onClose, onSaved }) {
     });
   };
 
+  const handleSleeveCountChange = (v) => {
+    setForm((f) => {
+      const sleeves = Number(v);
+      const upsleeve = Number(f.units_per_sleeve) || 100;
+      const totalUnits = sleeves * upsleeve;
+      const total_cost = Number(f.total_cost) || 0;
+      const cpu = totalUnits > 0 ? (total_cost / totalUnits).toFixed(4) : "";
+      return { ...f, sleeve_count: sleeves, total_unit_count: totalUnits, cost_per_unit: cpu };
+    });
+  };
+
+  const handleUnitsPerSleeveChange = (v) => {
+    setForm((f) => {
+      const upsleeve = Number(v) || 100;
+      const sleeves = Number(f.sleeve_count) || 0;
+      const totalUnits = sleeves * upsleeve;
+      const total_cost = Number(f.total_cost) || 0;
+      const cpu = totalUnits > 0 ? (total_cost / totalUnits).toFixed(4) : "";
+      return { ...f, units_per_sleeve: upsleeve, total_unit_count: totalUnits, cost_per_unit: cpu };
+    });
+  };
+
+  const handlePrimerTotalCostChange = (v) => {
+    setForm((f) => {
+      const totalCost = Number(v) || 0;
+      const totalUnits = f.total_unit_count || 0;
+      const cpu = totalUnits > 0 ? (totalCost / totalUnits).toFixed(4) : "";
+      return { ...f, total_cost: v, cost_per_unit: cpu };
+    });
+  };
+
   const getETNow = () => {
     return new Date().toLocaleString('en-US', {
       timeZone: 'America/New_York',
@@ -115,21 +149,26 @@ export default function ComponentModal({ item, onClose, onSaved }) {
   };
 
   const saveItem = async (overrideId) => {
-    setSaving(true);
-    const payload = {
-      ...form,
-      total_cost: form.total_cost !== "" && form.total_cost !== undefined ? Number(form.total_cost) : undefined,
-      cost_per_unit: form.cost_per_unit !== "" && form.cost_per_unit !== undefined ? Number(form.cost_per_unit) : undefined,
-      modified_et: getETNow(),
-    };
-    if (!item?.id) {
-      payload.created_et = getETNow();
-    }
-    if (overrideId) await base44.entities.Component.update(overrideId, payload);
-    else if (item?.id) await base44.entities.Component.update(item.id, payload);
-    else await base44.entities.Component.create(payload);
-    setSaving(false);
-    onSaved();
+   setSaving(true);
+   const payload = {
+     ...form,
+     total_cost: form.total_cost !== "" && form.total_cost !== undefined ? Number(form.total_cost) : undefined,
+     cost_per_unit: form.cost_per_unit !== "" && form.cost_per_unit !== undefined ? Number(form.cost_per_unit) : undefined,
+     modified_et: getETNow(),
+   };
+   if (form.category === "primers") {
+     payload.sleeve_count = Number(form.sleeve_count) || 0;
+     payload.units_per_sleeve = Number(form.units_per_sleeve) || 100;
+     payload.total_unit_count = Number(form.total_unit_count) || 0;
+   }
+   if (!item?.id) {
+     payload.created_et = getETNow();
+   }
+   if (overrideId) await base44.entities.Component.update(overrideId, payload);
+   else if (item?.id) await base44.entities.Component.update(item.id, payload);
+   else await base44.entities.Component.create(payload);
+   setSaving(false);
+   onSaved();
   };
 
   const handlePhotoCaptured = async (url) => {
@@ -297,34 +336,66 @@ export default function ComponentModal({ item, onClose, onSaved }) {
           <SuggestInput value={form.lot_number || ""} onChange={(v) => set("lot_number", v)} suggestions={lotSuggestions} placeholder="Lot or batch number" darkStyle />
         </div>
 
-        {/* Qty + Unit */}
-        <div style={S.grid2}>
-          <div>
-            <label style={S.label}>Quantity</label>
-            <input type="number" value={form.quantity} onChange={(e) => handleQuantityChange(e.target.value)} style={S.input} />
+        {/* Qty/Sleeves section — different for primers */}
+        {form.category === "primers" ? (
+          <>
+            <div style={S.grid2}>
+              <div>
+                <label style={S.label}># of Sleeves</label>
+                <input type="number" min="0" value={form.sleeve_count || 0} onChange={(e) => handleSleeveCountChange(e.target.value)} style={S.input} />
+              </div>
+              <div>
+                <label style={S.label}>Units Per Sleeve</label>
+                <input type="number" min="1" value={form.units_per_sleeve || 100} onChange={(e) => handleUnitsPerSleeveChange(e.target.value)} style={S.input} />
+              </div>
+            </div>
+            <div style={S.section}>
+              <label style={S.label}>Total Count</label>
+              <div style={S.readOnly}>{(form.total_unit_count || 0).toLocaleString()} count</div>
+            </div>
+          </>
+        ) : (
+          <div style={S.grid2}>
+            <div>
+              <label style={S.label}>Quantity</label>
+              <input type="number" value={form.quantity} onChange={(e) => handleQuantityChange(e.target.value)} style={S.input} />
+            </div>
+            <div>
+              <label style={S.label}>Unit</label>
+              <select value={form.unit} onChange={(e) => handleUnitChange(e.target.value)} style={S.select}>
+                <option value="count">Count</option>
+                <option value="lbs">Lbs</option>
+                <option value="oz">Oz</option>
+                <option value="grains">Grains</option>
+              </select>
+            </div>
           </div>
-          <div>
-            <label style={S.label}>Unit</label>
-            <select value={form.unit} onChange={(e) => handleUnitChange(e.target.value)} style={S.select}>
-              <option value="count">Count</option>
-              <option value="lbs">Lbs</option>
-              <option value="oz">Oz</option>
-              <option value="grains">Grains</option>
-            </select>
-          </div>
-        </div>
+        )}
 
         {/* Cost */}
-        <div style={S.grid2}>
-          <div>
-            <label style={S.label}>Cost Per Unit ($)</label>
-            <input type="number" min="0" step="0.0001" value={form.cost_per_unit} onChange={(e) => handleCostPerUnitChange(e.target.value)} placeholder="0.00" style={S.input} />
+        {form.category === "primers" ? (
+          <div style={S.grid2}>
+            <div>
+              <label style={S.label}>Total Cost ($)</label>
+              <input type="number" min="0" step="0.01" value={form.total_cost || ""} onChange={(e) => handlePrimerTotalCostChange(e.target.value)} placeholder="0.00" style={S.input} />
+            </div>
+            <div>
+              <label style={S.label}>Cost Per Unit ($)</label>
+              <div style={S.readOnly}>${form.cost_per_unit ? Number(form.cost_per_unit).toFixed(4) : "0.0000"}/ea</div>
+            </div>
           </div>
-          <div>
-            <label style={S.label}>Total Cost ($) <span style={{ color: "#525252", fontWeight: 400, textTransform: "none", letterSpacing: 0 }}>auto</span></label>
-            <div style={S.readOnly}>{computedTotal || "—"}</div>
+        ) : (
+          <div style={S.grid2}>
+            <div>
+              <label style={S.label}>Cost Per Unit ($)</label>
+              <input type="number" min="0" step="0.0001" value={form.cost_per_unit} onChange={(e) => handleCostPerUnitChange(e.target.value)} placeholder="0.00" style={S.input} />
+            </div>
+            <div>
+              <label style={S.label}>Total Cost ($) <span style={{ color: "#525252", fontWeight: 400, textTransform: "none", letterSpacing: 0 }}>auto</span></label>
+              <div style={S.readOnly}>{computedTotal || "—"}</div>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Purchase Date */}
         <div style={{ ...S.section, maxWidth: "50%" }}>
