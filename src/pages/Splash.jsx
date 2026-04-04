@@ -1,13 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Package, Zap, BarChart3, Shield, Plus } from "lucide-react";
-import ComponentModal from "@/components/ComponentModal";
+import { Package, Zap, BarChart3, Shield } from "lucide-react";
 
 export default function Splash() {
   const navigate = useNavigate();
-  const [showModal, setShowModal] = useState(false);
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary via-background to-background flex flex-col items-center justify-center px-6 py-6">
       {/* Hero Section */}
@@ -45,32 +42,14 @@ export default function Splash() {
           </div>
         </div>
 
-        {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row gap-3 w-full">
-          <Button
-            size="lg"
-            onClick={() => navigate("/dashboard")}
-            className="flex-1 px-8">
-            Get Started
-          </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            onClick={() => setShowModal(true)}
-            className="flex-1 px-8 gap-2">
-            <Plus className="w-4 h-4" />
-            Add Item
-          </Button>
-        </div>
+        {/* CTA Button */}
+        <Button
+          size="lg"
+          onClick={() => navigate("/dashboard")}
+          className="w-full md:w-auto px-8">
+          Get Started
+        </Button>
       </div>
-
-      {showModal && (
-        <ComponentModal
-          item={null}
-          onClose={() => setShowModal(false)}
-          onSaved={() => { setShowModal(false); navigate("/inventory"); }}
-        />
-      )}
     </div>);
 
 }
