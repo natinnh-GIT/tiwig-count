@@ -11,7 +11,7 @@ import ExportDialog from "@/components/ExportDialog";
 import HomeTab from "@/pages/HomeTab";
 
 const TABS = [
-  { id: "home",       label: "Home",       icon: HomeIcon },
+  { id: "home",       label: "Home",       icon: HomeIcon, headerTitle: "Armory Overview" },
   { id: "components", label: "Components", icon: Layers },
   { id: "firearms",   label: "Firearms",   icon: Crosshair },
   { id: "optics",     label: "Optics",     icon: Eye },
@@ -83,7 +83,9 @@ export default function Home() {
     <div style={S.app}>
       {/* Header */}
       <div style={S.header}>
-        <span style={S.title}>TIWIG Count</span>
+        <span style={S.title}>
+          {activeTab === "home" ? "Armory Overview" : "TIWIG Count"}
+        </span>
         {activeTab !== "home" && <span style={S.badge}>{count} {count === 1 ? "item" : "items"}</span>}
       </div>
 

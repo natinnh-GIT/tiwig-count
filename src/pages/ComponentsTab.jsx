@@ -12,7 +12,7 @@ const CATEGORIES = [
   { id: "primers", label: "Primers" },
 ];
 
-export default function ComponentsTab({ search, onEdit }) {
+export default function ComponentsTab({ search, onEdit, onCountChange }) {
   const navigate = useNavigate();
   const [components, setComponents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -24,6 +24,11 @@ export default function ComponentsTab({ search, onEdit }) {
       setLoading(false);
     });
   }, []);
+
+  useEffect(() => {
+    const filtered = components.filter(c => activeCategory === "all" || c.category === activeCategory);
+    onCountChange?.(filtered.length);
+  }, [components, activeCategory, onCountChange]);
 
   const filtered = components.filter((c) => {
     const matchCat = activeCategory === "all" || c.category === activeCategory;
