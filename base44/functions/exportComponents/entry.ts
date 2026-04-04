@@ -18,7 +18,7 @@ Deno.serve(async (req) => {
 
     if (format === 'csv') {
       // Generate CSV
-      const fmtDate = (d) => {
+      const formatETExport = (d) => {
         if (!d) return '';
         return new Date(d).toLocaleString('en-US', { 
           timeZone: 'America/New_York', 
@@ -38,7 +38,7 @@ Deno.serve(async (req) => {
         c.cost_per_unit || '',
         c.total_cost || '',
         c.lot_number || '',
-        fmtDate(c.purchase_date),
+        formatETExport(c.purchase_date),
         c.purchased_from || '',
         c.barcode || '',
         c.description || '',
@@ -61,7 +61,7 @@ Deno.serve(async (req) => {
     if (format === 'xlsx') {
       const XLSX = await import('npm:xlsx@0.18.5');
 
-      const fmtDate = (d) => {
+      const formatETExport = (d) => {
         if (!d) return '';
         return new Date(d).toLocaleString('en-US', { 
           timeZone: 'America/New_York', 
@@ -82,7 +82,7 @@ Deno.serve(async (req) => {
         c.cost_per_unit || '',
         c.total_cost || '',
         c.lot_number || '',
-        fmtDate(c.purchase_date),
+        formatETExport(c.purchase_date),
         c.purchased_from || '',
         c.barcode || '',
         c.description || '',

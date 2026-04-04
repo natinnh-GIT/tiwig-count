@@ -4,35 +4,13 @@ import { base44 } from "@/api/base44Client";
 import { ArrowLeft, Pencil, Trash2, Package } from "lucide-react";
 import ComponentModal from "@/components/ComponentModal";
 import ImageLightbox from "@/components/ImageLightbox";
+import { formatET } from "@/lib/dateFormatter";
 
 const CAT = {
   brass:   { bg: "#78350f", text: "#fde68a", border: "#ca8a04", label: "BRASS" },
   bullets: { bg: "#1e3a8a", text: "#bfdbfe", border: "#2563eb", label: "BULLETS" },
   powder:  { bg: "#7c2d12", text: "#fed7aa", border: "#c2410c", label: "POWDER" },
   primers: { bg: "#14532d", text: "#bbf7d0", border: "#16a34a", label: "PRIMERS" },
-};
-
-const fmtDateTime = (d) => {
-  if (!d) return null;
-  return new Date(d).toLocaleString('en-US', { 
-    timeZone: 'America/New_York', 
-    month: 'short', 
-    day: 'numeric', 
-    year: 'numeric', 
-    hour: 'numeric', 
-    minute: '2-digit', 
-    hour12: true 
-  });
-};
-
-const fmtDate = (d) => {
-  if (!d) return null;
-  return new Date(d).toLocaleString('en-US', { 
-    timeZone: 'America/New_York', 
-    month: 'short', 
-    day: 'numeric', 
-    year: 'numeric'
-  });
 };
 
 
@@ -186,7 +164,7 @@ export default function ComponentDetail() {
             <Row label="Lot #" value={item.lot_number} />
             <Row label="Cost Per Unit" value={item.cost_per_unit ? `$${Number(item.cost_per_unit).toFixed(4)}` : null} />
             <Row label="Total Cost" value={item.total_cost ? `$${Number(item.total_cost).toFixed(2)}` : null} />
-            <Row label="Purchase Date" value={item.purchase_date ? fmtDate(item.purchase_date) : null} />
+            <Row label="Purchase Date" value={item.purchase_date ? formatET(item.purchase_date) : null} />
             <Row label="Purchased From" value={item.purchased_from} />
             <BarcodeDisplay value={item.barcode} />
             <Row label="Storage" value={locationNames.length > 0 ? locationNames.join(", ") : null} />
@@ -194,8 +172,8 @@ export default function ComponentDetail() {
 
           {/* Timestamps */}
           <div style={{ background: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: 3, padding: "0 14px" }}>
-            <Row label="Created" value={item.created_date ? fmtDateTime(item.created_date) : null} />
-            <Row label="Modified" value={item.updated_date ? fmtDateTime(item.updated_date) : null} />
+            <Row label="Created" value={formatET(item.created_date)} />
+            <Row label="Modified" value={formatET(item.updated_date)} />
           </div>
         </div>
       </div>
