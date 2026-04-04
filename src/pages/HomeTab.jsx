@@ -112,16 +112,13 @@ export default function HomeTab({ onNavigate }) {
         </div>
         <div style={S.breakdown}>
           {[
-            { label: "Brass", count: componentsByCategory.brass, color: categoryColors.brass },
-            { label: "Bullets", count: componentsByCategory.bullets, color: categoryColors.bullets },
-            { label: "Powder", count: componentsByCategory.powder, color: categoryColors.powder },
-            { label: "Primers", count: componentsByCategory.primers, color: categoryColors.primers },
+            { label: "Brass", count: componentsByCategory.brass, bg: "#78350f", text: "#fde68a", border: "#ca8a04" },
+            { label: "Bullets", count: componentsByCategory.bullets, bg: "#1e3a8a", text: "#bfdbfe", border: "#2563eb" },
+            { label: "Powder", count: componentsByCategory.powder, bg: "#7c2d12", text: "#fed7aa", border: "#c2410c" },
+            { label: "Primers", count: componentsByCategory.primers, bg: "#14532d", text: "#bbf7d0", border: "#16a34a" },
           ].map(item => (
             <div key={item.label} style={S.breakdownRow}>
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <div style={{ ...S.breakdownDot, background: item.color }} />
-                {item.label}
-              </div>
+              <span style={{ background: item.bg, color: item.text, border: `1px solid ${item.border}`, borderRadius: 20, padding: "2px 10px", fontSize: 11, fontWeight: 600, textTransform: "uppercase" }}>{item.label}</span>
               <span style={{ color: "#f97316" }}>{item.count}</span>
             </div>
           ))}
