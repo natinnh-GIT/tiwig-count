@@ -77,7 +77,7 @@ export default function ComponentDetail() {
     }
   };
 
-  useEffect(() => { load(); }, [id]);
+  useEffect(() => { window.scrollTo(0, 0); load(); }, [id]);
 
   const handleDelete = async () => {
     if (!confirm("Delete this item?")) return;

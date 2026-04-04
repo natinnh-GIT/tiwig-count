@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Layers, Crosshair, Eye, MapPin } from "lucide-react";
 import ComponentsTab from "./ComponentsTab";
 import FirearmsTab from "./FirearmsTab";
@@ -27,6 +27,7 @@ const S = {
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState("components");
+  const bodyRef = useRef(null);
   const [count, setCount] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
@@ -78,7 +79,7 @@ export default function Home() {
       </div>
 
       {/* Body */}
-      <div style={S.body}>
+      <div ref={bodyRef} style={S.body}>
         {activeTab === "components" && (
           <ComponentsTab onCountChange={setCount} onEdit={handleEdit} onExport={setExportFormat} />
         )}
@@ -98,7 +99,7 @@ export default function Home() {
           return (
             <button
               key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
+              onClick={() => { setActiveTab(tab.id); bodyRef.current?.scrollTo(0, 0); }}
               style={{
                 flex: 1, display: "flex", flexDirection: "column",
                 alignItems: "center", justifyContent: "center",
