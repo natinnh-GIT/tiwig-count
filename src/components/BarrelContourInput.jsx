@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { ChevronDown } from "lucide-react";
 
-const PRESET_OPTIONS = ["Factory", "Wood", "Chassis", "Laminate", "Thumbhole", "Folding", "Other"];
+const PRESET_OPTIONS = ["Sporter", "Bull", "Varmint", "Sendero", "Palma", "Fluted", "Other"];
 
 const S = {
   label: { display: "block", color: "#a3a3a3", fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 5 },
@@ -15,7 +15,7 @@ const S = {
   saveBtn: { background: "transparent", border: "1px solid #f97316", borderRadius: 2, color: "#f97316", padding: "6px 12px", fontSize: 12, fontWeight: 600, cursor: "pointer", width: "100%" },
 };
 
-export default function StockInput({ value, onChange }) {
+export default function BarrelContourInput({ value, onChange }) {
   const [showDropdown, setShowDropdown] = useState(false);
   const [customOptions, setCustomOptions] = useState([]);
   const [inputValue, setInputValue] = useState(value || "");
@@ -32,7 +32,7 @@ export default function StockInput({ value, onChange }) {
   }, [value]);
 
   const loadCustomOptions = async () => {
-    const opts = await base44.entities.StockOption.list();
+    const opts = await base44.entities.BarrelContourOption.list();
     setCustomOptions(opts.map(o => o.value));
   };
 
@@ -56,20 +56,20 @@ export default function StockInput({ value, onChange }) {
 
   const handleSaveAsOption = async () => {
     if (!inputValue.trim() || customOptions.includes(inputValue)) return;
-    await base44.entities.StockOption.create({ value: inputValue });
+    await base44.entities.BarrelContourOption.create({ value: inputValue });
     setCustomOptions([...customOptions, inputValue]);
     setSelectedValue(inputValue);
   };
 
   return (
     <div>
-      <label style={S.label}>Stock</label>
+      <label style={S.label}>Barrel Contour</label>
       <div style={S.wrapper}>
         <button
           onClick={() => setShowDropdown(!showDropdown)}
           style={S.dropdownBtn}
         >
-          <span>{selectedValue || "Select stock type..."}</span>
+          <span>{selectedValue || "Select contour..."}</span>
           <ChevronDown style={{ width: 16, height: 16, color: "#6b7280", flexShrink: 0 }} />
         </button>
 
