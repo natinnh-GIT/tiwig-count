@@ -83,25 +83,8 @@
     @apply border-border outline-ring/50;
   }
 
-  body {
-    @apply bg-background text-foreground;
-    background: #0f0f0f;
-  }
-
-  html {
-    color-scheme: dark;
-  }
-
-  input, textarea, select {
-    background: #1a1a1a;
-    border-color: #2a2a2a;
-    color: #f5f5f5;
-    border-radius: 2px;
-  }
-
-  input:focus, textarea:focus, select:focus {
-    outline: none;
-    border-color: #f97316;
-    box-shadow: 0 0 0 1px #f97316;
+  html, body {
+    background: #0f0f0f !important;
+    @apply text-foreground;
   }
 }

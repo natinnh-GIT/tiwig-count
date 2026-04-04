@@ -12,27 +12,16 @@ const fmtDate = (d) => {
   return new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", month: "short", day: "numeric", year: "numeric" }).format(new Date(d));
 };
 
-const fmtDateTime = (d) => {
-  return new Intl.DateTimeFormat("en-US", {
-    timeZone: "America/New_York",
-    month: "short", day: "numeric", year: "numeric",
-    hour: "numeric", minute: "2-digit", hour12: true,
-  }).format(new Date(d));
-};
+const fmtDateTime = (d) => new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit", hour12: true }).format(new Date(d));
 
-const CAT_COLORS = {
-  brass: "#b45309", bullets: "#2563eb", powder: "#16a34a", primers: "#dc2626",
-};
-const CAT_LABELS = {
-  brass: "Brass / Casings", bullets: "Bullets / Projectiles", powder: "Powder", primers: "Primers",
-};
+const CAT_LABELS = { brass: "BRASS", bullets: "BULLETS", powder: "POWDER", primers: "PRIMERS" };
 
 function Row({ label, value }) {
   if (!value && value !== 0) return null;
   return (
-    <div className="flex justify-between py-3" style={{ borderBottom: "1px solid #2a2a2a" }}>
-      <span className="text-xs uppercase tracking-wider" style={{ color: "#a3a3a3" }}>{label}</span>
-      <span className="text-sm font-medium text-right max-w-[60%]" style={{ color: "#f5f5f5" }}>{value}</span>
+    <div style={{ display: "flex", justifyContent: "space-between", padding: "11px 0", borderBottom: "1px solid #2a2a2a" }}>
+      <span style={{ color: "#a3a3a3", fontSize: 12 }}>{label}</span>
+      <span style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 500, maxWidth: "60%", textAlign: "right" }}>{value}</span>
     </div>
   );
 }
@@ -45,19 +34,16 @@ function BarcodeDisplay({ value }) {
     bars.push({ wide: (charCode + i) % 3 === 0, space: i % 2 === 0 });
   }
   return (
-    <div className="py-3" style={{ borderBottom: "1px solid #2a2a2a" }}>
-      <span className="text-xs uppercase tracking-wider block mb-2" style={{ color: "#a3a3a3" }}>Barcode</span>
-      <div className="flex flex-col items-center p-3" style={{ background: "#fff", borderRadius: "2px" }}>
-        <div className="flex items-stretch h-12 gap-px">
-          {bars.map((bar, i) =>
-            bar.space ? (
-              <div key={i} className={bar.wide ? "w-1.5" : "w-0.5"} />
-            ) : (
-              <div key={i} className={`bg-black h-full ${bar.wide ? "w-1.5" : "w-0.5"}`} />
-            )
+    <div style={{ padding: "12px 0", borderBottom: "1px solid #2a2a2a" }}>
+      <span style={{ color: "#a3a3a3", fontSize: 12, display: "block", marginBottom: 8 }}>Barcode</span>
+      <div style={{ background: "#fff", borderRadius: 2, padding: "10px 12px", display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <div style={{ display: "flex", alignItems: "stretch", height: 48, gap: 1 }}>
+          {bars.map((bar, i) => bar.space
+            ? <div key={i} style={{ width: bar.wide ? 6 : 2 }} />
+            : <div key={i} style={{ background: "#000", height: "100%", width: bar.wide ? 6 : 2 }} />
           )}
         </div>
-        <span className="mt-1.5 text-xs font-mono tracking-widest text-black select-all">{value}</span>
+        <span style={{ marginTop: 6, fontSize: 10, fontFamily: "monospace", letterSpacing: 2, color: "#000" }}>{value}</span>
       </div>
     </div>
   );
@@ -87,119 +73,76 @@ export default function ComponentDetail() {
   const handleDelete = async () => {
     if (!confirm("Delete this item?")) return;
     await base44.entities.Component.delete(id);
-    navigate("/home");
+    navigate("/");
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: "#0f0f0f" }}>
-        <div className="w-5 h-5 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: "#f97316", borderTopColor: "transparent" }} />
-      </div>
-    );
-  }
+  if (loading) return (
+    <div style={{ background: "#0f0f0f", minHeight: "100dvh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div style={{ width: 24, height: 24, border: "2px solid #f97316", borderTopColor: "transparent", borderRadius: "50%", animation: "spin 0.7s linear infinite" }} />
+      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+    </div>
+  );
 
-  if (!item) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center gap-3" style={{ background: "#0f0f0f" }}>
-        <Package className="w-10 h-10" style={{ color: "#2a2a2a" }} />
-        <p style={{ color: "#a3a3a3" }}>Item not found</p>
-        <button onClick={() => navigate("/home")} className="px-4 py-2 text-sm" style={{ background: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: "2px", color: "#f5f5f5" }}>
-          Back
-        </button>
-      </div>
-    );
-  }
-
-  const accentColor = CAT_COLORS[item.category] || "#f97316";
+  if (!item) return (
+    <div style={{ background: "#0f0f0f", minHeight: "100dvh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 12 }}>
+      <Package style={{ width: 40, height: 40, color: "#2a2a2a" }} />
+      <p style={{ color: "#a3a3a3", fontSize: 14 }}>Item not found</p>
+      <button onClick={() => navigate("/")} style={{ background: "#242424", border: "1px solid #2a2a2a", borderRadius: 2, color: "#f5f5f5", padding: "8px 20px", cursor: "pointer", fontSize: 13 }}>Back</button>
+    </div>
+  );
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: "#0f0f0f" }}>
+    <div style={{ background: "#0f0f0f", minHeight: "100dvh", display: "flex", flexDirection: "column" }}>
       {/* Header */}
-      <div
-        className="sticky top-0 z-10 px-4 py-3 flex items-center justify-between flex-shrink-0"
-        style={{ background: "#111111", borderBottom: "1px solid #2a2a2a" }}
-      >
-        <button onClick={() => navigate("/home")} className="p-1" style={{ color: "#a3a3a3" }}>
-          <ArrowLeft className="w-5 h-5" />
+      <div style={{ background: "#1a1a1a", borderBottom: "1px solid #2a2a2a", padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 20 }}>
+        <button onClick={() => navigate("/")} style={{ background: "none", border: "none", cursor: "pointer", color: "#a3a3a3", padding: 4 }}>
+          <ArrowLeft style={{ width: 20, height: 20 }} />
         </button>
-        <h1 className="font-semibold text-sm truncate max-w-[55%]" style={{ color: "#f5f5f5" }}>{item.name}</h1>
-        <div className="flex gap-2">
-          <button
-            onClick={() => setShowEdit(true)}
-            className="p-1.5"
-            style={{ background: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: "2px", color: "#a3a3a3" }}
-          >
-            <Pencil className="w-4 h-4" />
+        <span style={{ color: "#f5f5f5", fontWeight: 700, fontSize: 15, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: "55%" }}>{item.name}</span>
+        <div style={{ display: "flex", gap: 8 }}>
+          <button onClick={() => setShowEdit(true)} style={{ background: "#242424", border: "1px solid #2a2a2a", borderRadius: 2, padding: "6px 8px", color: "#a3a3a3", cursor: "pointer" }}>
+            <Pencil style={{ width: 15, height: 15 }} />
           </button>
-          <button
-            onClick={handleDelete}
-            className="p-1.5"
-            style={{ background: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: "2px", color: "#ef4444" }}
-          >
-            <Trash2 className="w-4 h-4" />
+          <button onClick={handleDelete} style={{ background: "#242424", border: "1px solid #2a2a2a", borderRadius: 2, padding: "6px 8px", color: "#ef4444", cursor: "pointer" }}>
+            <Trash2 style={{ width: 15, height: 15 }} />
           </button>
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto pb-12">
+      <div style={{ flex: 1, overflowY: "auto", paddingBottom: 24 }}>
         {/* Photos */}
         {item.photo_url || item.photo_url_2 ? (
-          <div className={`w-full grid ${item.photo_url && item.photo_url_2 ? "grid-cols-2" : "grid-cols-1"} max-h-56 overflow-hidden`} style={{ background: "#1a1a1a" }}>
-            {item.photo_url && (
-              <div className="aspect-square overflow-hidden">
-                <img src={item.photo_url} alt={item.name} className="w-full h-full object-cover" />
-              </div>
-            )}
-            {item.photo_url_2 && (
-              <div className="aspect-square overflow-hidden">
-                <img src={item.photo_url_2} alt={`${item.name} (2)`} className="w-full h-full object-cover" />
-              </div>
-            )}
+          <div style={{ display: "grid", gridTemplateColumns: item.photo_url && item.photo_url_2 ? "1fr 1fr" : "1fr", maxHeight: 240, overflow: "hidden" }}>
+            {item.photo_url && <img src={item.photo_url} alt={item.name} style={{ width: "100%", aspectRatio: "1", objectFit: "cover" }} />}
+            {item.photo_url_2 && <img src={item.photo_url_2} alt="" style={{ width: "100%", aspectRatio: "1", objectFit: "cover" }} />}
           </div>
         ) : (
-          <div
-            className="w-full h-32 flex items-center justify-center text-3xl font-bold"
-            style={{ background: "#1a1a1a", color: accentColor }}
-          >
-            {CAT_LABELS[item.category]?.[0]}
+          <div style={{ height: 120, background: "#1a1a1a", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <span style={{ color: "#f97316", fontWeight: 900, fontSize: 40 }}>{item.name?.[0]?.toUpperCase()}</span>
           </div>
         )}
 
-        <div className="px-4 pt-4">
+        <div style={{ padding: "16px 16px 0" }}>
           {/* Title + badge */}
-          <div className="flex items-start justify-between gap-2 mb-1">
-            <h2 className="text-xl font-bold" style={{ color: "#f5f5f5" }}>{item.name}</h2>
-            <span
-              className="flex-shrink-0 text-xs font-semibold px-2 py-0.5"
-              style={{
-                background: `${accentColor}22`,
-                color: accentColor,
-                borderRadius: "2px",
-                border: `1px solid ${accentColor}44`,
-              }}
-            >
+          <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 8, marginBottom: 4 }}>
+            <h2 style={{ color: "#f5f5f5", fontWeight: 800, fontSize: 20, margin: 0 }}>{item.name}</h2>
+            <span style={{ background: "#f97316", color: "#fff", fontSize: 9, fontWeight: 700, padding: "3px 8px", borderRadius: 2, flexShrink: 0, letterSpacing: "0.08em" }}>
               {CAT_LABELS[item.category]}
             </span>
           </div>
-          {item.description && <p className="text-sm mb-4" style={{ color: "#a3a3a3" }}>{item.description}</p>}
+          {item.description && <p style={{ color: "#a3a3a3", fontSize: 13, marginBottom: 12 }}>{item.description}</p>}
 
-          {/* Quantity highlight */}
-          <div
-            className="flex items-center justify-between px-4 py-3 mb-4"
-            style={{ background: "#1a1a1a", border: `1px solid ${accentColor}44`, borderRadius: "3px" }}
-          >
-            <span className="text-xs uppercase tracking-wider" style={{ color: "#a3a3a3" }}>In Stock</span>
-            <span className="text-3xl font-bold" style={{ color: "#f97316" }}>
-              {item.quantity ?? 0}
-              <span className="text-sm font-normal ml-1" style={{ color: "#a3a3a3" }}>{item.unit || "count"}</span>
-            </span>
+          {/* Qty highlight */}
+          <div style={{ background: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: 3, padding: "14px 16px", marginBottom: 12, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <span style={{ color: "#a3a3a3", fontSize: 13 }}>In Stock</span>
+            <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
+              <span style={{ color: "#f97316", fontWeight: 900, fontSize: 32, lineHeight: 1 }}>{item.quantity ?? 0}</span>
+              <span style={{ color: "#a3a3a3", fontSize: 14 }}>{item.unit || "count"}</span>
+            </div>
           </div>
 
-          {/* Details */}
-          <div
-            className="px-4 mb-4"
-            style={{ background: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: "3px" }}
-          >
+          {/* Details card */}
+          <div style={{ background: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: 3, padding: "0 14px", marginBottom: 12 }}>
             <Row label="Brand" value={item.brand} />
             <Row label="Caliber / Type" value={item.caliber} />
             <Row label="Lot #" value={item.lot_number} />
@@ -208,23 +151,19 @@ export default function ComponentDetail() {
             <Row label="Purchase Date" value={item.purchase_date ? fmtDate(item.purchase_date) : null} />
             <Row label="Purchased From" value={item.purchased_from} />
             <BarcodeDisplay value={item.barcode} />
-            <Row label="Storage Location" value={locationNames.length > 0 ? locationNames.join(", ") : null} />
+            <Row label="Storage" value={locationNames.length > 0 ? locationNames.join(", ") : null} />
           </div>
 
           {/* Timestamps */}
-          <div
-            className="px-4 mb-4"
-            style={{ background: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: "3px" }}
-          >
+          <div style={{ background: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: 3, padding: "0 14px" }}>
             <Row label="Created" value={item.created_date ? fmtDateTime(item.created_date) : null} />
-            <Row label="Last Modified" value={item.updated_date ? fmtDateTime(item.updated_date) : null} />
+            <Row label="Modified" value={item.updated_date ? fmtDateTime(item.updated_date) : null} />
           </div>
         </div>
       </div>
 
-      {showEdit && (
-        <ComponentModal item={item} onClose={() => setShowEdit(false)} onSaved={() => { setShowEdit(false); load(); }} />
-      )}
+      {showEdit && <ComponentModal item={item} onClose={() => setShowEdit(false)} onSaved={() => { setShowEdit(false); load(); }} />}
+      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </div>
   );
 }

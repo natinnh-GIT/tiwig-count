@@ -6,7 +6,6 @@ import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 // Add page imports here
-import Splash from "./pages/Splash.jsx";
 import Home from "./pages/Home.jsx";
 import ComponentDetail from "./pages/ComponentDetail.jsx";
 
@@ -36,8 +35,7 @@ const AuthenticatedApp = () => {
   // Render the main app
   return (
     <Routes>
-      <Route path="/" element={<Splash />} />
-      <Route path="/home" element={<Home />} />
+      <Route path="/" element={<Home />} />
       <Route path="/component/:id" element={<ComponentDetail />} />
       {/* Add your page Route elements here */}
       <Route path="*" element={<PageNotFound />} />
@@ -45,12 +43,6 @@ const AuthenticatedApp = () => {
   );
 };
 
-
-// Force dark mode globally
-if (typeof document !== "undefined") {
-  document.documentElement.classList.add("dark");
-  localStorage.setItem("theme", "dark");
-}
 
 function App() {
 
