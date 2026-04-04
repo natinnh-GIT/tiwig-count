@@ -7,9 +7,8 @@ import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 // Add page imports here
 import Splash from "./pages/Splash.jsx";
-import Inventory from "./pages/Inventory.jsx";
+import Home from "./pages/Home.jsx";
 import ComponentDetail from "./pages/ComponentDetail.jsx";
-import Dashboard from "./pages/Dashboard.jsx";
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -38,15 +37,20 @@ const AuthenticatedApp = () => {
   return (
     <Routes>
       <Route path="/" element={<Splash />} />
-      <Route path="/inventory" element={<Inventory />} />
+      <Route path="/home" element={<Home />} />
       <Route path="/component/:id" element={<ComponentDetail />} />
-      <Route path="/dashboard" element={<Dashboard />} />
       {/* Add your page Route elements here */}
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
 };
 
+
+// Force dark mode globally
+if (typeof document !== "undefined") {
+  document.documentElement.classList.add("dark");
+  localStorage.setItem("theme", "dark");
+}
 
 function App() {
 

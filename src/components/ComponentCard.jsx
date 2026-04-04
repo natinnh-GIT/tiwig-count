@@ -3,18 +3,18 @@ import { base44 } from "@/api/base44Client";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-const CATEGORY_COLORS = {
-  brass: "bg-amber-100 text-amber-700",
-  bullets: "bg-blue-100 text-blue-700",
-  powder: "bg-green-100 text-green-700",
-  primers: "bg-red-100 text-red-700"
+const CAT_COLORS = {
+  brass: "#b45309",
+  bullets: "#2563eb",
+  powder: "#16a34a",
+  primers: "#dc2626",
 };
 
-const CATEGORY_LABELS = {
+const CAT_LABELS = {
   brass: "Brass",
   bullets: "Bullets",
   powder: "Powder",
-  primers: "Primers"
+  primers: "Primers",
 };
 
 export default function ComponentCard({ item, onEdit, onRefresh }) {
@@ -41,43 +41,70 @@ export default function ComponentCard({ item, onEdit, onRefresh }) {
     onEdit(item);
   };
 
+  const accentColor = CAT_COLORS[item.category] || "#f97316";
+
   return (
-    <div className="bg-card p-3 rounded-lg flex gap-3 border border-border shadow-sm cursor-pointer active:opacity-70 transition-opacity"
-
-    onClick={() => navigate(`/component/${item.id}`)}>
-      
-      {/* Photo */}
-      <div className="w-16 h-16 rounded-xl overflow-hidden bg-muted flex-shrink-0">
-        {item.photo_url ?
-        <img src={item.photo_url} alt={item.name} className="w-full h-full object-cover" /> :
-
-        <div className={`w-full h-full flex items-center justify-center text-xs font-bold ${CATEGORY_COLORS[item.category]}`}>
-            {CATEGORY_LABELS[item.category]?.[0]}
-          </div>
-        }
+    <div
+      className="flex gap-3 cursor-pointer active:opacity-70 transition-opacity"
+      style={{
+        background: "#1a1a1a",
+        border: "1px solid #2a2a2a",
+        borderRadius: "3px",
+        padding: "10px 12px",
+      }}
+      onClick={() => navigate(`/component/${item.id}`)}
+    >
+      {/* Photo / Thumb */}
+      <div
+        className="w-14 h-14 flex-shrink-0 overflow-hidden flex items-center justify-center text-xs font-bold"
+        style={{
+          background: "#242424",
+          borderRadius: "2px",
+          color: accentColor,
+          border: `1px solid #2a2a2a`,
+        }}
+      >
+        {item.photo_url ? (
+          <img src={item.photo_url} alt={item.name} className="w-full h-full object-cover" />
+        ) : (
+          CAT_LABELS[item.category]?.[0]
+        )}
       </div>
 
       {/* Info */}
       <div className="flex-1 min-w-0">
-        <div className="flex items-start justify-between gap-1">
-          <p className="font-semibold text-sm text-foreground truncate">{item.name}</p>
-          <span className={`flex-shrink-0 text-[10px] font-medium px-2 py-0.5 rounded-full ${CATEGORY_COLORS[item.category]}`}>
-            {CATEGORY_LABELS[item.category]}
+        <div className="flex items-start justify-between gap-1 mb-0.5">
+          <p className="font-semibold text-sm truncate" style={{ color: "#f5f5f5" }}>{item.name}</p>
+          <span
+            className="flex-shrink-0 text-[10px] font-semibold px-1.5 py-0.5"
+            style={{
+              background: `${accentColor}22`,
+              color: accentColor,
+              borderRadius: "2px",
+              border: `1px solid ${accentColor}44`,
+            }}
+          >
+            {CAT_LABELS[item.category]}
           </span>
         </div>
-        {item.brand && <p className="text-xs text-muted-foreground truncate">{item.brand}</p>}
-        {item.caliber && <p className="text-xs text-muted-foreground">{item.caliber}</p>}
-        <div className="flex items-center justify-between mt-1">
+
+        {(item.brand || item.caliber) && (
+          <p className="text-xs truncate mb-1" style={{ color: "#a3a3a3" }}>
+            {[item.brand, item.caliber].filter(Boolean).join(" · ")}
+          </p>
+        )}
+
+        <div className="flex items-end justify-between">
           <div>
-            <p className="text-base font-bold text-foreground">
+            <p className="text-lg font-bold leading-none" style={{ color: "#f97316" }}>
               {item.quantity ?? 0}
-              <span className="text-xs font-normal text-muted-foreground ml-1">{item.unit || "count"}</span>
+              <span className="text-xs font-normal ml-1" style={{ color: "#a3a3a3" }}>{item.unit || "count"}</span>
             </p>
-            {item.total_cost ?
-            <p className="text-xs text-muted-foreground">${Number(item.total_cost).toFixed(2)}</p> :
-            null}
+            {item.total_cost ? (
+              <p className="text-[11px] mt-0.5" style={{ color: "#737373" }}>${Number(item.total_cost).toFixed(2)}</p>
+            ) : null}
             {locationNames.length > 0 && (
-              <p className="text-xs text-muted-foreground flex items-center gap-0.5 mt-0.5">
+              <p className="text-[11px] flex items-center gap-0.5 mt-0.5" style={{ color: "#737373" }}>
                 <MapPin className="w-3 h-3 flex-shrink-0" />
                 {locationNames.join(", ")}
               </p>
@@ -86,19 +113,21 @@ export default function ComponentCard({ item, onEdit, onRefresh }) {
           <div className="flex gap-1">
             <button
               onClick={handleEdit}
-              className="p-1.5 rounded-lg bg-muted text-muted-foreground hover:text-foreground transition-colors">
-              
+              className="p-1.5 transition-colors"
+              style={{ background: "#242424", borderRadius: "2px", color: "#a3a3a3" }}
+            >
               <Pencil className="w-3.5 h-3.5" />
             </button>
             <button
               onClick={handleDelete}
-              className="p-1.5 rounded-lg bg-muted text-muted-foreground hover:text-destructive transition-colors">
-              
+              className="p-1.5 transition-colors"
+              style={{ background: "#242424", borderRadius: "2px", color: "#ef4444" }}
+            >
               <Trash2 className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>
       </div>
-    </div>);
-
+    </div>
+  );
 }
