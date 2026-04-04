@@ -4,6 +4,7 @@ import { X, Camera } from "lucide-react";
 import SuggestInput from "@/components/SuggestInput";
 import PhotoCapture from "@/components/PhotoCapture";
 import OpticPicker from "@/components/OpticPicker";
+import StockInput from "@/components/StockInput";
 
 const S = {
   overlay: { position: "fixed", inset: 0, zIndex: 50, background: "#0f0f0f", display: "flex", flexDirection: "column" },
@@ -155,16 +156,7 @@ export default function FirearmModal({ item, onClose, onSaved }) {
 
         {/* Stock */}
         <div style={S.section}>
-          <label style={S.label}>Stock</label>
-          <select value={form.stock} onChange={(e) => set("stock", e.target.value)} style={S.select}>
-            <option value="Factory">Factory</option>
-            <option value="Wood">Wood</option>
-            <option value="Chassis">Chassis</option>
-            <option value="Laminate">Laminate</option>
-            <option value="Thumbhole">Thumbhole</option>
-            <option value="Folding">Folding</option>
-            <option value="Other">Other</option>
-          </select>
+          <StockInput value={form.stock} onChange={(v) => set("stock", v)} />
         </div>
 
         {/* Barrel Length + Contour */}

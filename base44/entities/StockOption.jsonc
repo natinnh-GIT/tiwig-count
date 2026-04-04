@@ -1,0 +1,13 @@
+{
+  "name": "StockOption",
+  "type": "object",
+  "properties": {
+    "value": {
+      "type": "string",
+      "description": "Stock option value (e.g., 'MDT Chassis', 'McMillan A5')"
+    }
+  },
+  "required": [
+    "value"
+  ]
+}
