@@ -84,7 +84,7 @@ export default function Home() {
       {/* Header */}
       <div style={S.header}>
         <span style={S.title}>TIWIG Count</span>
-        {activeTab !== "home" && <span style={S.badge}>{count} items</span>}
+        {activeTab !== "home" && <span style={S.badge}>{count} {count === 1 ? "item" : "items"}</span>}
       </div>
 
       {/* Body */}
