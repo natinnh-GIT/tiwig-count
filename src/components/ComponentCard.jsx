@@ -1,5 +1,3 @@
-import { Pencil, Trash2 } from "lucide-react";
-import { base44 } from "@/api/base44Client";
 import { useNavigate } from "react-router-dom";
 
 // STEP 1 — category color system
@@ -10,21 +8,9 @@ const CAT = {
   primers: { bg: "#14532d", text: "#bbf7d0", border: "#16a34a", label: "PRIMERS" },
 };
 
-export default function ComponentCard({ item, onEdit, onRefresh }) {
+export default function ComponentCard({ item }) {
   const navigate = useNavigate();
   const cat = CAT[item.category] || { bg: "#1a1a1a", text: "#f97316", border: "#f97316", label: (item.category || "").toUpperCase() };
-
-  const handleDelete = async (e) => {
-    e.stopPropagation();
-    if (!confirm("Delete this item?")) return;
-    await base44.entities.Component.delete(item.id);
-    onRefresh();
-  };
-
-  const handleEdit = (e) => {
-    e.stopPropagation();
-    onEdit(item);
-  };
 
   return (
     <div
@@ -88,15 +74,7 @@ export default function ComponentCard({ item, onEdit, onRefresh }) {
         </div>
       </div>
 
-      {/* Action buttons */}
-      <div style={{ display: "flex", flexDirection: "column", gap: 4, flexShrink: 0 }}>
-        <button onClick={handleEdit} style={{ background: "#242424", border: "none", borderRadius: 2, padding: "5px 6px", color: "#a3a3a3", cursor: "pointer" }}>
-          <Pencil style={{ width: 13, height: 13 }} />
-        </button>
-        <button onClick={handleDelete} style={{ background: "#242424", border: "none", borderRadius: 2, padding: "5px 6px", color: "#ef4444", cursor: "pointer" }}>
-          <Trash2 style={{ width: 13, height: 13 }} />
-        </button>
-      </div>
+
     </div>
   );
 }

@@ -1,5 +1,4 @@
-import { Pencil, Trash2, MapPin } from "lucide-react";
-import { base44 } from "@/api/base44Client";
+import { MapPin } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
@@ -16,18 +15,6 @@ export default function ComponentCardNew({ item, onEdit, onRefresh }) {
       });
     }
   }, [item.location_ids]);
-
-  const handleDelete = async (e) => {
-    e.stopPropagation();
-    if (!confirm("Delete this item?")) return;
-    await base44.entities.Component.delete(item.id);
-    onRefresh && onRefresh();
-  };
-
-  const handleEdit = (e) => {
-    e.stopPropagation();
-    onEdit && onEdit(item);
-  };
 
   return (
     <div
@@ -73,33 +60,17 @@ export default function ComponentCardNew({ item, onEdit, onRefresh }) {
           <span style={{ color: "#a3a3a3", fontSize: 11 }}>{item.unit || "count"}</span>
         </div>
 
-        {/* Row 4: cost + location + actions */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <div>
-            {item.cost_per_unit && (
-              <span style={{ color: "#525252", fontSize: 11 }}>${Number(item.cost_per_unit).toFixed(4)}/unit</span>
-            )}
-            {locationNames.length > 0 && (
-              <div style={{ display: "flex", alignItems: "center", gap: 3, marginTop: 2 }}>
-                <MapPin style={{ width: 10, height: 10, color: "#525252" }} />
-                <span style={{ color: "#525252", fontSize: 10 }}>{locationNames.join(", ")}</span>
-              </div>
-            )}
-          </div>
-          <div style={{ display: "flex", gap: 6 }}>
-            <button
-              onClick={handleEdit}
-              style={{ background: "#242424", border: "1px solid #2a2a2a", borderRadius: 2, padding: "5px 7px", color: "#a3a3a3", cursor: "pointer" }}
-            >
-              <Pencil style={{ width: 13, height: 13 }} />
-            </button>
-            <button
-              onClick={handleDelete}
-              style={{ background: "#242424", border: "1px solid #2a2a2a", borderRadius: 2, padding: "5px 7px", color: "#ef4444", cursor: "pointer" }}
-            >
-              <Trash2 style={{ width: 13, height: 13 }} />
-            </button>
-          </div>
+        {/* Row 4: cost + location */}
+        <div>
+          {item.cost_per_unit && (
+            <span style={{ color: "#525252", fontSize: 11 }}>${Number(item.cost_per_unit).toFixed(4)}/unit</span>
+          )}
+          {locationNames.length > 0 && (
+            <div style={{ display: "flex", alignItems: "center", gap: 3, marginTop: 2 }}>
+              <MapPin style={{ width: 10, height: 10, color: "#525252" }} />
+              <span style={{ color: "#525252", fontSize: 10 }}>{locationNames.join(", ")}</span>
+            </div>
+          )}
         </div>
       </div>
     </div>
