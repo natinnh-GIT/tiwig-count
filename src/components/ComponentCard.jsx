@@ -1,16 +1,10 @@
 import { useNavigate } from "react-router-dom";
-
-// STEP 1 — category color system
-const CAT = {
-  brass:   { bg: "#78350f", text: "#fde68a", border: "#ca8a04", label: "BRASS" },
-  bullets: { bg: "#1e3a8a", text: "#bfdbfe", border: "#2563eb", label: "BULLETS" },
-  powder:  { bg: "#7c2d12", text: "#fed7aa", border: "#c2410c", label: "POWDER" },
-  primers: { bg: "#14532d", text: "#bbf7d0", border: "#16a34a", label: "PRIMERS" },
-};
+import { CategoryPill, getStyleForCategory } from "@/lib/categoryPill";
+import { formatCurrency } from "@/lib/currencyFormatter";
 
 export default function ComponentCard({ item }) {
   const navigate = useNavigate();
-  const cat = CAT[item.category] || { bg: "#1a1a1a", text: "#f97316", border: "#f97316", label: (item.category || "").toUpperCase() };
+  const cat = getStyleForCategory(item.category);
 
   const handleClick = () => {
     navigate(`/component/${item.id}`, { state: { from: "components" } });
@@ -40,7 +34,7 @@ export default function ComponentCard({ item }) {
       }}>
         {item.photo_url
           ? <img src={item.photo_url} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-          : cat.label[0]}
+          : item.category?.[0]?.toUpperCase()}
       </div>
 
       {/* Main content */}
@@ -50,13 +44,7 @@ export default function ComponentCard({ item }) {
           <span style={{ color: "#f5f5f5", fontWeight: 700, fontSize: 13, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", flex: 1 }}>
             {item.name}
           </span>
-          <span style={{
-            background: cat.bg, color: cat.text, border: `1px solid ${cat.border}`,
-            fontSize: 9, fontWeight: 700, padding: "2px 6px", borderRadius: 2,
-            flexShrink: 0, letterSpacing: "0.06em",
-          }}>
-            {cat.label}
-          </span>
+          <CategoryPill value={item.category} />
         </div>
 
         {/* Row 2: brand · caliber */}
@@ -69,7 +57,7 @@ export default function ComponentCard({ item }) {
         {/* Row 3: cost left, qty right */}
         <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between" }}>
           <span style={{ color: "#6b7280", fontSize: 11 }}>
-            {item.cost_per_unit ? `$${Number(item.cost_per_unit).toFixed(4)}/ea` : ""}
+            {item.cost_per_unit ? `${formatCurrency(item.cost_per_unit)}/ea` : ""}
           </span>
           <div style={{ display: "flex", alignItems: "baseline", gap: 3 }}>
             <span style={{ color: "#f97316", fontWeight: 800, fontSize: 18, lineHeight: 1 }}>{item.quantity ?? 0}</span>

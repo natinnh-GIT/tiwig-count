@@ -1,11 +1,16 @@
 import { useNavigate } from "react-router-dom";
+import { CategoryPill } from "@/lib/categoryPill";
 
 export default function FirearmCard({ item }) {
   const navigate = useNavigate();
 
+  const handleClick = () => {
+    navigate(`/firearm/${item.id}`, { state: { from: "firearms" } });
+  };
+
   return (
     <div
-      onClick={() => navigate(`/firearm/${item.id}`)}
+      onClick={handleClick}
       style={{
         background: "#1a1a1a",
         borderBottom: "1px solid #1f1f1f",
@@ -37,15 +42,7 @@ export default function FirearmCard({ item }) {
           <span style={{ color: "#f5f5f5", fontWeight: 700, fontSize: 13, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", flex: 1 }}>
             {item.name}
           </span>
-          {item.type && (
-            <span style={{
-              background: "#374151", color: "#9ca3af", border: "1px solid #4b5563",
-              fontSize: 9, fontWeight: 700, padding: "2px 6px", borderRadius: 3,
-              flexShrink: 0, letterSpacing: "0.06em",
-            }}>
-              {item.type}
-            </span>
-          )}
+          {item.type && <CategoryPill value={item.type} isFirearmType={true} />}
         </div>
 
         {/* Row 2: make/model */}

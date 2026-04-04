@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { Zap, Crosshair, Eye, MapPin } from "lucide-react";
+import { CategoryPill, getStyleForCategory } from "@/lib/categoryPill";
+import { formatCurrency } from "@/lib/currencyFormatter";
 
 const S = {
   container: { padding: "16px", paddingBottom: 32 },
@@ -125,9 +127,9 @@ export default function HomeTab({ onNavigate }) {
           ))}
         </div>
         <div style={{ marginTop: 10, paddingTop: 10, borderTop: "1px solid #2a2a2a", display: "flex", justifyContent: "space-between" }}>
-          <span style={S.statLabel}>Total Value</span>
-          <span style={{ color: "#f97316", fontWeight: 700, fontSize: 13 }}>${totalCost.toFixed(2)}</span>
-        </div>
+           <span style={S.statLabel}>Total Value</span>
+           <span style={{ color: "#f97316", fontWeight: 700, fontSize: 13 }}>{formatCurrency(totalCost)}</span>
+         </div>
       </div>
 
       {/* Firearms Card */}
@@ -148,7 +150,7 @@ export default function HomeTab({ onNavigate }) {
         <div style={S.breakdown}>
           {Object.entries(firearmsByType).map(([type, count]) => (
             <div key={type} style={S.breakdownRow}>
-              <span>{type}</span>
+              <CategoryPill value={type} isFirearmType={true} />
               <span style={{ color: "#f97316" }}>{count}</span>
             </div>
           ))}

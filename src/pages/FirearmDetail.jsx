@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { ChevronLeft, Pencil, Trash2 } from "lucide-react";
 import FirearmModal from "@/components/FirearmModal";
+import { CategoryPill } from "@/lib/categoryPill";
 
 const S = {
   overlay: { background: "#0f0f0f", minHeight: "100dvh", display: "flex", flexDirection: "column" },
@@ -118,7 +119,7 @@ export default function FirearmDetail() {
           {firearm.type && (
             <div style={S.row}>
               <span style={S.label}>Type</span>
-              <span style={S.value}>{firearm.type}</span>
+              <CategoryPill value={firearm.type} isFirearmType={true} />
             </div>
           )}
           {firearm.make && (

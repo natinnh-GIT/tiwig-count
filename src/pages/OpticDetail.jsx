@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { ChevronLeft, Pencil, Trash2 } from "lucide-react";
+import { formatCurrency } from "@/lib/currencyFormatter";
 
 const S = {
   overlay: { background: "#0f0f0f", minHeight: "100dvh", display: "flex", flexDirection: "column" },
@@ -193,7 +194,7 @@ export default function OpticDetail() {
             {optic.purchase_price && (
               <div style={S.row}>
                 <span style={S.label}>Purchase Price</span>
-                <span style={S.value}>${Number(optic.purchase_price).toFixed(2)}</span>
+                <span style={S.value}>{formatCurrency(optic.purchase_price)}</span>
               </div>
             )}
           </div>

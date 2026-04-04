@@ -5,13 +5,8 @@ import { ArrowLeft, Pencil, Trash2, Package } from "lucide-react";
 import ComponentModal from "@/components/ComponentModal";
 import ImageLightbox from "@/components/ImageLightbox";
 import { formatET } from "@/lib/dateFormatter";
-
-const CAT = {
-  brass:   { bg: "#78350f", text: "#fde68a", border: "#ca8a04", label: "BRASS" },
-  bullets: { bg: "#1e3a8a", text: "#bfdbfe", border: "#2563eb", label: "BULLETS" },
-  powder:  { bg: "#7c2d12", text: "#fed7aa", border: "#c2410c", label: "POWDER" },
-  primers: { bg: "#14532d", text: "#bbf7d0", border: "#16a34a", label: "PRIMERS" },
-};
+import { CategoryPill } from "@/lib/categoryPill";
+import { formatCurrency } from "@/lib/currencyFormatter";
 
 
 
@@ -145,17 +140,10 @@ export default function ComponentDetail() {
 
         <div style={{ padding: "16px 16px 0" }}>
           {/* Title + badge */}
-          {(() => {
-            const cat = CAT[item.category] || { bg: "#1a1a1a", text: "#f97316", border: "#f97316", label: (item.category||"").toUpperCase() };
-            return (
-              <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 8, marginBottom: 4 }}>
-                <h2 style={{ color: "#f5f5f5", fontWeight: 800, fontSize: 20, margin: 0 }}>{item.name}</h2>
-                <span style={{ background: cat.bg, color: cat.text, border: `1px solid ${cat.border}`, fontSize: 9, fontWeight: 700, padding: "3px 8px", borderRadius: 2, flexShrink: 0, letterSpacing: "0.08em" }}>
-                  {cat.label}
-                </span>
-              </div>
-            );
-          })()}
+          <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 8, marginBottom: 4 }}>
+            <h2 style={{ color: "#f5f5f5", fontWeight: 800, fontSize: 20, margin: 0 }}>{item.name}</h2>
+            <CategoryPill value={item.category} />
+          </div>
           {item.description && <p style={{ color: "#a3a3a3", fontSize: 13, marginBottom: 12 }}>{item.description}</p>}
 
           {/* Qty highlight */}
@@ -172,8 +160,8 @@ export default function ComponentDetail() {
             <Row label="Brand" value={item.brand} />
             <Row label="Caliber / Type" value={item.caliber} />
             <Row label="Lot #" value={item.lot_number} />
-            <Row label="Cost Per Unit" value={item.cost_per_unit ? `$${Number(item.cost_per_unit).toFixed(4)}` : null} />
-            <Row label="Total Cost" value={item.total_cost ? `$${Number(item.total_cost).toFixed(2)}` : null} />
+            <Row label="Cost Per Unit" value={item.cost_per_unit ? formatCurrency(item.cost_per_unit) : null} />
+            <Row label="Total Cost" value={item.total_cost ? formatCurrency(item.total_cost) : null} />
             <Row label="Purchase Date" value={item.purchase_date ? formatET(item.purchase_date) : null} />
             <Row label="Purchased From" value={item.purchased_from} />
             <BarcodeDisplay value={item.barcode} />

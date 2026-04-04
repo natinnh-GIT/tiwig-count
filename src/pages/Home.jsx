@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Layers, Crosshair, Eye, MapPin, Home as HomeIcon } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 import ComponentsTab from "./ComponentsTab";
@@ -28,12 +29,18 @@ const S = {
 };
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState("home");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [activeTab, setActiveTab] = useState(searchParams.get("tab") || "home");
   const bodyRef = useRef(null);
   const [count, setCount] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
   const [exportFormat, setExportFormat] = useState(null);
+
+  useEffect(() => {
+    const tabParam = searchParams.get("tab");
+    if (tabParam) setActiveTab(tabParam);
+  }, [searchParams]);
 
   const handleFab = () => {
     if (activeTab === "firearms" || activeTab === "optics") {
@@ -102,7 +109,7 @@ export default function Home() {
           return (
             <button
               key={tab.id}
-              onClick={() => { setActiveTab(tab.id); bodyRef.current?.scrollTo(0, 0); }}
+              onClick={() => { setActiveTab(tab.id); setSearchParams({ tab: tab.id }); bodyRef.current?.scrollTo(0, 0); }}
               style={{
                 flex: 1, display: "flex", flexDirection: "column",
                 alignItems: "center", justifyContent: "center",
