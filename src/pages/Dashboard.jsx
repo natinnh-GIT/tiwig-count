@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Search, Package, Layers, Flame, CircleDot, ArrowLeft, Sun, Moon, X } from "lucide-react";
+import { Search, Package, Layers, Flame, CircleDot, ArrowLeft, Sun, Moon, X, Plus } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import AppHeader from "@/components/AppHeader";
+import ComponentModal from "@/components/ComponentModal";
 
 const CATEGORIES = [
 { key: "brass", label: "Brass / Casings", icon: Layers, color: "bg-amber-50 border-amber-200 text-amber-700", iconColor: "text-amber-500" },
@@ -16,6 +17,7 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const [components, setComponents] = useState([]);
   const [search, setSearch] = useState("");
+  const [showModal, setShowModal] = useState(false);
   const [dark, setDark] = useState(() => localStorage.getItem("theme") === "dark");
 
   useEffect(() => {
@@ -58,13 +60,21 @@ export default function Dashboard() {
           <ArrowLeft className="w-5 h-5" />
         </button>
         <h1 className="text-xl font-bold">Dashboard</h1>
-        <button
-          onClick={() => setDark((d) => !d)}
-          className="ml-auto p-2 rounded-full bg-muted text-muted-foreground hover:text-foreground transition-colors"
-          aria-label="Toggle theme">
-          
-          {dark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-        </button>
+        <div className="ml-auto flex items-center gap-2">
+          <button
+            onClick={() => setShowModal(true)}
+            className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-primary text-primary-foreground text-sm font-medium"
+          >
+            <Plus className="w-4 h-4" />
+            Add Item
+          </button>
+          <button
+            onClick={() => setDark((d) => !d)}
+            className="p-2 rounded-full bg-muted text-muted-foreground hover:text-foreground transition-colors"
+            aria-label="Toggle theme">
+            {dark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+          </button>
+        </div>
       </div>
 
       {/* Search */}
@@ -158,6 +168,17 @@ export default function Dashboard() {
         </div>
       }
       </div>
+
+      {showModal && (
+        <ComponentModal
+          item={null}
+          onClose={() => setShowModal(false)}
+          onSaved={() => {
+            setShowModal(false);
+            base44.entities.Component.list().then(setComponents);
+          }}
+        />
+      )}
     </div>);
 
 }
