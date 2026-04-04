@@ -130,7 +130,7 @@ export default function ComponentDetail() {
                   src={url}
                   alt=""
                   onClick={() => setLightboxIndex(i)}
-                  style={{ width: "100%", aspectRatio: "1", objectFit: "cover", cursor: "zoom-in", borderRadius: 8 }}
+                  style={{ width: "100%", aspectRatio: "1", objectFit: "cover", cursor: "zoom-in" }}
                 />
               ))}
             </div>
