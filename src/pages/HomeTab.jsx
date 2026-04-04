@@ -112,13 +112,13 @@ export default function HomeTab({ onNavigate }) {
         </div>
         <div style={S.breakdown}>
           {[
-            { label: "Brass", count: componentsByCategory.brass, bg: "#78350f", text: "#fde68a", border: "#ca8a04" },
-            { label: "Bullets", count: componentsByCategory.bullets, bg: "#1e3a8a", text: "#bfdbfe", border: "#2563eb" },
-            { label: "Powder", count: componentsByCategory.powder, bg: "#7c2d12", text: "#fed7aa", border: "#c2410c" },
-            { label: "Primers", count: componentsByCategory.primers, bg: "#14532d", text: "#bbf7d0", border: "#16a34a" },
+            { label: "brass", count: componentsByCategory.brass, bg: "#713f12", text: "#fef08a" },
+            { label: "bullets", count: componentsByCategory.bullets, bg: "#1d4ed8", text: "#dbeafe" },
+            { label: "primers", count: componentsByCategory.primers, bg: "#15803d", text: "#dcfce7" },
+            { label: "powder", count: componentsByCategory.powder, bg: "#c2410c", text: "#ffedd5" },
           ].map(item => (
             <div key={item.label} style={S.breakdownRow}>
-              <span style={{ background: item.bg, color: item.text, border: `1px solid ${item.border}`, borderRadius: 20, padding: "2px 10px", fontSize: 11, fontWeight: 600, textTransform: "uppercase" }}>{item.label}</span>
+              <span style={{ background: item.bg, color: item.text, borderRadius: 6, padding: "3px 10px", fontSize: 12, fontWeight: 600 }}>{item.label}</span>
               <span style={{ color: "#f97316" }}>{item.count}</span>
             </div>
           ))}
