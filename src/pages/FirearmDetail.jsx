@@ -12,7 +12,7 @@ const S = {
   iconBtn: { background: "none", border: "none", cursor: "pointer", color: "#a3a3a3", padding: 8, fontSize: 14, display: "flex", alignItems: "center" },
   deleteBtn: { ...{ background: "none", border: "none", cursor: "pointer", padding: 8, fontSize: 14, display: "flex", alignItems: "center", color: "#ef4444" } },
   body: { flex: 1, overflowY: "auto", padding: "16px" },
-  photo: { width: "100%", aspectRatio: "1", borderRadius: 6, overflow: "hidden", background: "#242424", marginBottom: 16, border: "1px solid #2a2a2a" },
+  photo: { width: "100%", padding: 8, background: "#242424", marginBottom: 16, border: "1px solid #2a2a2a", borderRadius: 6 },
   section: { marginBottom: 20 },
   sectionTitle: { color: "#a3a3a3", fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 8, paddingLeft: 10, borderLeft: "2px solid #f97316" },
   row: { paddingBottom: 10, display: "flex", justifyContent: "space-between", borderBottom: "1px solid #2a2a2a" },
@@ -97,7 +97,7 @@ export default function FirearmDetail() {
         {/* Photo */}
         {firearm.photo_url && (
           <div style={S.photo}>
-            <img src={firearm.photo_url} alt={firearm.name} style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+            <img src={firearm.photo_url} alt={firearm.name} style={{ width: "100%", height: "auto", display: "block", borderRadius: 6, objectFit: "contain" }} />
           </div>
         )}
 
