@@ -151,10 +151,19 @@ export default function ComponentDetail() {
       </div>
 
       <div className="flex-1 overflow-y-auto pb-12">
-        {/* Photo */}
-        {item.photo_url ? (
-          <div className="w-full aspect-square max-h-64 overflow-hidden bg-muted">
-            <img src={item.photo_url} alt={item.name} className="w-full h-full object-cover" />
+        {/* Photos */}
+        {item.photo_url || item.photo_url_2 ? (
+          <div className={`w-full grid ${item.photo_url && item.photo_url_2 ? "grid-cols-2" : "grid-cols-1"} max-h-64 overflow-hidden bg-muted`}>
+            {item.photo_url && (
+              <div className="aspect-square overflow-hidden">
+                <img src={item.photo_url} alt={item.name} className="w-full h-full object-cover" />
+              </div>
+            )}
+            {item.photo_url_2 && (
+              <div className="aspect-square overflow-hidden">
+                <img src={item.photo_url_2} alt={`${item.name} (2)`} className="w-full h-full object-cover" />
+              </div>
+            )}
           </div>
         ) : (
           <div className={`w-full h-40 flex items-center justify-center text-4xl font-bold ${CATEGORY_COLORS[item.category]}`}>

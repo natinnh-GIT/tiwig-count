@@ -34,6 +34,7 @@ export default function ComponentModal({ item, onClose, onSaved }) {
   const [aiLoading, setAiLoading] = useState(false);
   const [showBarcode, setShowBarcode] = useState(false);
   const [showPhoto, setShowPhoto] = useState(false);
+  const [showPhoto2, setShowPhoto2] = useState(false);
   const [showEnhancer, setShowEnhancer] = useState(false);
   const [duplicate, setDuplicate] = useState(null);
 
@@ -148,6 +149,11 @@ export default function ComponentModal({ item, onClose, onSaved }) {
     onSaved();
   };
 
+  const handlePhoto2Captured = async (url) => {
+    set("photo_url_2", url);
+    setShowPhoto2(false);
+  };
+
   const handlePhotoCaptured = async (url) => {
     set("photo_url", url);
     setShowPhoto(false);
@@ -206,6 +212,7 @@ export default function ComponentModal({ item, onClose, onSaved }) {
 
   if (showBarcode) return <BarcodeScanner onDetected={handleBarcodeDetected} onClose={() => setShowBarcode(false)} />;
   if (showPhoto) return <PhotoCapture onCapture={handlePhotoCaptured} onClose={() => setShowPhoto(false)} />;
+  if (showPhoto2) return <PhotoCapture onCapture={handlePhoto2Captured} onClose={() => setShowPhoto2(false)} />;
   if (showEnhancer) return (
     <PhotoEnhancer
       originalUrl={form.photo_url}
@@ -300,6 +307,31 @@ export default function ComponentModal({ item, onClose, onSaved }) {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Second Photo */}
+        <div className="flex gap-3 items-center">
+          <button
+            onClick={() => setShowPhoto2(true)}
+            className="w-24 h-24 rounded-2xl border-2 border-dashed border-border bg-muted flex flex-col items-center justify-center gap-1 flex-shrink-0 overflow-hidden"
+          >
+            {form.photo_url_2 ? (
+              <img src={form.photo_url_2} alt="" className="w-full h-full object-cover" />
+            ) : (
+              <>
+                <Camera className="w-6 h-6 text-muted-foreground" />
+                <span className="text-[10px] text-muted-foreground">Photo 2</span>
+              </>
+            )}
+          </button>
+          {form.photo_url_2 && (
+            <button
+              onClick={() => set("photo_url_2", "")}
+              className="text-xs text-destructive underline"
+            >
+              Remove
+            </button>
+          )}
         </div>
 
         {/* Category */}

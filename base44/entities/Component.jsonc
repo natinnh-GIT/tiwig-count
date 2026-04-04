@@ -65,6 +65,10 @@
     "photo_url": {
       "type": "string"
     },
+    "photo_url_2": {
+      "type": "string",
+      "description": "Second photo"
+    },
     "notes": {
       "type": "string"
     },
