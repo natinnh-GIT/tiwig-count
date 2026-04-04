@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { X, Camera, Barcode, Loader2, Sparkles } from "lucide-react";
+import { X, Camera, Barcode, Sparkles } from "lucide-react";
 import BarcodeScanner from "@/components/BarcodeScanner";
 import SuggestInput from "@/components/SuggestInput";
 import PhotoCapture from "@/components/PhotoCapture";
 import DuplicateDialog from "@/components/DuplicateDialog";
 import PhotoEnhancer from "@/components/PhotoEnhancer";
 import LocationPickerNew from "@/components/LocationPickerNew";
+import CartridgeLoader from "@/components/CartridgeLoader";
 
 const getDefaults = () => ({
   name: "", description: "",
@@ -42,6 +43,7 @@ export default function ComponentModal({ item, onClose, onSaved }) {
   const [allComponents, setAllComponents] = useState([]);
   const [saving, setSaving] = useState(false);
   const [aiLoading, setAiLoading] = useState(false);
+  const [aiMode, setAiMode] = useState("reid");
   const [showBarcode, setShowBarcode] = useState(false);
   const [showPhoto, setShowPhoto] = useState(false);
   const [showPhoto2, setShowPhoto2] = useState(false);
@@ -117,12 +119,10 @@ export default function ComponentModal({ item, onClose, onSaved }) {
   const handlePhotoCaptured = async (url) => {
     set("photo_url", url);
     setShowPhoto(false);
+    setAiMode("reid");
     setAiLoading(true);
-    const result = await base44.integrations.Core.InvokeLLM({
-      prompt: `You are an expert in ammunition reloading components. Analyze this image and identify the reloading component shown. Return the product name, brand, caliber (if applicable), category (one of: brass, bullets, powder, primers), and a short description.`,
-      file_urls: [url],
-      response_json_schema: { type: "object", properties: { name: { type: "string" }, brand: { type: "string" }, caliber: { type: "string" }, category: { type: "string", enum: ["brass", "bullets", "powder", "primers"] }, description: { type: "string" } } }
-    });
+    const res = await base44.functions.invoke("claudeVision", { image_url: url, mode: "reid" });
+    const result = res.data?.result;
     if (result?.name) setForm((f) => ({ ...f, ...result, photo_url: url }));
     setAiLoading(false);
   };
@@ -131,13 +131,22 @@ export default function ComponentModal({ item, onClose, onSaved }) {
 
   const handleAILookup = async () => {
     if (!form.photo_url) return;
+    setAiMode("reid");
     setAiLoading(true);
-    const result = await base44.integrations.Core.InvokeLLM({
-      prompt: `Identify this reloading component. Return name, brand, caliber, category (brass/bullets/powder/primers), description.`,
-      file_urls: [form.photo_url],
-      response_json_schema: { type: "object", properties: { name: { type: "string" }, brand: { type: "string" }, caliber: { type: "string" }, category: { type: "string", enum: ["brass", "bullets", "powder", "primers"] }, description: { type: "string" } } }
-    });
+    const res = await base44.functions.invoke("claudeVision", { image_url: form.photo_url, mode: "reid" });
+    const result = res.data?.result;
     if (result?.name) setForm((f) => ({ ...f, ...result }));
+    setAiLoading(false);
+  };
+
+  const handleEnhance = async () => {
+    if (!form.photo_url) return;
+    setShowEnhancer(false);
+    setAiMode("enhance");
+    setAiLoading(true);
+    const res = await base44.functions.invoke("claudeVision", { image_url: form.photo_url, mode: "enhance" });
+    const description = res.data?.description;
+    if (description) setForm((f) => ({ ...f, description }));
     setAiLoading(false);
   };
 
@@ -156,12 +165,12 @@ export default function ComponentModal({ item, onClose, onSaved }) {
   if (showBarcode) return <BarcodeScanner onDetected={handleBarcodeDetected} onClose={() => setShowBarcode(false)} />;
   if (showPhoto) return <PhotoCapture onCapture={handlePhotoCaptured} onClose={() => setShowPhoto(false)} />;
   if (showPhoto2) return <PhotoCapture onCapture={handlePhoto2Captured} onClose={() => setShowPhoto2(false)} />;
-  if (showEnhancer) return <PhotoEnhancer originalUrl={form.photo_url} onSelect={(url) => { set("photo_url", url); setShowEnhancer(false); }} onCancel={() => setShowEnhancer(false)} />;
 
   const computedTotal = form.cost_per_unit && form.quantity ? (Number(form.cost_per_unit) * Number(form.quantity)).toFixed(2) : "";
 
   return (
     <div style={S.overlay}>
+      {aiLoading && <CartridgeLoader mode={aiMode} />}
       {duplicate && <DuplicateDialog existing={duplicate} onAddNew={() => { setDuplicate(null); saveItem(); }} onEditExisting={() => { setDuplicate(null); saveItem(duplicate.id); }} onCancel={() => setDuplicate(null)} />}
 
       <div style={S.header}>
@@ -207,26 +216,22 @@ export default function ComponentModal({ item, onClose, onSaved }) {
 
           {/* AI buttons row — only shown when photo_url exists */}
           {form.photo_url && (
-            aiLoading ? (
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, color: "#a3a3a3", fontSize: 12, padding: "6px 0" }}>
-                <Loader2 style={{ width: 14, height: 14 }} className="animate-spin" /> Analyzing…
-              </div>
-            ) : (
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-                <button
-                  onClick={handleAILookup}
-                  style={{ background: "#242424", border: "1px solid #f97316", borderRadius: 3, color: "#f97316", fontSize: 12, fontWeight: 600, padding: "8px 0", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 5 }}
-                >
-                  <Sparkles style={{ width: 13, height: 13 }} /> Re-ID
-                </button>
-                <button
-                  onClick={() => setShowEnhancer(true)}
-                  style={{ background: "#242424", border: "1px solid #2a2a2a", borderRadius: 3, color: "#a3a3a3", fontSize: 12, fontWeight: 600, padding: "8px 0", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 5 }}
-                >
-                  <Sparkles style={{ width: 13, height: 13 }} /> Enhance
-                </button>
-              </div>
-            )
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+              <button
+                onClick={handleAILookup}
+                disabled={aiLoading}
+                style={{ background: "#242424", border: "1px solid #f97316", borderRadius: 3, color: "#f97316", fontSize: 12, fontWeight: 600, padding: "8px 0", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 5, opacity: aiLoading ? 0.5 : 1 }}
+              >
+                <Sparkles style={{ width: 13, height: 13 }} /> Re-ID
+              </button>
+              <button
+                onClick={handleEnhance}
+                disabled={aiLoading}
+                style={{ background: "#242424", border: "1px solid #2a2a2a", borderRadius: 3, color: "#a3a3a3", fontSize: 12, fontWeight: 600, padding: "8px 0", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 5, opacity: aiLoading ? 0.5 : 1 }}
+              >
+                <Sparkles style={{ width: 13, height: 13 }} /> Enhance
+              </button>
+            </div>
           )}
         </div>
 
