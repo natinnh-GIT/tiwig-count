@@ -9,6 +9,7 @@ import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import Home from "./pages/Home.jsx";
 import ComponentDetail from "./pages/ComponentDetail.jsx";
 import FirearmDetail from "./pages/FirearmDetail.jsx";
+import OpticDetail from "./pages/OpticDetail.jsx";
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -39,6 +40,7 @@ const AuthenticatedApp = () => {
       <Route path="/" element={<Home />} />
       <Route path="/component/:id" element={<ComponentDetail />} />
       <Route path="/firearm/:id" element={<FirearmDetail />} />
+      <Route path="/optic/:id" element={<OpticDetail />} />
       {/* Add your page Route elements here */}
       <Route path="*" element={<PageNotFound />} />
     </Routes>

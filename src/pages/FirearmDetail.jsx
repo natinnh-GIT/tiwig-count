@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { ChevronLeft, Pencil, Trash2 } from "lucide-react";
 import FirearmModal from "@/components/FirearmModal";
@@ -23,6 +24,7 @@ const S = {
 export default function FirearmDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const [firearm, setFirearm] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -40,7 +42,16 @@ export default function FirearmDetail() {
   const handleDelete = async () => {
     if (!confirm("Delete this firearm? This cannot be undone.")) return;
     await base44.entities.Firearm.delete(id);
-    navigate("/");
+    navigate("/?tab=firearms", { replace: true });
+  };
+
+  const handleBackClick = () => {
+    const referrer = location.state?.from || "firearms";
+    if (referrer === "firearms") {
+      navigate("/?tab=firearms", { replace: true });
+    } else {
+      navigate(-1);
+    }
   };
 
   const handleEdit = () => {
@@ -62,7 +73,7 @@ export default function FirearmDetail() {
     return (
       <div style={S.overlay}>
         <div style={S.header}>
-          <button onClick={() => navigate(-1)} style={S.iconBtn}>
+          <button onClick={handleBackClick} style={S.iconBtn}>
             <ChevronLeft style={{ width: 20, height: 20 }} />
           </button>
           <span style={{ color: "#f5f5f5", fontWeight: 700, fontSize: 15 }}>Not found</span>
@@ -76,7 +87,7 @@ export default function FirearmDetail() {
     <div style={S.overlay}>
       <div style={S.header}>
         <div style={S.headerLeft}>
-          <button onClick={() => navigate(-1)} style={S.iconBtn}>
+          <button onClick={handleBackClick} style={S.iconBtn}>
             <ChevronLeft style={{ width: 20, height: 20 }} />
           </button>
           <span style={{ color: "#f5f5f5", fontWeight: 700, fontSize: 15, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>

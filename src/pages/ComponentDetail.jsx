@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { ArrowLeft, Pencil, Trash2, Package } from "lucide-react";
 import ComponentModal from "@/components/ComponentModal";
@@ -52,6 +52,7 @@ function BarcodeDisplay({ value }) {
 export default function ComponentDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const [item, setItem] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showEdit, setShowEdit] = useState(false);
@@ -74,7 +75,16 @@ export default function ComponentDetail() {
   const handleDelete = async () => {
     if (!confirm("Delete this item?")) return;
     await base44.entities.Component.delete(id);
-    navigate("/");
+    navigate("/?tab=components", { replace: true });
+  };
+
+  const handleBackClick = () => {
+    const referrer = location.state?.from || "components";
+    if (referrer === "components") {
+      navigate("/?tab=components", { replace: true });
+    } else {
+      navigate(-1);
+    }
   };
 
   if (loading) return (
@@ -88,7 +98,7 @@ export default function ComponentDetail() {
     <div style={{ background: "#0f0f0f", minHeight: "100dvh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 12 }}>
       <Package style={{ width: 40, height: 40, color: "#2a2a2a" }} />
       <p style={{ color: "#a3a3a3", fontSize: 14 }}>Item not found</p>
-      <button onClick={() => navigate("/")} style={{ background: "#242424", border: "1px solid #2a2a2a", borderRadius: 2, color: "#f5f5f5", padding: "8px 20px", cursor: "pointer", fontSize: 13 }}>Back</button>
+      <button onClick={handleBackClick} style={{ background: "#242424", border: "1px solid #2a2a2a", borderRadius: 2, color: "#f5f5f5", padding: "8px 20px", cursor: "pointer", fontSize: 13 }}>Back</button>
     </div>
   );
 
@@ -96,7 +106,7 @@ export default function ComponentDetail() {
     <div style={{ background: "#0f0f0f", minHeight: "100dvh", display: "flex", flexDirection: "column" }}>
       {/* Header */}
       <div style={{ background: "#1a1a1a", borderBottom: "1px solid #2a2a2a", padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 20 }}>
-        <button onClick={() => navigate("/")} style={{ background: "none", border: "none", cursor: "pointer", color: "#a3a3a3", padding: 4 }}>
+        <button onClick={handleBackClick} style={{ background: "none", border: "none", cursor: "pointer", color: "#a3a3a3", padding: 4 }}>
           <ArrowLeft style={{ width: 20, height: 20 }} />
         </button>
         <span style={{ color: "#f5f5f5", fontWeight: 700, fontSize: 15, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: "55%" }}>{item.name}</span>

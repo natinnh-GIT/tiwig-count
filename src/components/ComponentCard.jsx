@@ -12,9 +12,13 @@ export default function ComponentCard({ item }) {
   const navigate = useNavigate();
   const cat = CAT[item.category] || { bg: "#1a1a1a", text: "#f97316", border: "#f97316", label: (item.category || "").toUpperCase() };
 
+  const handleClick = () => {
+    navigate(`/component/${item.id}`, { state: { from: "components" } });
+  };
+
   return (
     <div
-      onClick={() => navigate(`/component/${item.id}`)}
+      onClick={handleClick}
       style={{
         background: "#1a1a1a",
         borderBottom: "1px solid #1f1f1f",

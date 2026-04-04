@@ -4,9 +4,13 @@ export default function OpticsCard({ item }) {
   const navigate = useNavigate();
   const mounted = item.mounted_on_firearm_id && item.mounted_on_firearm_name;
 
+  const handleClick = () => {
+    navigate(`/optic/${item.id}`, { state: { from: "optics" } });
+  };
+
   return (
     <div
-      onClick={() => navigate(`/optic/${item.id}`)}
+      onClick={handleClick}
       style={{
         background: "#1a1a1a",
         borderBottom: "1px solid #1f1f1f",

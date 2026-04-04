@@ -1,14 +1,16 @@
-import { useState, useRef } from "react";
-import { Layers, Crosshair, Eye, MapPin } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { Layers, Crosshair, Eye, MapPin, Home as HomeIcon } from "lucide-react";
+import { base44 } from "@/api/base44Client";
 import ComponentsTab from "./ComponentsTab";
 import FirearmsTab from "./FirearmsTab";
 import OpticsTab from "./OpticsTab";
 import LocationsTabNew from "./LocationsTabNew";
 import ComponentModal from "@/components/ComponentModal";
 import ExportDialog from "@/components/ExportDialog";
-import { base44 } from "@/api/base44Client";
+import HomeTab from "@/pages/HomeTab";
 
 const TABS = [
+  { id: "home",       label: "Home",       icon: HomeIcon },
   { id: "components", label: "Components", icon: Layers },
   { id: "firearms",   label: "Firearms",   icon: Crosshair },
   { id: "optics",     label: "Optics",     icon: Eye },
@@ -26,7 +28,7 @@ const S = {
 };
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState("components");
+  const [activeTab, setActiveTab] = useState("home");
   const bodyRef = useRef(null);
   const [count, setCount] = useState(0);
   const [showModal, setShowModal] = useState(false);
@@ -75,11 +77,12 @@ export default function Home() {
       {/* Header */}
       <div style={S.header}>
         <span style={S.title}>TIWIG Count</span>
-        <span style={S.badge}>{count} items</span>
+        {activeTab !== "home" && <span style={S.badge}>{count} items</span>}
       </div>
 
       {/* Body */}
       <div ref={bodyRef} style={S.body}>
+        {activeTab === "home" && <HomeTab onNavigate={setActiveTab} />}
         {activeTab === "components" && (
           <ComponentsTab onCountChange={setCount} onEdit={handleEdit} onExport={setExportFormat} />
         )}
@@ -89,7 +92,7 @@ export default function Home() {
       </div>
 
       {/* FAB */}
-      <button style={S.fab} onClick={handleFab}>+</button>
+      {activeTab !== "home" && <button style={S.fab} onClick={handleFab}>+</button>}
 
       {/* Bottom Nav */}
       <nav style={S.nav}>
