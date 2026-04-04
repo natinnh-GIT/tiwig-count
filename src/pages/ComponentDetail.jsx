@@ -12,20 +12,34 @@ const CAT = {
   primers: { bg: "#14532d", text: "#bbf7d0", border: "#16a34a", label: "PRIMERS" },
 };
 
-const fmtDate = (d) => {
-  if (typeof d === "string" && /^\d{4}-\d{2}-\d{2}$/.test(d)) {
-    const [y, m, day] = d.split("-").map(Number);
-    return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" }).format(new Date(y, m - 1, day));
-  }
-  return new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", month: "short", day: "numeric", year: "numeric" }).format(new Date(d));
+const fmtDateTime = (d) => {
+  if (!d) return null;
+  return new Date(d).toLocaleString('en-US', { 
+    timeZone: 'America/New_York', 
+    month: 'short', 
+    day: 'numeric', 
+    year: 'numeric', 
+    hour: 'numeric', 
+    minute: '2-digit', 
+    hour12: true 
+  });
 };
 
-const fmtDateTime = (d) => new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit", hour12: true }).format(new Date(d));
+const fmtDate = (d) => {
+  if (!d) return null;
+  return new Date(d).toLocaleString('en-US', { 
+    timeZone: 'America/New_York', 
+    month: 'short', 
+    day: 'numeric', 
+    year: 'numeric'
+  });
+};
 
 
 
 function Row({ label, value }) {
-  if (!value && value !== 0) return null;
+  if (value === null || value === undefined || value === "") return null;
+  if (value === 0) return null;
   return (
     <div style={{ display: "flex", justifyContent: "space-between", padding: "11px 0", borderBottom: "1px solid #2a2a2a" }}>
       <span style={{ color: "#a3a3a3", fontSize: 12 }}>{label}</span>

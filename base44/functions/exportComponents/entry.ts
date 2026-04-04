@@ -18,6 +18,15 @@ Deno.serve(async (req) => {
 
     if (format === 'csv') {
       // Generate CSV
+      const fmtDate = (d) => {
+        if (!d) return '';
+        return new Date(d).toLocaleString('en-US', { 
+          timeZone: 'America/New_York', 
+          month: 'short', 
+          day: 'numeric', 
+          year: 'numeric' 
+        });
+      };
       const headers = ['Name', 'Category', 'Brand', 'Caliber', 'Quantity', 'Unit', 'Cost Per Unit', 'Total Cost', 'Lot Number', 'Purchase Date', 'Purchased From', 'Barcode', 'Description', 'Photo URL'];
       const rows = components.map(c => [
         c.name || '',
@@ -29,7 +38,7 @@ Deno.serve(async (req) => {
         c.cost_per_unit || '',
         c.total_cost || '',
         c.lot_number || '',
-        c.purchase_date || '',
+        fmtDate(c.purchase_date),
         c.purchased_from || '',
         c.barcode || '',
         c.description || '',
@@ -52,6 +61,16 @@ Deno.serve(async (req) => {
     if (format === 'xlsx') {
       const XLSX = await import('npm:xlsx@0.18.5');
 
+      const fmtDate = (d) => {
+        if (!d) return '';
+        return new Date(d).toLocaleString('en-US', { 
+          timeZone: 'America/New_York', 
+          month: 'short', 
+          day: 'numeric', 
+          year: 'numeric' 
+        });
+      };
+
       const headers = ['Name', 'Category', 'Brand', 'Caliber', 'Quantity', 'Unit', 'Cost Per Unit', 'Total Cost', 'Lot Number', 'Purchase Date', 'Purchased From', 'Barcode', 'Description', 'Photo URL'];
       const rows = components.map(c => [
         c.name || '',
@@ -63,7 +82,7 @@ Deno.serve(async (req) => {
         c.cost_per_unit || '',
         c.total_cost || '',
         c.lot_number || '',
-        c.purchase_date || '',
+        fmtDate(c.purchase_date),
         c.purchased_from || '',
         c.barcode || '',
         c.description || '',
