@@ -146,13 +146,56 @@ export default function ComponentDetail() {
           </div>
           {item.description && <p style={{ color: "#a3a3a3", fontSize: 13, marginBottom: 12 }}>{item.description}</p>}
 
-          {/* Qty highlight */}
-          <div style={{ background: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: 3, padding: "14px 16px", marginBottom: 12, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <span style={{ color: "#a3a3a3", fontSize: 13 }}>In Stock</span>
-            <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
-              <span style={{ color: "#f97316", fontWeight: 900, fontSize: 32, lineHeight: 1 }}>{item.quantity ?? 0}</span>
-              <span style={{ color: "#a3a3a3", fontSize: 14 }}>{item.unit || "count"}</span>
-            </div>
+          {/* Qty highlight — category-specific */}
+          <div style={{ background: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: 3, padding: "14px 16px", marginBottom: 12 }}>
+            {item.category === "primers" && (
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <span style={{ color: "#a3a3a3", fontSize: 13 }}>In Stock</span>
+                <div style={{ textAlign: "right" }}>
+                  <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
+                    <span style={{ color: "#f97316", fontWeight: 900, fontSize: 32, lineHeight: 1 }}>{Number(item.total_unit_count || 0).toLocaleString()}</span>
+                    <span style={{ color: "#a3a3a3", fontSize: 14 }}>count</span>
+                  </div>
+                  <div style={{ color: "#6b7280", fontSize: 12 }}>{item.sleeve_count || 0} Sleeves</div>
+                </div>
+              </div>
+            )}
+            {item.category === "bullets" && (
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <span style={{ color: "#a3a3a3", fontSize: 13 }}>In Stock</span>
+                <div style={{ textAlign: "right" }}>
+                  <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
+                    <span style={{ color: "#f97316", fontWeight: 900, fontSize: 32, lineHeight: 1 }}>{Number(item.total_bullet_count || 0).toLocaleString()}</span>
+                    <span style={{ color: "#a3a3a3", fontSize: 14 }}>count</span>
+                  </div>
+                  <div style={{ color: "#6b7280", fontSize: 12 }}>{item.box_count || 0} Boxes</div>
+                </div>
+              </div>
+            )}
+            {item.category === "powder" && (
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <span style={{ color: "#a3a3a3", fontSize: 13 }}>In Stock</span>
+                <div style={{ textAlign: "right" }}>
+                  <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
+                    <span style={{ color: "#f97316", fontWeight: 900, fontSize: 32, lineHeight: 1 }}>{item.powder_lbs || 0}</span>
+                    <span style={{ color: "#a3a3a3", fontSize: 14 }}>lbs</span>
+                  </div>
+                  <div style={{ color: "#6b7280", fontSize: 12 }}>{Number(item.powder_grains || 0).toLocaleString()} grains</div>
+                </div>
+              </div>
+            )}
+            {item.category === "brass" && (
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <span style={{ color: "#a3a3a3", fontSize: 13 }}>In Stock</span>
+                <div style={{ textAlign: "right" }}>
+                  <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
+                    <span style={{ color: "#f97316", fontWeight: 900, fontSize: 32, lineHeight: 1 }}>{Number(item.total_cases || 0).toLocaleString()}</span>
+                    <span style={{ color: "#a3a3a3", fontSize: 14 }}>cases</span>
+                  </div>
+                  <div style={{ color: "#6b7280", fontSize: 12 }}>{Number(item.total_unit_uses || 0).toLocaleString()} uses</div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Details card */}
@@ -160,21 +203,40 @@ export default function ComponentDetail() {
             <Row label="Brand" value={item.brand} />
             <Row label="Caliber / Type" value={item.caliber} />
             <Row label="Lot #" value={item.lot_number} />
-            {item.category === "primers" ? (
-              <>
-                <Row label="Sleeves" value={item.sleeve_count ? `${item.sleeve_count}` : null} />
-                <Row label="Units Per Sleeve" value={item.units_per_sleeve ? `${item.units_per_sleeve}` : null} />
-                <Row label="Total Count" value={item.total_unit_count ? `${item.total_unit_count.toLocaleString()}` : null} />
-                <Row label="Cost Per Unit" value={item.cost_per_unit ? `$${Number(item.cost_per_unit).toFixed(4)}/ea` : null} />
-                <Row label="Total Cost" value={item.total_cost ? formatCurrency(item.total_cost) : null} />
-              </>
-            ) : (
-              <>
-                <Row label="Quantity" value={item.quantity ? `${item.quantity} ${item.unit || "count"}` : null} />
-                <Row label="Cost Per Unit" value={item.cost_per_unit ? formatCurrency(item.cost_per_unit) : null} />
-                <Row label="Total Cost" value={item.total_cost ? formatCurrency(item.total_cost) : null} />
-              </>
-            )}
+
+            {item.category === "primers" && <>
+              <Row label="Sleeves" value={item.sleeve_count} />
+              <Row label="Units Per Sleeve" value={item.units_per_sleeve} />
+              <Row label="Total Count" value={item.total_unit_count ? `${Number(item.total_unit_count).toLocaleString()} count` : null} />
+              <Row label="Total Cost Paid" value={item.total_cost ? formatCurrency(item.total_cost) : null} />
+              <Row label="Cost Per Unit" value={item.cost_per_unit ? `$${Number(item.cost_per_unit).toLocaleString("en-US", { minimumFractionDigits: 4, maximumFractionDigits: 4 })}/ea` : null} />
+            </>}
+
+            {item.category === "bullets" && <>
+              <Row label="Boxes" value={item.box_count} />
+              <Row label="Bullets Per Box" value={item.bullets_per_box} />
+              <Row label="Total Count" value={item.total_bullet_count ? `${Number(item.total_bullet_count).toLocaleString()} count` : null} />
+              <Row label="Total Cost Paid" value={item.total_cost ? formatCurrency(item.total_cost) : null} />
+              <Row label="Cost Per Bullet" value={item.cost_per_unit ? `$${Number(item.cost_per_unit).toLocaleString("en-US", { minimumFractionDigits: 4, maximumFractionDigits: 4 })}/ea` : null} />
+            </>}
+
+            {item.category === "powder" && <>
+              <Row label="Pounds Purchased" value={item.powder_lbs ? `${item.powder_lbs} lbs` : null} />
+              <Row label="Grains" value={item.powder_grains ? `${Number(item.powder_grains).toLocaleString()} gr` : null} />
+              <Row label="Total Cost Paid" value={item.total_cost ? formatCurrency(item.total_cost) : null} />
+              <Row label="Cost Per Grain" value={item.cost_per_grain ? `$${Number(item.cost_per_grain).toLocaleString("en-US", { minimumFractionDigits: 4, maximumFractionDigits: 4 })}/grain` : null} />
+            </>}
+
+            {item.category === "brass" && <>
+              <Row label="Boxes" value={item.brass_box_count} />
+              <Row label="Cases Per Box" value={item.cases_per_box} />
+              <Row label="Total Cases" value={item.total_cases ? `${Number(item.total_cases).toLocaleString()} cases` : null} />
+              <Row label="Uses Per Case" value={item.uses_per_case} />
+              <Row label="Total Unit Uses" value={item.total_unit_uses ? `${Number(item.total_unit_uses).toLocaleString()} uses` : null} />
+              <Row label="Total Cost Paid" value={item.total_cost ? formatCurrency(item.total_cost) : null} />
+              <Row label="Cost Per Use" value={item.cost_per_use ? `$${Number(item.cost_per_use).toLocaleString("en-US", { minimumFractionDigits: 4, maximumFractionDigits: 4 })}/use` : null} />
+            </>}
+
             <Row label="Purchase Date" value={item.purchase_date ? formatET(item.purchase_date) : null} />
             <Row label="Purchased From" value={item.purchased_from} />
             <BarcodeDisplay value={item.barcode} />

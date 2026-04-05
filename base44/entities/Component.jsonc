@@ -30,21 +30,7 @@
       "description": "Lot or batch number"
     },
     "quantity": {
-      "type": "number",
-      "default": 0
-    },
-    "sleeve_count": {
-      "type": "number",
-      "description": "Number of sleeves entered by user (primers only)"
-    },
-    "units_per_sleeve": {
-      "type": "number",
-      "default": 100,
-      "description": "Units per sleeve (primers default 100)"
-    },
-    "total_unit_count": {
-      "type": "number",
-      "description": "Calculated total unit count (sleeve_count \u00d7 units_per_sleeve)"
+      "type": "number"
     },
     "unit": {
       "type": "string",
@@ -56,9 +42,72 @@
       ],
       "default": "count"
     },
+    "sleeve_count": {
+      "type": "number",
+      "description": "Number of sleeves (primers only)"
+    },
+    "units_per_sleeve": {
+      "type": "number",
+      "default": 100,
+      "description": "Units per sleeve (primers default 100)"
+    },
+    "total_unit_count": {
+      "type": "number",
+      "description": "Calculated: sleeve_count \u00d7 units_per_sleeve"
+    },
+    "box_count": {
+      "type": "number",
+      "description": "Number of boxes (bullets only)"
+    },
+    "bullets_per_box": {
+      "type": "number",
+      "default": 100,
+      "description": "Bullets per box (default 100)"
+    },
+    "total_bullet_count": {
+      "type": "number",
+      "description": "Calculated: box_count \u00d7 bullets_per_box"
+    },
+    "powder_lbs": {
+      "type": "number",
+      "description": "Pounds of powder purchased"
+    },
+    "powder_grains": {
+      "type": "number",
+      "description": "Calculated: powder_lbs \u00d7 7000"
+    },
+    "brass_box_count": {
+      "type": "number",
+      "description": "Number of boxes (brass only)"
+    },
+    "cases_per_box": {
+      "type": "number",
+      "default": 100,
+      "description": "Cases per box (default 100)"
+    },
+    "uses_per_case": {
+      "type": "number",
+      "description": "Expected reloads per case"
+    },
+    "total_cases": {
+      "type": "number",
+      "description": "Calculated: brass_box_count \u00d7 cases_per_box"
+    },
+    "total_unit_uses": {
+      "type": "number",
+      "description": "Calculated: total_cases \u00d7 uses_per_case"
+    },
     "cost_per_unit": {
       "type": "number",
-      "description": "Cost per unit"
+      "description": "Cost per unit/bullet/ea"
+    },
+    "cost_per_grain": {
+      "type": "number",
+      "description": "Cost per grain (powder only)"
+    },
+    "cost_per_use": {
+      "type": "number",
+      "description": "Cost per use (brass only)"
     },
     "total_cost": {
       "type": "number",
@@ -66,8 +115,7 @@
     },
     "purchase_date": {
       "type": "string",
-      "format": "date",
-      "description": "Date of purchase"
+      "format": "date"
     },
     "purchased_from": {
       "type": "string"
@@ -90,15 +138,13 @@
       "items": {
         "type": "string"
       },
-      "description": "IDs of storage locations where this component is kept"
+      "description": "IDs of storage locations"
     },
     "created_et": {
-      "type": "string",
-      "description": "Created timestamp in Eastern Time"
+      "type": "string"
     },
     "modified_et": {
-      "type": "string",
-      "description": "Modified timestamp in Eastern Time"
+      "type": "string"
     }
   },
   "required": [
