@@ -37,6 +37,23 @@ export default function Home() {
   const [showModal, setShowModal] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
   const [exportFormat, setExportFormat] = useState(null);
+  const [user, setUser] = useState(null);
+  const [etNow, setEtNow] = useState(new Date());
+
+  useEffect(() => {
+    base44.auth.me().then(setUser).catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    const id = setInterval(() => setEtNow(new Date()), 60000);
+    return () => clearInterval(id);
+  }, []);
+
+  const etDatetime = etNow.toLocaleString("en-US", {
+    timeZone: "America/New_York",
+    month: "short", day: "numeric",
+    hour: "numeric", minute: "2-digit", hour12: true,
+  }).replace(",", " ·");
 
   useEffect(() => {
     const tabParam = searchParams.get("tab");
@@ -87,7 +104,16 @@ export default function Home() {
         <span style={S.title}>
           {activeTab === "summary" ? "Armory Overview" : "TIWIG Count"}
         </span>
-        {activeTab !== "summary" && <span style={S.badge}>{count} {count === 1 ? "item" : "items"}</span>}
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 1 }}>
+          {activeTab !== "summary" && <span style={S.badge}>{count} {count === 1 ? "item" : "items"}</span>}
+          {user && (
+            <div style={{ textAlign: "right", lineHeight: 1.4 }}>
+              <div style={{ color: "#a3a3a3", fontSize: 10 }}>{user.full_name || user.email}</div>
+              <div style={{ color: "#6b7280", fontSize: 10 }}>{etDatetime}</div>
+              <button onClick={() => base44.auth.logout("/")} style={{ background: "none", border: "none", padding: 0, color: "#ef4444", fontSize: 10, cursor: "pointer", lineHeight: 1.4 }}>Sign Out</button>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Body */}
