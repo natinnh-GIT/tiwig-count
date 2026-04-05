@@ -12,11 +12,11 @@ const CATEGORIES = [
   { id: "primers", label: "Primers" },
 ];
 
-export default function ComponentsTab({ search, onEdit, onCountChange }) {
+export default function ComponentsTab({ search, onEdit, onCountChange, initialCategory }) {
   const navigate = useNavigate();
   const [components, setComponents] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [activeCategory, setActiveCategory] = useState("all");
+  const [activeCategory, setActiveCategory] = useState(initialCategory || "all");
 
   useEffect(() => {
     base44.entities.Component.list("-created_date", 200).then((data) => {

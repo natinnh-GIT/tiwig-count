@@ -100,7 +100,7 @@ export default function HomeTab({ onNavigate }) {
         style={{ ...S.card, ...(hoveredCard === "components" ? S.cardHover : {}) }}
         onMouseEnter={() => setHoveredCard("components")}
         onMouseLeave={() => setHoveredCard(null)}
-        onClick={() => onNavigate("components")}
+        onClick={() => onNavigate("components", "all")}
       >
         <div style={S.cardTitle}>
           <Zap style={S.icon} />
@@ -116,10 +116,10 @@ export default function HomeTab({ onNavigate }) {
             { label: "bullets", count: componentsByCategory.bullets, bg: "#1d4ed8", text: "#dbeafe" },
             { label: "primers", count: componentsByCategory.primers, bg: "#15803d", text: "#dcfce7" },
             { label: "powder", count: componentsByCategory.powder, bg: "#c2410c", text: "#ffedd5" },
-          ].map(item => (
-            <div key={item.label} style={S.breakdownRow}>
-              <span style={{ background: item.bg, color: item.text, borderRadius: 6, padding: "3px 10px", fontSize: 12, fontWeight: 600 }}>{item.label}</span>
-              <span style={{ color: "#f97316" }}>{item.count}</span>
+          ].map(cat => (
+            <div key={cat.label} style={{ ...S.breakdownRow, cursor: "pointer" }} onClick={(e) => { e.stopPropagation(); onNavigate("components", cat.label); }}>
+              <span style={{ background: cat.bg, color: cat.text, borderRadius: 6, padding: "3px 10px", fontSize: 12, fontWeight: 600 }}>{cat.label}</span>
+              <span style={{ color: "#f97316" }}>{cat.count}</span>
             </div>
           ))}
         </div>

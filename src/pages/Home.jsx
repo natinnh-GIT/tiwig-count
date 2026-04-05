@@ -11,7 +11,7 @@ import ExportDialog from "@/components/ExportDialog";
 import HomeTab from "@/pages/HomeTab";
 
 const TABS = [
-  { id: "home",       label: "Home",       icon: HomeIcon, headerTitle: "Armory Overview" },
+  { id: "summary",    label: "Home",       icon: HomeIcon, headerTitle: "Armory Overview" },
   { id: "components", label: "Components", icon: Layers },
   { id: "firearms",   label: "Firearms",   icon: Crosshair },
   { id: "optics",     label: "Optics",     icon: Eye },
@@ -30,7 +30,8 @@ const S = {
 
 export default function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [activeTab, setActiveTab] = useState(searchParams.get("tab") || "home");
+  const [activeTab, setActiveTab] = useState(searchParams.get("tab") || "summary");
+  const [componentCategory, setComponentCategory] = useState("all");
   const bodyRef = useRef(null);
   const [count, setCount] = useState(0);
   const [showModal, setShowModal] = useState(false);
@@ -84,16 +85,16 @@ export default function Home() {
       {/* Header */}
       <div style={S.header}>
         <span style={S.title}>
-          {activeTab === "home" ? "Armory Overview" : "TIWIG Count"}
+          {activeTab === "summary" ? "Armory Overview" : "TIWIG Count"}
         </span>
-        {activeTab !== "home" && <span style={S.badge}>{count} {count === 1 ? "item" : "items"}</span>}
+        {activeTab !== "summary" && <span style={S.badge}>{count} {count === 1 ? "item" : "items"}</span>}
       </div>
 
       {/* Body */}
       <div ref={bodyRef} style={S.body}>
-        {activeTab === "home" && <HomeTab onNavigate={setActiveTab} />}
+        {activeTab === "summary" && <HomeTab onNavigate={(tab, category) => { setActiveTab(tab); if (category) setComponentCategory(category); setSearchParams({ tab }); bodyRef.current?.scrollTo(0, 0); }} />}
         {activeTab === "components" && (
-          <ComponentsTab onCountChange={setCount} onEdit={handleEdit} onExport={setExportFormat} />
+          <ComponentsTab onCountChange={setCount} onEdit={handleEdit} onExport={setExportFormat} initialCategory={componentCategory} />
         )}
         {activeTab === "firearms" && <FirearmsTab onCountChange={setCount} />}
         {activeTab === "optics"   && <OpticsTab onCountChange={setCount} />}
@@ -101,7 +102,7 @@ export default function Home() {
       </div>
 
       {/* FAB */}
-      {activeTab !== "home" && <button style={S.fab} onClick={handleFab}>+</button>}
+      {activeTab !== "summary" && <button style={S.fab} onClick={handleFab}>+</button>}
 
       {/* Bottom Nav */}
       <nav style={S.nav}>
