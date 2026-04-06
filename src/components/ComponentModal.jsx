@@ -138,35 +138,33 @@ export default function ComponentModal({ item, onClose, onSaved }) {
 
   const saveItem = async (overrideId) => {
     setSaving(true);
-    const toNum = (v) => v !== "" && v !== undefined && v !== null ? Number(v) : undefined;
+    const toNum = (v) => (v !== "" && v !== undefined && v !== null && !isNaN(Number(v))) ? Number(v) : undefined;
+    // Always sanitize ALL numeric fields regardless of category to avoid sending empty strings
     const payload = {
       ...form,
       total_cost: toNum(form.total_cost),
+      cost_per_unit: toNum(form.cost_per_unit),
+      // primers
+      sleeve_count: toNum(form.sleeve_count),
+      units_per_sleeve: toNum(form.units_per_sleeve) ?? 100,
+      total_unit_count: toNum(form.total_unit_count),
+      // bullets
+      box_count: toNum(form.box_count),
+      bullets_per_box: toNum(form.bullets_per_box) ?? 100,
+      total_bullet_count: toNum(form.total_bullet_count),
+      // powder
+      powder_lbs: toNum(form.powder_lbs),
+      powder_grains: toNum(form.powder_grains),
+      cost_per_grain: toNum(form.cost_per_grain),
+      // brass
+      brass_box_count: toNum(form.brass_box_count),
+      cases_per_box: toNum(form.cases_per_box) ?? 100,
+      uses_per_case: toNum(form.uses_per_case),
+      total_cases: toNum(form.total_cases),
+      total_unit_uses: toNum(form.total_unit_uses),
+      cost_per_use: toNum(form.cost_per_use),
       modified_et: getETNow(),
     };
-    // per-category calculated fields
-    if (form.category === "primers") {
-      payload.sleeve_count = toNum(form.sleeve_count);
-      payload.units_per_sleeve = toNum(form.units_per_sleeve) ?? 100;
-      payload.total_unit_count = toNum(form.total_unit_count);
-      payload.cost_per_unit = toNum(form.cost_per_unit);
-    } else if (form.category === "bullets") {
-      payload.box_count = toNum(form.box_count);
-      payload.bullets_per_box = toNum(form.bullets_per_box) ?? 100;
-      payload.total_bullet_count = toNum(form.total_bullet_count);
-      payload.cost_per_unit = toNum(form.cost_per_unit);
-    } else if (form.category === "powder") {
-      payload.powder_lbs = toNum(form.powder_lbs);
-      payload.powder_grains = toNum(form.powder_grains);
-      payload.cost_per_grain = toNum(form.cost_per_grain);
-    } else if (form.category === "brass") {
-      payload.brass_box_count = toNum(form.brass_box_count);
-      payload.cases_per_box = toNum(form.cases_per_box) ?? 100;
-      payload.uses_per_case = toNum(form.uses_per_case);
-      payload.total_cases = toNum(form.total_cases);
-      payload.total_unit_uses = toNum(form.total_unit_uses);
-      payload.cost_per_use = toNum(form.cost_per_use);
-    }
     if (!item?.id) payload.created_et = getETNow();
     if (overrideId) await base44.entities.Component.update(overrideId, payload);
     else if (item?.id) await base44.entities.Component.update(item.id, payload);
