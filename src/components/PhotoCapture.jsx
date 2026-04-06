@@ -16,9 +16,9 @@ export default function PhotoCapture({ onCapture, onClose }) {
     const objectUrl = URL.createObjectURL(f);
     img.src = objectUrl;
     await new Promise((res) => { img.onload = res; img.onerror = res; });
-    const MAX_WIDTH = 800;
-    const origW = img.naturalWidth || 800;
-    const origH = img.naturalHeight || 600;
+    const MAX_WIDTH = 512;
+    const origW = img.naturalWidth || 512;
+    const origH = img.naturalHeight || 512;
     const scale = origW > MAX_WIDTH ? MAX_WIDTH / origW : 1;
     const canvas = document.createElement("canvas");
     canvas.width = Math.round(origW * scale);
@@ -30,7 +30,7 @@ export default function PhotoCapture({ onCapture, onClose }) {
       const jpeg = new File([blob], "photo.jpg", { type: "image/jpeg" });
       setFile(jpeg);
       setPreview(URL.createObjectURL(jpeg));
-    }, "image/jpeg", 0.9);
+    }, "image/jpeg", 0.95);
   };
 
   const handleUpload = async () => {
