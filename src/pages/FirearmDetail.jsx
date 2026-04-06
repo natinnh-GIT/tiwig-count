@@ -16,8 +16,8 @@ const S = {
   body: { flex: 1, overflowY: "auto", padding: "16px" },
   photo: { width: "100%", borderRadius: 6, overflow: "hidden", background: "#242424", marginBottom: 16, border: "1px solid #2a2a2a" },
   section: { marginBottom: 20 },
-  sectionTitle: { color: "#a3a3a3", fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 8, paddingLeft: 10, borderLeft: "2px solid #f97316" },
-  row: { paddingBottom: 10, display: "flex", justifyContent: "space-between", borderBottom: "1px solid #2a2a2a" },
+  sectionTitle: { color: "#a3a3a3", fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 8, paddingLeft: 10, paddingTop: 4, borderLeft: "2px solid #f97316" },
+  row: { paddingTop: 8, paddingBottom: 10, display: "flex", justifyContent: "space-between", borderBottom: "1px solid #2a2a2a" },
   label: { color: "#6b7280", fontSize: 12 },
   value: { color: "#f5f5f5", fontSize: 13, fontWeight: 600, textAlign: "right", flex: 1, paddingLeft: 12 },
 };
