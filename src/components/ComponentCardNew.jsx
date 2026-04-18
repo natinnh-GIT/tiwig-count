@@ -1,6 +1,7 @@
 import { MapPin } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { base44 } from "@/api/base44Client";
 
 const CAT_LABELS = { brass: "BRASS", bullets: "BULLETS", powder: "POWDER", primers: "PRIMERS" };
 
