@@ -2,6 +2,23 @@ import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { Plus } from "lucide-react";
 import OpticsCard from "@/components/OpticsCard";
+import ExportMenu from "@/components/ExportMenu";
+
+const OPTIC_COLUMNS = [
+  { key: "brand",             label: "Brand" },
+  { key: "model",             label: "Model" },
+  { key: "magnification",     label: "Magnification" },
+  { key: "reticle",           label: "Reticle" },
+  { key: "tube_diameter",     label: "Tube Diameter" },
+  { key: "focal_plane",       label: "Focal Plane" },
+  { key: "serial_number",     label: "Serial #" },
+  { key: "rings_mounts",      label: "Rings/Mounts" },
+  { key: "mounted_on_firearm_name", label: "Mounted On" },
+  { key: "purchase_price",    label: "Purchase Price ($)" },
+  { key: "purchase_date",     label: "Purchase Date" },
+  { key: "purchased_from",    label: "Purchased From" },
+  { key: "notes",             label: "Notes" },
+];
 
 export default function OpticsTab({ onCountChange }) {
   const [optics, setOptics] = useState([]);
@@ -27,12 +44,20 @@ export default function OpticsTab({ onCountChange }) {
       {/* Sticky header */}
       <div style={{ background: "#1a1a1a", borderBottom: "1px solid #2a2a2a", padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 10 }}>
         <span style={{ color: "#f5f5f5", fontWeight: 700, fontSize: 14 }}>Optics</span>
-        <button
-          onClick={() => setShowModal(true)}
-          style={{ background: "#f97316", color: "#fff", border: "none", borderRadius: 3, padding: "6px 12px", cursor: "pointer", display: "flex", alignItems: "center", gap: 4, fontWeight: 700, fontSize: 12 }}
-        >
-          <Plus style={{ width: 16, height: 16 }} /> Add
-        </button>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <ExportMenu
+            getData={() => optics}
+            filename="optics"
+            columns={OPTIC_COLUMNS}
+            title="Optics Inventory"
+          />
+          <button
+            onClick={() => setShowModal(true)}
+            style={{ background: "#f97316", color: "#fff", border: "none", borderRadius: 3, padding: "6px 12px", cursor: "pointer", display: "flex", alignItems: "center", gap: 4, fontWeight: 700, fontSize: 12 }}
+          >
+            <Plus style={{ width: 16, height: 16 }} /> Add
+          </button>
+        </div>
       </div>
 
       {/* List or empty state */}

@@ -3,6 +3,25 @@ import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { Package } from "lucide-react";
 import ComponentCard from "@/components/ComponentCard";
+import ExportMenu from "@/components/ExportMenu";
+
+const COMPONENT_COLUMNS = [
+  { key: "name",           label: "Name" },
+  { key: "category",       label: "Category" },
+  { key: "brand",          label: "Brand" },
+  { key: "caliber",        label: "Caliber" },
+  { key: "lot_number",     label: "Lot #" },
+  { key: "total_unit_count",   label: "Primer Count" },
+  { key: "total_bullet_count", label: "Bullet Count" },
+  { key: "powder_lbs",    label: "Powder (lbs)" },
+  { key: "powder_grains", label: "Powder (gr)" },
+  { key: "total_cases",   label: "Brass Cases" },
+  { key: "total_cost",    label: "Total Cost ($)" },
+  { key: "cost_per_unit", label: "Cost/Unit ($)" },
+  { key: "purchase_date", label: "Purchase Date" },
+  { key: "purchased_from",label: "Purchased From" },
+  { key: "notes",         label: "Notes" },
+];
 
 const CATEGORIES = [
   { id: "all", label: "All" },
@@ -70,11 +89,17 @@ export default function ComponentsTab({ search, onEdit, onCountChange, initialCa
         })}
       </div>
 
-      {/* Count row */}
-      <div className="px-4 py-2">
+      {/* Count + Export row */}
+      <div className="px-4 py-2" style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <span className="text-xs" style={{ color: "#737373" }}>
           {filtered.length} item{filtered.length !== 1 ? "s" : ""}
         </span>
+        <ExportMenu
+          getData={() => filtered}
+          filename={`components-${activeCategory}`}
+          columns={COMPONENT_COLUMNS}
+          title={`Components — ${activeCategory.charAt(0).toUpperCase() + activeCategory.slice(1)}`}
+        />
       </div>
 
       {/* List */}

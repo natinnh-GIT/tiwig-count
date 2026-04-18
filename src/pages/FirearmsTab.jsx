@@ -3,6 +3,26 @@ import { base44 } from "@/api/base44Client";
 import { Plus } from "lucide-react";
 import FirearmCard from "@/components/FirearmCard";
 import FirearmModal from "@/components/FirearmModal";
+import ExportMenu from "@/components/ExportMenu";
+
+const FIREARM_COLUMNS = [
+  { key: "name",                 label: "Name" },
+  { key: "type",                 label: "Type" },
+  { key: "make",                 label: "Make" },
+  { key: "model",                label: "Model" },
+  { key: "caliber",             label: "Caliber" },
+  { key: "serial_number",       label: "Serial #" },
+  { key: "barrel_length",       label: "Barrel Length" },
+  { key: "barrel_contour",      label: "Barrel Contour" },
+  { key: "stock",               label: "Stock" },
+  { key: "trigger_brand",       label: "Trigger" },
+  { key: "trigger_pull_oz",     label: "Trigger Pull (oz)" },
+  { key: "current_round_count", label: "Round Count" },
+  { key: "expected_barrel_life",label: "Expected Barrel Life" },
+  { key: "optic_name",          label: "Optic" },
+  { key: "suppressor_model",    label: "Suppressor" },
+  { key: "notes",               label: "Notes" },
+];
 
 export default function FirearmsTab({ onCountChange }) {
   const [firearms, setFirearms] = useState([]);
@@ -28,12 +48,20 @@ export default function FirearmsTab({ onCountChange }) {
       {/* Sticky header */}
       <div style={{ background: "#1a1a1a", borderBottom: "1px solid #2a2a2a", padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 10 }}>
         <span style={{ color: "#f5f5f5", fontWeight: 700, fontSize: 14 }}>Firearms</span>
-        <button
-          onClick={() => setShowModal(true)}
-          style={{ background: "#f97316", color: "#fff", border: "none", borderRadius: 3, padding: "6px 12px", cursor: "pointer", display: "flex", alignItems: "center", gap: 4, fontWeight: 700, fontSize: 12 }}
-        >
-          <Plus style={{ width: 16, height: 16 }} /> Add
-        </button>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <ExportMenu
+            getData={() => firearms}
+            filename="firearms"
+            columns={FIREARM_COLUMNS}
+            title="Firearms Inventory"
+          />
+          <button
+            onClick={() => setShowModal(true)}
+            style={{ background: "#f97316", color: "#fff", border: "none", borderRadius: 3, padding: "6px 12px", cursor: "pointer", display: "flex", alignItems: "center", gap: 4, fontWeight: 700, fontSize: 12 }}
+          >
+            <Plus style={{ width: 16, height: 16 }} /> Add
+          </button>
+        </div>
       </div>
 
       {/* List or empty state */}
