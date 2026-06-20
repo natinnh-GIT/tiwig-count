@@ -36,7 +36,7 @@ const EMPTY = {
   suppressor_model: "", suppressor_type: "", suppressor_serial: "",
   optic_id: "", optic_name: "",
   purchase_date: "", purchased_from: "", ffl_dealer: "", purchase_price: "", current_value: "",
-  notes: "", photo_url: "",
+  notes: "", photo_url: "", photo_url_2: "",
 };
 
 export default function FirearmModal({ item, onClose, onSaved }) {
@@ -44,6 +44,7 @@ export default function FirearmModal({ item, onClose, onSaved }) {
   const [allFirearms, setAllFirearms] = useState([]);
   const [saving, setSaving] = useState(false);
   const [showPhoto, setShowPhoto] = useState(false);
+  const [showPhoto2, setShowPhoto2] = useState(false);
   const [showSuppressor, setShowSuppressor] = useState(!!(item?.suppressor_model));
 
   useEffect(() => { base44.entities.Firearm.list().then(setAllFirearms); }, []);
@@ -77,14 +78,8 @@ export default function FirearmModal({ item, onClose, onSaved }) {
     onSaved();
   };
 
-  if (showPhoto) {
-    return (
-      <PhotoCapture
-        onCapture={url => { set("photo_url", url); setShowPhoto(false); }}
-        onClose={() => setShowPhoto(false)}
-      />
-    );
-  }
+  if (showPhoto) return <PhotoCapture onCapture={url => { set("photo_url", url); setShowPhoto(false); }} onClose={() => setShowPhoto(false)} />;
+  if (showPhoto2) return <PhotoCapture onCapture={url => { set("photo_url_2", url); setShowPhoto2(false); }} onClose={() => setShowPhoto2(false)} />;
 
   return (
     <div style={S.overlay}>
@@ -103,17 +98,20 @@ export default function FirearmModal({ item, onClose, onSaved }) {
       </div>
 
       <div style={S.body}>
-        {/* Photo */}
-        <div style={S.section}>
-          <label style={S.label}>Photo</label>
-          <button
-            onClick={() => setShowPhoto(true)}
-            style={{ width: "50%", aspectRatio: "16/9", borderRadius: 6, border: "1px dashed #2a2a2a", background: "#242424", overflow: "hidden", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", padding: 0 }}
-          >
-            {form.photo_url
-              ? <img src={form.photo_url} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-              : <Camera style={{ width: 28, height: 28, color: "#6b7280" }} />}
-          </button>
+        {/* Photos */}
+        <div style={{ ...S.section, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+          <div>
+            <label style={S.label}>Photo 1</label>
+            <button onClick={() => setShowPhoto(true)} style={{ width: "100%", aspectRatio: "16/9", borderRadius: 6, border: "1px dashed #2a2a2a", background: "#242424", overflow: "hidden", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", padding: 0 }}>
+              {form.photo_url ? <img src={form.photo_url} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : <Camera style={{ width: 24, height: 24, color: "#6b7280" }} />}
+            </button>
+          </div>
+          <div>
+            <label style={S.label}>Photo 2</label>
+            <button onClick={() => setShowPhoto2(true)} style={{ width: "100%", aspectRatio: "16/9", borderRadius: 6, border: "1px dashed #2a2a2a", background: "#242424", overflow: "hidden", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", padding: 0 }}>
+              {form.photo_url_2 ? <img src={form.photo_url_2} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : <Camera style={{ width: 24, height: 24, color: "#6b7280" }} />}
+            </button>
+          </div>
         </div>
 
         {/* Identity */}

@@ -136,12 +136,23 @@ export default function OpticDetail() {
       </div>
 
       <div style={S.body}>
-        {/* Photo */}
-        {optic.photo_url && (
-          <div style={{ borderRadius: 6, overflow: "hidden", background: "#242424", marginBottom: 16, border: "1px solid #2a2a2a" }}>
-            <img src={optic.photo_url} alt={optic.model} style={{ width: "100%", height: "auto", display: "block", objectFit: "contain" }} />
-          </div>
-        )}
+        {/* Photos */}
+        {(() => {
+          const photos = [optic.photo_url, optic.photo_url_2];
+          const hasAny = photos.some(Boolean);
+          if (!hasAny) return null;
+          return (
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", marginBottom: 16 }}>
+              {photos.map((url, i) => (
+                url ? (
+                  <img key={i} src={url} alt="" style={{ width: "100%", aspectRatio: "16/9", objectFit: "cover" }} />
+                ) : (
+                  <div key={i} style={{ aspectRatio: "16/9", background: "#1a1a1a" }} />
+                )
+              ))}
+            </div>
+          );
+        })()}
 
         {/* Header badges */}
         {(optic.type || optic.condition) && (

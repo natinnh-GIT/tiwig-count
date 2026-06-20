@@ -21,7 +21,7 @@ const S = {
 
 const getETNow = () => new Date().toLocaleString("en-US", { timeZone: "America/New_York", month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit", hour12: true });
 
-const EMPTY = { brand: "", model: "", serial_number: "", type: "", magnification: "", objective_lens: "", tube_diameter: "", reticle: "", focal_plane: "", adjustment_units: "", max_elevation: "", max_windage: "", finish: "", condition: "", purchase_date: "", purchased_from: "", purchase_price: "", current_value: "", mounted_on_firearm_id: "", mounted_on_firearm_name: "", mount_info: "", notes: "", photo_url: "" };
+const EMPTY = { brand: "", model: "", serial_number: "", type: "", magnification: "", objective_lens: "", tube_diameter: "", reticle: "", focal_plane: "", adjustment_units: "", max_elevation: "", max_windage: "", finish: "", condition: "", purchase_date: "", purchased_from: "", purchase_price: "", current_value: "", mounted_on_firearm_id: "", mounted_on_firearm_name: "", mount_info: "", notes: "", photo_url: "", photo_url_2: "" };
 
 export default function OpticModal({ item, onClose, onSaved }) {
   const [form, setForm] = useState(item ? { ...EMPTY, ...item } : { ...EMPTY });
@@ -29,6 +29,7 @@ export default function OpticModal({ item, onClose, onSaved }) {
   const [allFirearms, setAllFirearms] = useState([]);
   const [saving, setSaving] = useState(false);
   const [showPhoto, setShowPhoto] = useState(false);
+  const [showPhoto2, setShowPhoto2] = useState(false);
 
   useEffect(() => {
     base44.entities.Optic.list().then(setAllOptics);
@@ -58,6 +59,7 @@ export default function OpticModal({ item, onClose, onSaved }) {
   };
 
   if (showPhoto) return <PhotoCapture onCapture={url => { set("photo_url", url); setShowPhoto(false); }} onClose={() => setShowPhoto(false)} />;
+  if (showPhoto2) return <PhotoCapture onCapture={url => { set("photo_url_2", url); setShowPhoto2(false); }} onClose={() => setShowPhoto2(false)} />;
 
   return (
     <div style={S.overlay}>
@@ -67,11 +69,19 @@ export default function OpticModal({ item, onClose, onSaved }) {
         <button onClick={handleSave} disabled={saving || !form.brand || !form.model} style={{ ...S.saveBtn, opacity: (saving || !form.brand || !form.model) ? 0.5 : 1 }}>{saving ? "Saving…" : "Save"}</button>
       </div>
       <div style={S.body}>
-        <div style={S.section}>
-          <label style={S.label}>Photo</label>
-          <button onClick={() => setShowPhoto(true)} style={{ width: "50%", aspectRatio: "16/9", borderRadius: 6, border: "1px dashed #2a2a2a", background: "#242424", overflow: "hidden", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", padding: 0 }}>
-            {form.photo_url ? <img src={form.photo_url} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : <Camera style={{ width: 28, height: 28, color: "#6b7280" }} />}
-          </button>
+        <div style={{ ...S.section, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+          <div>
+            <label style={S.label}>Photo 1</label>
+            <button onClick={() => setShowPhoto(true)} style={{ width: "100%", aspectRatio: "16/9", borderRadius: 6, border: "1px dashed #2a2a2a", background: "#242424", overflow: "hidden", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", padding: 0 }}>
+              {form.photo_url ? <img src={form.photo_url} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : <Camera style={{ width: 24, height: 24, color: "#6b7280" }} />}
+            </button>
+          </div>
+          <div>
+            <label style={S.label}>Photo 2</label>
+            <button onClick={() => setShowPhoto2(true)} style={{ width: "100%", aspectRatio: "16/9", borderRadius: 6, border: "1px dashed #2a2a2a", background: "#242424", overflow: "hidden", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", padding: 0 }}>
+              {form.photo_url_2 ? <img src={form.photo_url_2} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : <Camera style={{ width: 24, height: 24, color: "#6b7280" }} />}
+            </button>
+          </div>
         </div>
         <div style={S.sectionHeader}>Identity</div>
         <div style={S.grid2}>

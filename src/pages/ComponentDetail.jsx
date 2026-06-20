@@ -118,22 +118,25 @@ export default function ComponentDetail() {
       <div style={{ flex: 1, overflowY: "auto", paddingBottom: 24 }}>
         {/* Photos */}
         {(() => {
-          const photos = [item.photo_url, item.photo_url_2].filter(Boolean);
-          return photos.length > 0 ? (
-            <div style={{ display: "grid", gridTemplateColumns: photos.length > 1 ? "1fr 1fr" : "1fr", maxHeight: 220, overflow: "hidden" }}>
+          const photos = [item.photo_url, item.photo_url_2];
+          const hasAny = photos.some(Boolean);
+          return (
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
               {photos.map((url, i) => (
-                <img
-                  key={i}
-                  src={url}
-                  alt=""
-                  onClick={() => setLightboxIndex(i)}
-                  style={{ width: "100%", aspectRatio: "1", objectFit: "cover", cursor: "zoom-in" }}
-                />
+                url ? (
+                  <img
+                    key={i}
+                    src={url}
+                    alt=""
+                    onClick={() => setLightboxIndex(i)}
+                    style={{ width: "100%", aspectRatio: "16/9", objectFit: "cover", cursor: "zoom-in" }}
+                  />
+                ) : (
+                  <div key={i} style={{ aspectRatio: "16/9", background: "#1a1a1a", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    {!hasAny && i === 0 && <span style={{ color: "#f97316", fontWeight: 900, fontSize: 40 }}>{item.name?.[0]?.toUpperCase()}</span>}
+                  </div>
+                )
               ))}
-            </div>
-          ) : (
-            <div style={{ height: 100, background: "#1a1a1a", display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <span style={{ color: "#f97316", fontWeight: 900, fontSize: 40 }}>{item.name?.[0]?.toUpperCase()}</span>
             </div>
           );
         })()}
