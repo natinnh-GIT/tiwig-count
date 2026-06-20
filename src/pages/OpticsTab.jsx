@@ -2,19 +2,28 @@ import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { Plus } from "lucide-react";
 import OpticsCard from "@/components/OpticsCard";
+import OpticModal from "@/components/OpticModal";
 import ExportMenu from "@/components/ExportMenu";
 
 const OPTIC_COLUMNS = [
-  { key: "brand",             label: "Brand" },
+  { key: "brand",             label: "Make" },
   { key: "model",             label: "Model" },
-  { key: "magnification",     label: "Magnification" },
-  { key: "reticle",           label: "Reticle" },
-  { key: "tube_diameter",     label: "Tube Diameter" },
-  { key: "focal_plane",       label: "Focal Plane" },
+  { key: "type",              label: "Type" },
   { key: "serial_number",     label: "Serial #" },
-  { key: "rings_mounts",      label: "Rings/Mounts" },
+  { key: "magnification",     label: "Magnification" },
+  { key: "objective_lens",    label: "Objective Lens" },
+  { key: "tube_diameter",     label: "Tube Diameter" },
+  { key: "reticle",           label: "Reticle" },
+  { key: "focal_plane",       label: "Focal Plane" },
+  { key: "adjustment_units",  label: "Adj. Units" },
+  { key: "max_elevation",     label: "Max Elevation" },
+  { key: "max_windage",       label: "Max Windage" },
+  { key: "finish",            label: "Finish" },
+  { key: "condition",         label: "Condition" },
+  { key: "mount_info",        label: "Mount/Rings" },
   { key: "mounted_on_firearm_name", label: "Mounted On" },
   { key: "purchase_price",    label: "Purchase Price ($)" },
+  { key: "current_value",     label: "Current Value ($)" },
   { key: "purchase_date",     label: "Purchase Date" },
   { key: "purchased_from",    label: "Purchased From" },
   { key: "notes",             label: "Notes" },
@@ -60,7 +69,6 @@ export default function OpticsTab({ onCountChange }) {
         </div>
       </div>
 
-      {/* List or empty state */}
       {loading ? (
         <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
           <div style={{ width: 24, height: 24, border: "2px solid #f97316", borderTopColor: "transparent", borderRadius: "50%", animation: "spin 0.7s linear infinite" }} />
@@ -82,6 +90,13 @@ export default function OpticsTab({ onCountChange }) {
             <OpticsCard key={o.id} item={o} />
           ))}
         </div>
+      )}
+
+      {showModal && (
+        <OpticModal
+          onClose={() => setShowModal(false)}
+          onSaved={() => { setShowModal(false); loadOptics(); }}
+        />
       )}
     </div>
   );
