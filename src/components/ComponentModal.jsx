@@ -13,14 +13,17 @@ import CartridgeLoader from "@/components/CartridgeLoader";
 const getDefaults = () => ({
   name: "", description: "",
   category: localStorage.getItem("rt_last_category") || "brass",
-  caliber: "", brand: "",
+  caliber: "", brand: "", lot_number: "", condition: "",
   purchased_from: "", barcode: "", photo_url: "", photo_url_2: "", notes: "",
-  total_cost: "", purchase_date: "", location_ids: [],
-  // primers
-  sleeve_count: "", units_per_sleeve: 100, total_unit_count: 0, cost_per_unit: "",
+  total_cost: "", current_value: "", purchase_date: "", location_ids: [],
   // bullets
+  bullet_weight: "", bullet_type: "",
   box_count: "", bullets_per_box: 100, total_bullet_count: 0,
+  // primers
+  primer_type: "",
+  sleeve_count: "", units_per_sleeve: 100, total_unit_count: 0, cost_per_unit: "",
   // powder
+  burn_rate: "",
   powder_lbs: "", powder_grains: 0, cost_per_grain: "",
   // brass
   brass_box_count: "", cases_per_box: 100, uses_per_case: "", total_cases: 0, total_unit_uses: 0, cost_per_use: "",
@@ -38,6 +41,8 @@ const S = {
   section: { marginBottom: 16 },
   grid2: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 16 },
   readOnly: { width: "100%", background: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: 2, color: "#f97316", padding: "9px 12px", fontSize: 13, fontWeight: 700, boxSizing: "border-box" },
+  sectionHeader: { color: "#a3a3a3", fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 12, paddingLeft: 10, borderLeft: "2px solid #f97316" },
+  divider: { borderTop: "1px solid #2a2a2a", marginBottom: 16 },
 };
 
 // formatting helpers
@@ -143,6 +148,8 @@ export default function ComponentModal({ item, onClose, onSaved }) {
     const payload = {
       ...form,
       total_cost: toNum(form.total_cost),
+      current_value: toNum(form.current_value),
+      bullet_weight: toNum(form.bullet_weight),
       cost_per_unit: toNum(form.cost_per_unit),
       // primers
       sleeve_count: toNum(form.sleeve_count),
@@ -318,6 +325,10 @@ export default function ComponentModal({ item, onClose, onSaved }) {
         {/* ── PRIMERS ── */}
         {isP && (
           <>
+            <div style={S.section}>
+              <label style={S.label}>Primer Type</label>
+              <input value={form.primer_type || ""} onChange={(e) => set("primer_type", e.target.value)} placeholder="Small Rifle, Large Pistol, Small Rifle Magnum…" style={S.input} />
+            </div>
             <div style={S.grid2}>
               <div>
                 <label style={S.label}># of Sleeves</label>
@@ -350,6 +361,16 @@ export default function ComponentModal({ item, onClose, onSaved }) {
           <>
             <div style={S.grid2}>
               <div>
+                <label style={S.label}>Bullet Weight (gr)</label>
+                <input type="number" min="0" value={form.bullet_weight || ""} onChange={(e) => set("bullet_weight", e.target.value)} placeholder="168" style={S.input} />
+              </div>
+              <div>
+                <label style={S.label}>Bullet Type</label>
+                <input value={form.bullet_type || ""} onChange={(e) => set("bullet_type", e.target.value)} placeholder="FMJ, BTHP, SP…" style={S.input} />
+              </div>
+            </div>
+            <div style={S.grid2}>
+              <div>
                 <label style={S.label}># of Boxes</label>
                 <input type="number" min="0" value={form.box_count} onChange={(e) => handleBulletField("box_count", e.target.value)} placeholder="" style={S.input} />
               </div>
@@ -378,6 +399,10 @@ export default function ComponentModal({ item, onClose, onSaved }) {
         {/* ── POWDER ── */}
         {isPw && (
           <>
+            <div style={S.section}>
+              <label style={S.label}>Burn Rate</label>
+              <input value={form.burn_rate || ""} onChange={(e) => set("burn_rate", e.target.value)} placeholder="Fast, Medium, Slow, or index…" style={S.input} />
+            </div>
             <div style={S.grid2}>
               <div>
                 <label style={S.label}>Pounds Purchased (lbs)</label>
@@ -439,16 +464,29 @@ export default function ComponentModal({ item, onClose, onSaved }) {
           </>
         )}
 
-        {/* Purchase Date */}
-        <div style={{ ...S.section, maxWidth: "50%" }}>
-          <label style={S.label}>Purchase Date</label>
-          <input type="date" value={form.purchase_date || ""} onChange={(e) => set("purchase_date", e.target.value)} style={S.input} />
+        {/* Purchase + Value */}
+        <div style={S.grid2}>
+          <div>
+            <label style={S.label}>Purchase Date</label>
+            <input type="date" value={form.purchase_date || ""} onChange={(e) => set("purchase_date", e.target.value)} style={S.input} />
+          </div>
+          <div>
+            <label style={S.label}>Purchased From</label>
+            <input value={form.purchased_from} onChange={(e) => set("purchased_from", e.target.value)} placeholder="Store or website" style={S.input} />
+          </div>
         </div>
-
-        {/* Purchased From */}
-        <div style={S.section}>
-          <label style={S.label}>Purchased From</label>
-          <input value={form.purchased_from} onChange={(e) => set("purchased_from", e.target.value)} placeholder="Store or website" style={S.input} />
+        <div style={S.grid2}>
+          <div>
+            <label style={S.label}>Current Value ($)</label>
+            <input type="number" step="0.01" value={form.current_value || ""} onChange={(e) => set("current_value", e.target.value)} placeholder="0.00" style={S.input} />
+          </div>
+          <div>
+            <label style={S.label}>Condition</label>
+            <select value={form.condition || ""} onChange={(e) => set("condition", e.target.value)} style={{ ...S.input, appearance: "none" }}>
+              <option value="">— Select —</option>
+              {["New", "Good", "Fair", "Poor"].map(c => <option key={c} value={c}>{c}</option>)}
+            </select>
+          </div>
         </div>
 
         {/* Locations */}

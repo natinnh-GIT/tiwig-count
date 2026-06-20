@@ -203,16 +203,11 @@ export default function ComponentDetail() {
             <Row label="Brand" value={item.brand} />
             <Row label="Caliber / Type" value={item.caliber} />
             <Row label="Lot #" value={item.lot_number} />
-
-            {item.category === "primers" && <>
-              <Row label="Sleeves" value={item.sleeve_count} />
-              <Row label="Units Per Sleeve" value={item.units_per_sleeve} />
-              <Row label="Total Count" value={item.total_unit_count ? `${Number(item.total_unit_count).toLocaleString()} count` : null} />
-              <Row label="Total Cost Paid" value={item.total_cost ? formatCurrency(item.total_cost) : null} />
-              <Row label="Cost Per Unit" value={item.cost_per_unit ? `$${Number(item.cost_per_unit).toLocaleString("en-US", { minimumFractionDigits: 4, maximumFractionDigits: 4 })}/ea` : null} />
-            </>}
+            <Row label="Condition" value={item.condition} />
 
             {item.category === "bullets" && <>
+              <Row label="Bullet Weight" value={item.bullet_weight ? `${item.bullet_weight} gr` : null} />
+              <Row label="Bullet Type" value={item.bullet_type} />
               <Row label="Boxes" value={item.box_count} />
               <Row label="Bullets Per Box" value={item.bullets_per_box} />
               <Row label="Total Count" value={item.total_bullet_count ? `${Number(item.total_bullet_count).toLocaleString()} count` : null} />
@@ -220,7 +215,17 @@ export default function ComponentDetail() {
               <Row label="Cost Per Bullet" value={item.cost_per_unit ? `$${Number(item.cost_per_unit).toLocaleString("en-US", { minimumFractionDigits: 4, maximumFractionDigits: 4 })}/ea` : null} />
             </>}
 
+            {item.category === "primers" && <>
+              <Row label="Primer Type" value={item.primer_type} />
+              <Row label="Sleeves" value={item.sleeve_count} />
+              <Row label="Units Per Sleeve" value={item.units_per_sleeve} />
+              <Row label="Total Count" value={item.total_unit_count ? `${Number(item.total_unit_count).toLocaleString()} count` : null} />
+              <Row label="Total Cost Paid" value={item.total_cost ? formatCurrency(item.total_cost) : null} />
+              <Row label="Cost Per Unit" value={item.cost_per_unit ? `$${Number(item.cost_per_unit).toLocaleString("en-US", { minimumFractionDigits: 4, maximumFractionDigits: 4 })}/ea` : null} />
+            </>}
+
             {item.category === "powder" && <>
+              <Row label="Burn Rate" value={item.burn_rate} />
               <Row label="Pounds Purchased" value={item.powder_lbs ? `${item.powder_lbs} lbs` : null} />
               <Row label="Grains" value={item.powder_grains ? `${Number(item.powder_grains).toLocaleString()} gr` : null} />
               <Row label="Total Cost Paid" value={item.total_cost ? formatCurrency(item.total_cost) : null} />
@@ -237,6 +242,7 @@ export default function ComponentDetail() {
               <Row label="Cost Per Use" value={item.cost_per_use ? `$${Number(item.cost_per_use).toLocaleString("en-US", { minimumFractionDigits: 4, maximumFractionDigits: 4 })}/use` : null} />
             </>}
 
+            <Row label="Current Value" value={item.current_value ? formatCurrency(item.current_value) : null} />
             <Row label="Purchase Date" value={item.purchase_date ? formatET(item.purchase_date) : null} />
             <Row label="Purchased From" value={item.purchased_from} />
             <BarcodeDisplay value={item.barcode} />

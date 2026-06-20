@@ -117,7 +117,7 @@ export default function Home() {
       <div ref={bodyRef} style={S.body}>
         {activeTab === "summary" && <HomeTab onNavigate={(tab, category) => { setActiveTab(tab); if (category) setComponentCategory(category); setSearchParams({ tab }); bodyRef.current?.scrollTo(0, 0); }} />}
         {activeTab === "components" && (
-          <ComponentsTab onCountChange={setCount} onEdit={handleEdit} onExport={setExportFormat} initialCategory={componentCategory} />
+          <ComponentsTab onCountChange={setCount} initialCategory={componentCategory} />
         )}
         {activeTab === "firearms" && <FirearmsTab onCountChange={setCount} />}
         {activeTab === "optics"   && <OpticsTab onCountChange={setCount} />}
