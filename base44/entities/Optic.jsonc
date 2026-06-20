@@ -1,0 +1,186 @@
+{
+  "name": "Optic",
+  "type": "object",
+  "properties": {
+    "brand": {
+      "type": "string",
+      "description": "Optic make/brand (e.g. Vortex, Leupold, Nightforce)"
+    },
+    "model": {
+      "type": "string",
+      "description": "Model name/number"
+    },
+    "serial_number": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "Scope",
+        "LPVO",
+        "Red Dot",
+        "Holographic",
+        "Prism",
+        "Binocular",
+        "Monocular",
+        "Rangefinder",
+        "Night Vision",
+        "Thermal",
+        "Other"
+      ],
+      "description": "Optic type"
+    },
+    "magnification": {
+      "type": "string",
+      "description": "Magnification range (e.g. 5-25x, 1-6x, 4x)"
+    },
+    "objective_lens": {
+      "type": "string",
+      "description": "Objective lens diameter (e.g. 50mm, 44mm)"
+    },
+    "tube_diameter": {
+      "type": "string",
+      "enum": [
+        "1 inch",
+        "30mm",
+        "34mm",
+        "35mm",
+        "other"
+      ],
+      "description": "Tube diameter"
+    },
+    "reticle": {
+      "type": "string",
+      "description": "Reticle type (e.g. EBR-2C, Horus H59, BDC)"
+    },
+    "focal_plane": {
+      "type": "string",
+      "enum": [
+        "FFP",
+        "SFP"
+      ],
+      "description": "First or Second Focal Plane"
+    },
+    "adjustment_units": {
+      "type": "string",
+      "enum": [
+        "MOA",
+        "MRAD"
+      ],
+      "description": "Turret adjustment units"
+    },
+    "max_elevation": {
+      "type": "number",
+      "description": "Maximum elevation adjustment (in adjustment units)"
+    },
+    "max_windage": {
+      "type": "number",
+      "description": "Maximum windage adjustment (in adjustment units)"
+    },
+    "finish": {
+      "type": "string",
+      "description": "Finish (e.g. Matte Black, FDE, Graphite)"
+    },
+    "condition": {
+      "type": "string",
+      "enum": [
+        "New",
+        "Excellent",
+        "Very Good",
+        "Good",
+        "Fair",
+        "Poor"
+      ],
+      "description": "Current condition"
+    },
+    "purchase_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "purchased_from": {
+      "type": "string"
+    },
+    "purchase_price": {
+      "type": "number"
+    },
+    "current_value": {
+      "type": "number",
+      "description": "Estimated current market value"
+    },
+    "mounted_on_firearm_id": {
+      "type": "string",
+      "description": "ID of firearm this optic is currently mounted on"
+    },
+    "mounted_on_firearm_name": {
+      "type": "string",
+      "description": "Snapshot of firearm name for display"
+    },
+    "mount_info": {
+      "type": "string",
+      "description": "Mount and rings details (brand, height, type)"
+    },
+    "rings_mounts": {
+      "type": "string",
+      "description": "Legacy rings/mounts field"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "photo_url": {
+      "type": "string"
+    },
+    "created_et": {
+      "type": "string",
+      "description": "Created timestamp in Eastern Time"
+    },
+    "modified_et": {
+      "type": "string",
+      "description": "Last modified timestamp in Eastern Time"
+    }
+  },
+  "required": [
+    "brand",
+    "model"
+  ],
+  "rls": {
+    "create": {
+      "created_by": "{{user.email}}"
+    },
+    "read": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

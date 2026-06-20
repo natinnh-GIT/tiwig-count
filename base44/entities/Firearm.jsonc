@@ -1,0 +1,167 @@
+{
+  "name": "Firearm",
+  "properties": {
+    "barrel_contour": {
+      "description": "Barrel contour profile",
+      "enum": [
+        "Sporter",
+        "Bull",
+        "Varmint",
+        "Sendero",
+        "Palma",
+        "Fluted",
+        "Other"
+      ],
+      "type": "string"
+    },
+    "barrel_length": {
+      "description": "Barrel length in inches (e.g. 24)",
+      "type": "string"
+    },
+    "caliber": {
+      "description": "Caliber (e.g. .308 Win, 6.5 Creedmoor)",
+      "type": "string"
+    },
+    "created_et": {
+      "description": "Created timestamp in Eastern Time \u2014 set at creation, never changed",
+      "type": "string"
+    },
+    "current_round_count": {
+      "default": 0,
+      "description": "Current total rounds fired through this firearm",
+      "type": "number"
+    },
+    "expected_barrel_life": {
+      "description": "Expected barrel life in rounds before replacement",
+      "type": "number"
+    },
+    "make": {
+      "description": "Manufacturer (e.g. Remington, Savage, Ruger)",
+      "type": "string"
+    },
+    "model": {
+      "description": "Model name (e.g. 700 SPS, Axis II, American)",
+      "type": "string"
+    },
+    "modified_et": {
+      "description": "Last modified timestamp in Eastern Time \u2014 updated on every save",
+      "type": "string"
+    },
+    "name": {
+      "description": "Display name for this firearm (e.g. Savage 110 6.5CM)",
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "optic_id": {
+      "description": "ID of the optic from Optic inventory currently mounted on this firearm",
+      "type": "string"
+    },
+    "optic_name": {
+      "description": "Snapshot of optic name for display (brand + model)",
+      "type": "string"
+    },
+    "photo_url": {
+      "type": "string"
+    },
+    "serial_number": {
+      "type": "string"
+    },
+    "stock": {
+      "description": "Stock or chassis type",
+      "enum": [
+        "Factory",
+        "Wood",
+        "Chassis",
+        "Laminate",
+        "Thumbhole",
+        "Folding",
+        "Other"
+      ],
+      "type": "string"
+    },
+    "suppressor_model": {
+      "description": "Suppressor name/model (e.g. SilencerCo Omega 300)",
+      "type": "string"
+    },
+    "suppressor_serial": {
+      "description": "Suppressor serial number",
+      "type": "string"
+    },
+    "suppressor_type": {
+      "description": "Suppressor mount type",
+      "enum": [
+        "Direct Thread",
+        "Quick Detach",
+        "N/A"
+      ],
+      "type": "string"
+    },
+    "trigger_brand": {
+      "description": "Trigger brand/model (e.g. Timney 510, Jewell HVR)",
+      "type": "string"
+    },
+    "trigger_pull_oz": {
+      "description": "Trigger pull weight in ounces",
+      "type": "number"
+    },
+    "type": {
+      "description": "Firearm type",
+      "enum": [
+        "Rifle",
+        "Pistol",
+        "Shotgun",
+        "AR",
+        "Rimfire",
+        "Other"
+      ],
+      "type": "string"
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "rls": {
+    "create": {
+      "created_by": "{{user.email}}"
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  },
+  "type": "object"
+}

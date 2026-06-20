@@ -61,10 +61,7 @@ export default function Home() {
   }, [searchParams]);
 
   const handleFab = () => {
-    if (activeTab === "firearms" || activeTab === "optics") {
-      alert("Coming Soon — this feature is not yet available.");
-      return;
-    }
+    if (activeTab === "firearms" || activeTab === "optics") return;
     setEditingItem(null);
     setShowModal(true);
   };

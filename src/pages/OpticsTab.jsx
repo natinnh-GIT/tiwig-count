@@ -34,13 +34,8 @@ export default function OpticsTab({ onCountChange }) {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
 
-  useEffect(() => {
-    loadOptics();
-  }, []);
-
-  useEffect(() => {
-    onCountChange?.(optics.length);
-  }, [optics.length, onCountChange]);
+  useEffect(() => { loadOptics(); }, []);
+  useEffect(() => { onCountChange?.(optics.length); }, [optics.length, onCountChange]);
 
   const loadOptics = async () => {
     const data = await base44.entities.Optic.list();
@@ -50,16 +45,10 @@ export default function OpticsTab({ onCountChange }) {
 
   return (
     <div style={{ background: "#0f0f0f", minHeight: "100dvh", display: "flex", flexDirection: "column" }}>
-      {/* Sticky header */}
       <div style={{ background: "#1a1a1a", borderBottom: "1px solid #2a2a2a", padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 10 }}>
         <span style={{ color: "#f5f5f5", fontWeight: 700, fontSize: 14 }}>Optics</span>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <ExportMenu
-            getData={() => optics}
-            filename="optics"
-            columns={OPTIC_COLUMNS}
-            title="Optics Inventory"
-          />
+          <ExportMenu getData={() => optics} filename="optics" columns={OPTIC_COLUMNS} title="Optics Inventory" />
           <button
             onClick={() => setShowModal(true)}
             style={{ background: "#f97316", color: "#fff", border: "none", borderRadius: 3, padding: "6px 12px", cursor: "pointer", display: "flex", alignItems: "center", gap: 4, fontWeight: 700, fontSize: 12 }}
@@ -86,9 +75,7 @@ export default function OpticsTab({ onCountChange }) {
         </div>
       ) : (
         <div style={{ flex: 1, overflowY: "auto" }}>
-          {optics.map(o => (
-            <OpticsCard key={o.id} item={o} />
-          ))}
+          {optics.map(o => <OpticsCard key={o.id} item={o} />)}
         </div>
       )}
 
