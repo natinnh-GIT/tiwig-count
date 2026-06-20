@@ -69,7 +69,7 @@ export default function OpticModal({ item, onClose, onSaved }) {
       <div style={S.body}>
         <div style={S.section}>
           <label style={S.label}>Photo</label>
-          <button onClick={() => setShowPhoto(true)} style={{ width: "100%", aspectRatio: "16/9", borderRadius: 6, border: "1px dashed #2a2a2a", background: "#242424", overflow: "hidden", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", padding: 0 }}>
+          <button onClick={() => setShowPhoto(true)} style={{ width: "50%", aspectRatio: "16/9", borderRadius: 6, border: "1px dashed #2a2a2a", background: "#242424", overflow: "hidden", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", padding: 0 }}>
             {form.photo_url ? <img src={form.photo_url} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : <Camera style={{ width: 28, height: 28, color: "#6b7280" }} />}
           </button>
         </div>

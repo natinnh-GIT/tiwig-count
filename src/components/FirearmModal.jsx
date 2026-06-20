@@ -108,7 +108,7 @@ export default function FirearmModal({ item, onClose, onSaved }) {
           <label style={S.label}>Photo</label>
           <button
             onClick={() => setShowPhoto(true)}
-            style={{ width: "100%", aspectRatio: "16/9", borderRadius: 6, border: "1px dashed #2a2a2a", background: "#242424", overflow: "hidden", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", padding: 0 }}
+            style={{ width: "50%", aspectRatio: "16/9", borderRadius: 6, border: "1px dashed #2a2a2a", background: "#242424", overflow: "hidden", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", padding: 0 }}
           >
             {form.photo_url
               ? <img src={form.photo_url} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
