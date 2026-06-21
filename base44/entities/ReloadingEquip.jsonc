@@ -1,0 +1,79 @@
+{
+  "type": "object",
+  "properties": {
+    "category": {
+      "type": "string",
+      "title": "Category"
+    },
+    "name": {
+      "type": "string",
+      "title": "Name"
+    },
+    "type": {
+      "type": "string",
+      "title": "Type"
+    },
+    "brand": {
+      "type": "string",
+      "title": "Brand"
+    },
+    "model": {
+      "type": "string",
+      "title": "Model"
+    },
+    "serial_number": {
+      "type": "string",
+      "title": "Serial Number"
+    },
+    "condition": {
+      "type": "string",
+      "title": "Condition"
+    },
+    "caliber_compatibility": {
+      "type": "string",
+      "title": "Caliber Compatibility"
+    },
+    "quantity": {
+      "type": "number",
+      "title": "Quantity"
+    },
+    "unit": {
+      "type": "string",
+      "title": "Unit"
+    },
+    "purchase_date": {
+      "type": "string",
+      "title": "Purchase Date"
+    },
+    "purchased_from": {
+      "type": "string",
+      "title": "Purchased From"
+    },
+    "purchase_price": {
+      "type": "number",
+      "title": "Purchase Price"
+    },
+    "current_value": {
+      "type": "number",
+      "title": "Current Value"
+    },
+    "photo_url": {
+      "type": "string",
+      "title": "Photo URL"
+    },
+    "notes": {
+      "type": "string",
+      "title": "Notes"
+    },
+    "created_et": {
+      "type": "string",
+      "title": "Created (ET)"
+    },
+    "modified_et": {
+      "type": "string",
+      "title": "Modified (ET)"
+    }
+  },
+  "required": [],
+  "name": "ReloadingEquip"
+}
