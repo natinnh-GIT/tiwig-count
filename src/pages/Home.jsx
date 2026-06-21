@@ -1,20 +1,22 @@
 import { useState, useRef, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Layers, Crosshair, Eye, MapPin, Home as HomeIcon } from "lucide-react";
+import { Layers, Crosshair, Eye, MapPin, Home as HomeIcon, Wrench } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 import ComponentsTab from "./ComponentsTab";
 import FirearmsTab from "./FirearmsTab";
 import OpticsTab from "./OpticsTab";
 import LocationsTabNew from "./LocationsTabNew";
+import ReloadingEquipTab from "./ReloadingEquipTab";
 import ComponentModal from "@/components/ComponentModal";
 import ExportDialog from "@/components/ExportDialog";
 import HomeTab from "@/pages/HomeTab";
 
 const TABS = [
-  { id: "summary",    label: "Home",       icon: HomeIcon, headerTitle: "Armory Overview" },
+  { id: "summary",    label: "Home",       icon: HomeIcon },
   { id: "components", label: "Components", icon: Layers },
   { id: "firearms",   label: "Firearms",   icon: Crosshair },
   { id: "optics",     label: "Optics",     icon: Eye },
+  { id: "reloading",  label: "Bench",      icon: Wrench },
   { id: "locations",  label: "Locations",  icon: MapPin },
 ];
 
@@ -119,8 +121,9 @@ export default function Home() {
         {activeTab === "components" && (
           <ComponentsTab onCountChange={setCount} initialCategory={componentCategory} />
         )}
-        {activeTab === "firearms" && <FirearmsTab onCountChange={setCount} />}
-        {activeTab === "optics"   && <OpticsTab onCountChange={setCount} />}
+        {activeTab === "firearms"  && <FirearmsTab onCountChange={setCount} />}
+        {activeTab === "optics"    && <OpticsTab onCountChange={setCount} />}
+        {activeTab === "reloading" && <ReloadingEquipTab onCountChange={setCount} />}
         {activeTab === "locations" && <LocationsTabNew onCountChange={setCount} />}
       </div>
 
