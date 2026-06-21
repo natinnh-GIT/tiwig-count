@@ -124,23 +124,7 @@ export default function Home() {
         {activeTab === "locations" && <LocationsTabNew onCountChange={setCount} />}
       </div>
 
-      {/* FAB — zero-height spacer so button is contained within the centered column */}
-      {activeTab !== "summary" && (
-        <div style={{ position: "relative", height: 0, flexShrink: 0, zIndex: 35 }}>
-          <button
-            onClick={handleFab}
-            style={{
-              position: "absolute", bottom: 16, right: 16,
-              width: 52, height: 52, borderRadius: 6,
-              background: "#f97316", color: "#fff",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              fontSize: 28, fontWeight: 300,
-              boxShadow: "0 4px 16px rgba(249,115,22,0.5)",
-              border: "none", cursor: "pointer",
-            }}
-          >+</button>
-        </div>
-      )}
+
 
       {/* Bottom Nav */}
       <nav style={S.nav}>
