@@ -86,7 +86,7 @@ export default function ReloadingEquipTab({ onCountChange }) {
                 cursor: "pointer",
               }}
             >
-              {cat}s {count > 0 && <span style={{ opacity: 0.7 }}>({count})</span>}
+              {cat} {count > 0 && <span style={{ opacity: 0.7 }}>({count})</span>}
             </button>
           );
         })}
