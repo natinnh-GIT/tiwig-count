@@ -6,7 +6,7 @@ import FirearmModal from "@/components/FirearmModal";
 import { formatCurrency } from "@/lib/currencyFormatter";
 
 const S = {
-  overlay: { background: "#0f0f0f", minHeight: "100dvh", display: "flex", flexDirection: "column" },
+  overlay: { background: "#0f0f0f", height: "100dvh", display: "flex", flexDirection: "column" },
   header: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 16px", borderBottom: "1px solid #2a2a2a", background: "#1a1a1a", flexShrink: 0, minHeight: 56 },
   headerLeft: { display: "flex", alignItems: "center", gap: 8 },
   headerRight: { display: "flex", alignItems: "center", gap: 6 },

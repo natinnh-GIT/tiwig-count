@@ -98,7 +98,7 @@ export default function ComponentDetail() {
   );
 
   return (
-    <div style={{ background: "#0f0f0f", minHeight: "100dvh", display: "flex", flexDirection: "column" }}>
+    <div style={{ background: "#0f0f0f", height: "100dvh", display: "flex", flexDirection: "column" }}>
       {/* Header */}
       <div style={{ background: "#1a1a1a", borderBottom: "1px solid #2a2a2a", padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 20, minHeight: 56 }}>
         <button onClick={handleBackClick} style={{ background: "none", border: "none", cursor: "pointer", color: "#a3a3a3", padding: 10, minWidth: 44, minHeight: 44, display: "flex", alignItems: "center", justifyContent: "center" }}>
