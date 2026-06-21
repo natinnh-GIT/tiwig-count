@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
-import { Zap, Crosshair, Eye, MapPin } from "lucide-react";
+import { Zap, Crosshair, Eye, MapPin, Wrench } from "lucide-react";
 import { CategoryPill, getStyleForCategory } from "@/lib/categoryPill";
 import { formatCurrency } from "@/lib/currencyFormatter";
 
@@ -34,6 +34,7 @@ export default function HomeTab({ onNavigate }) {
   const [firearms, setFirearms] = useState([]);
   const [optics, setOptics] = useState([]);
   const [locations, setLocations] = useState([]);
+  const [bench, setBench] = useState([]);
   const [loading, setLoading] = useState(true);
   const [hoveredCard, setHoveredCard] = useState(null);
 
@@ -43,16 +44,18 @@ export default function HomeTab({ onNavigate }) {
 
   const loadData = async () => {
     try {
-      const [comp, fire, opt, loc] = await Promise.all([
-      base44.entities.Component.list(),
-      base44.entities.Firearm.list(),
-      base44.entities.Optic.list(),
-      base44.entities.Location.list()]
-      );
+      const [comp, fire, opt, loc, bnch] = await Promise.all([
+        base44.entities.Component.list(),
+        base44.entities.Firearm.list(),
+        base44.entities.Optic.list(),
+        base44.entities.Location.list(),
+        base44.entities.ReloadingEquip.list(),
+      ]);
       setComponents(comp);
       setFirearms(fire);
       setOptics(opt);
       setLocations(loc);
+      setBench(bnch);
     } catch (error) {
       console.error("Failed to load data:", error);
     } finally {
@@ -177,6 +180,33 @@ export default function HomeTab({ onNavigate }) {
           <div style={S.breakdownRow}>
             <span>Mounted</span>
             <span style={{ color: "#f97316" }}>{mountedOptics}</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Bench Card */}
+      <div
+        style={{ ...S.card, ...(hoveredCard === "reloading" ? S.cardHover : {}) }}
+        onMouseEnter={() => setHoveredCard("reloading")}
+        onMouseLeave={() => setHoveredCard(null)}
+        onClick={() => onNavigate("reloading")}
+      >
+        <div style={S.cardTitle}>
+          <Wrench style={S.icon} />
+          Bench
+        </div>
+        <div style={S.stat}>
+          <span style={S.statLabel}>Total Items</span>
+          <span style={S.statValue}>{bench.length}</span>
+        </div>
+        <div style={S.breakdown}>
+          <div style={S.breakdownRow}>
+            <span>Equipment</span>
+            <span style={{ color: "#f97316" }}>{bench.filter(i => (i.category || "Equipment") === "Equipment").length}</span>
+          </div>
+          <div style={S.breakdownRow}>
+            <span>Consumables</span>
+            <span style={{ color: "#f97316" }}>{bench.filter(i => i.category === "Consumable").length}</span>
           </div>
         </div>
       </div>
