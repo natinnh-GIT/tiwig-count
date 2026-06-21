@@ -30,19 +30,19 @@ const getDefaults = () => ({
 });
 
 const S = {
-  overlay: { position: "fixed", inset: 0, zIndex: 50, background: "#0f0f0f", display: "flex", flexDirection: "column" },
-  header: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 16px", borderBottom: "1px solid #2a2a2a", background: "#1a1a1a", flexShrink: 0 },
-  title: { color: "#f5f5f5", fontWeight: 700, fontSize: 15 },
-  saveBtn: { background: "#f97316", color: "#fff", border: "none", borderRadius: 3, padding: "7px 18px", fontWeight: 700, fontSize: 13, cursor: "pointer" },
-  body: { flex: 1, overflowY: "auto", padding: "16px" },
-  label: { display: "block", color: "#a3a3a3", fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 5 },
-  input: { width: "100%", background: "#242424", border: "1px solid #2a2a2a", borderRadius: 2, color: "#f5f5f5", padding: "9px 12px", fontSize: 13, outline: "none", boxSizing: "border-box" },
-  select: { width: "100%", background: "#242424", border: "1px solid #2a2a2a", borderRadius: 2, color: "#f5f5f5", padding: "9px 12px", fontSize: 13, outline: "none", appearance: "none" },
-  section: { marginBottom: 16 },
-  grid2: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 16 },
-  readOnly: { width: "100%", background: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: 2, color: "#f97316", padding: "9px 12px", fontSize: 13, fontWeight: 700, boxSizing: "border-box" },
-  sectionHeader: { color: "#a3a3a3", fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 12, paddingLeft: 10, borderLeft: "2px solid #f97316" },
-  divider: { borderTop: "1px solid #2a2a2a", marginBottom: 16 },
+  overlay: { position: "fixed", inset: 0, zIndex: 50, background: "#0f0f0f", display: "flex", flexDirection: "column", maxWidth: 430, margin: "0 auto" },
+  header: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 16px", borderBottom: "1px solid #2a2a2a", background: "#1a1a1a", flexShrink: 0, minHeight: 56 },
+  title: { color: "#f5f5f5", fontWeight: 700, fontSize: 17 },
+  saveBtn: { background: "#f97316", color: "#fff", border: "none", borderRadius: 4, padding: "10px 22px", fontWeight: 700, fontSize: 15, cursor: "pointer", minHeight: 44 },
+  body: { flex: 1, overflowY: "auto", padding: "20px 16px" },
+  label: { display: "block", color: "#a3a3a3", fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 7 },
+  input: { width: "100%", background: "#242424", border: "1px solid #2a2a2a", borderRadius: 4, color: "#f5f5f5", padding: "14px 12px", fontSize: 16, outline: "none", boxSizing: "border-box", minHeight: 48 },
+  select: { width: "100%", background: "#242424", border: "1px solid #2a2a2a", borderRadius: 4, color: "#f5f5f5", padding: "14px 12px", fontSize: 16, outline: "none", appearance: "none", minHeight: 48 },
+  section: { marginBottom: 20 },
+  grid2: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginBottom: 20 },
+  readOnly: { width: "100%", background: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: 4, color: "#f97316", padding: "14px 12px", fontSize: 16, fontWeight: 700, boxSizing: "border-box", minHeight: 48 },
+  sectionHeader: { color: "#a3a3a3", fontSize: 12, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 14, paddingLeft: 10, borderLeft: "2px solid #f97316" },
+  divider: { borderTop: "1px solid #2a2a2a", marginBottom: 20 },
 };
 
 // formatting helpers
@@ -238,8 +238,8 @@ export default function ComponentModal({ item, onClose, onSaved }) {
       {duplicate && <DuplicateDialog existing={duplicate} onAddNew={() => { setDuplicate(null); saveItem(); }} onEditExisting={() => { setDuplicate(null); saveItem(duplicate.id); }} onCancel={() => setDuplicate(null)} />}
 
       <div style={S.header}>
-        <button onClick={onClose} style={{ background: "none", border: "none", cursor: "pointer", color: "#a3a3a3", padding: 4 }}>
-          <X style={{ width: 20, height: 20 }} />
+        <button onClick={onClose} style={{ background: "none", border: "none", cursor: "pointer", color: "#a3a3a3", padding: 10, minWidth: 44, minHeight: 44, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <X style={{ width: 22, height: 22 }} />
         </button>
         <span style={S.title}>{item ? "Edit Component" : "Add Component"}</span>
         <button onClick={handleSave} disabled={saving || !form.name} style={{ ...S.saveBtn, opacity: (saving || !form.name) ? 0.5 : 1 }}>
@@ -265,12 +265,12 @@ export default function ComponentModal({ item, onClose, onSaved }) {
             </div>
           </div>
           {form.photo_url && (
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-              <button onClick={handleAILookup} disabled={aiLoading} style={{ background: "#242424", border: "1px solid #f97316", borderRadius: 3, color: "#f97316", fontSize: 12, fontWeight: 600, padding: "8px 0", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 5, opacity: aiLoading ? 0.5 : 1 }}>
-                <Sparkles style={{ width: 13, height: 13 }} /> Re-ID
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+              <button onClick={handleAILookup} disabled={aiLoading} style={{ background: "#242424", border: "1px solid #f97316", borderRadius: 4, color: "#f97316", fontSize: 14, fontWeight: 600, padding: "12px 0", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 6, opacity: aiLoading ? 0.5 : 1, minHeight: 48 }}>
+                <Sparkles style={{ width: 15, height: 15 }} /> Re-ID
               </button>
-              <button onClick={handleEnhance} disabled={aiLoading} style={{ background: "#242424", border: "1px solid #2a2a2a", borderRadius: 3, color: "#a3a3a3", fontSize: 12, fontWeight: 600, padding: "8px 0", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 5, opacity: aiLoading ? 0.5 : 1 }}>
-                <Sparkles style={{ width: 13, height: 13 }} /> Enhance
+              <button onClick={handleEnhance} disabled={aiLoading} style={{ background: "#242424", border: "1px solid #2a2a2a", borderRadius: 4, color: "#a3a3a3", fontSize: 14, fontWeight: 600, padding: "12px 0", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 6, opacity: aiLoading ? 0.5 : 1, minHeight: 48 }}>
+                <Sparkles style={{ width: 15, height: 15 }} /> Enhance
               </button>
             </div>
           )}
@@ -281,8 +281,8 @@ export default function ComponentModal({ item, onClose, onSaved }) {
           <label style={S.label}>Barcode</label>
           <div style={{ display: "flex", gap: 8 }}>
             <input value={form.barcode} onChange={(e) => set("barcode", e.target.value)} placeholder="Scan or enter" style={S.input} />
-            <button onClick={() => setShowBarcode(true)} style={{ background: "#242424", border: "1px solid #2a2a2a", borderRadius: 2, padding: "0 12px", color: "#a3a3a3", cursor: "pointer" }}>
-              <Barcode style={{ width: 18, height: 18 }} />
+            <button onClick={() => setShowBarcode(true)} style={{ background: "#242424", border: "1px solid #2a2a2a", borderRadius: 4, padding: "0 14px", color: "#a3a3a3", cursor: "pointer", minWidth: 52, minHeight: 48, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <Barcode style={{ width: 22, height: 22 }} />
             </button>
           </div>
         </div>
@@ -464,7 +464,7 @@ export default function ComponentModal({ item, onClose, onSaved }) {
           </>
         )}
 
-        {/* Purchase + Value */}
+        {/* Purchase + Vendor */}
         <div style={S.grid2}>
           <div>
             <label style={S.label}>Purchase Date</label>

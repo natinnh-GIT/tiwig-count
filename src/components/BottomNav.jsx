@@ -11,8 +11,14 @@ const TABS = [
 export default function BottomNav({ active, onChange }) {
   return (
     <nav
-      style={{ background: "#111111", borderTop: "1px solid #2a2a2a" }}
-      className="fixed bottom-0 left-0 right-0 z-30 flex items-stretch"
+      style={{
+        background: "#111111",
+        borderTop: "1px solid #2a2a2a",
+        height: 72,
+        paddingBottom: "env(safe-area-inset-bottom)",
+        flexShrink: 0,
+      }}
+      className="flex items-stretch w-full"
     >
       {TABS.map((tab) => {
         const Icon = tab.icon;
@@ -21,11 +27,14 @@ export default function BottomNav({ active, onChange }) {
           <button
             key={tab.id}
             onClick={() => onChange(tab.id)}
-            className="flex-1 flex flex-col items-center justify-center py-2 gap-0.5 transition-colors"
-            style={{ color: isActive ? "#f97316" : "#737373" }}
+            className="flex-1 flex flex-col items-center justify-center gap-1 transition-colors relative"
+            style={{ color: isActive ? "#f97316" : "#737373", minHeight: 44 }}
           >
-            <Icon className="w-5 h-5" />
-            <span className="text-[10px] font-medium">{tab.label}</span>
+            {isActive && (
+              <div style={{ position: "absolute", top: 0, left: "20%", right: "20%", height: 2, background: "#f97316", borderRadius: "0 0 2px 2px" }} />
+            )}
+            <Icon className="w-6 h-6" />
+            <span className="font-medium" style={{ fontSize: 11 }}>{tab.label}</span>
           </button>
         );
       })}

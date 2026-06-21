@@ -5,21 +5,21 @@ import { CategoryPill, getStyleForCategory } from "@/lib/categoryPill";
 import { formatCurrency } from "@/lib/currencyFormatter";
 
 const S = {
-  container: { padding: "16px", paddingBottom: 32 },
-  header: { marginBottom: 24, textAlign: "center" },
-  title: { color: "#f97316", fontWeight: 700, fontSize: 24, letterSpacing: "-0.02em", marginBottom: 4 },
-  subtitle: { color: "#a3a3a3", fontSize: 13, fontWeight: 500 },
-  card: { background: "#1a1a1a", borderRadius: 3, border: "1px solid #2a2a2a", borderLeft: "4px solid #f97316", padding: 16, marginBottom: 12, cursor: "pointer", transition: "all 0.2s", minHeight: 120 },
+  container: { padding: "20px 16px", paddingBottom: 32 },
+  header: { marginBottom: 28, textAlign: "center" },
+  title: { color: "#f97316", fontWeight: 700, fontSize: 28, letterSpacing: "-0.02em", marginBottom: 4 },
+  subtitle: { color: "#a3a3a3", fontSize: 14, fontWeight: 500 },
+  card: { background: "#1a1a1a", borderRadius: 6, border: "1px solid #2a2a2a", borderLeft: "4px solid #f97316", padding: 20, marginBottom: 14, cursor: "pointer", transition: "all 0.2s", minHeight: 140 },
   cardHover: { background: "#242424", borderColor: "#3a3a3a" },
-  cardTitle: { display: "flex", alignItems: "center", gap: 8, marginBottom: 12, fontSize: 14, fontWeight: 700, color: "#f5f5f5" },
-  icon: { width: 18, height: 18, color: "#f97316", flexShrink: 0 },
-  stat: { display: "flex", justifyContent: "space-between", alignItems: "center", paddingBottom: 8, borderBottom: "1px solid #2a2a2a" },
-  statLabel: { color: "#a3a3a3", fontSize: 12 },
-  statValue: { color: "#f97316", fontWeight: 700, fontSize: 14 },
-  breakdown: { marginTop: 10, paddingTop: 10, borderTop: "1px solid #2a2a2a" },
-  breakdownRow: { display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 12, paddingBottom: 6, color: "#f5f5f5" },
+  cardTitle: { display: "flex", alignItems: "center", gap: 10, marginBottom: 14, fontSize: 16, fontWeight: 700, color: "#f5f5f5" },
+  icon: { width: 20, height: 20, color: "#f97316", flexShrink: 0 },
+  stat: { display: "flex", justifyContent: "space-between", alignItems: "center", paddingBottom: 10, borderBottom: "1px solid #2a2a2a" },
+  statLabel: { color: "#a3a3a3", fontSize: 14 },
+  statValue: { color: "#f97316", fontWeight: 700, fontSize: 16 },
+  breakdown: { marginTop: 12, paddingTop: 12, borderTop: "1px solid #2a2a2a" },
+  breakdownRow: { display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 14, paddingBottom: 8, color: "#f5f5f5" },
   breakdownDot: { width: 6, height: 6, borderRadius: "50%", marginRight: 6, flexShrink: 0 },
-  footer: { textAlign: "center", color: "#6b7280", fontSize: 11, marginTop: 20, paddingTop: 20, borderTop: "1px solid #2a2a2a" },
+  footer: { textAlign: "center", color: "#6b7280", fontSize: 13, marginTop: 24, paddingTop: 20, borderTop: "1px solid #2a2a2a" },
 };
 
 const categoryColors = {
@@ -118,14 +118,14 @@ export default function HomeTab({ onNavigate }) {
             { label: "powder", count: componentsByCategory.powder, bg: "#c2410c", text: "#ffedd5" },
           ].map(cat => (
             <div key={cat.label} style={{ ...S.breakdownRow, cursor: "pointer" }} onClick={(e) => { e.stopPropagation(); onNavigate("components", cat.label); }}>
-              <span style={{ background: cat.bg, color: cat.text, borderRadius: 6, padding: "3px 10px", fontSize: 12, fontWeight: 600 }}>{cat.label}</span>
-              <span style={{ color: "#f97316" }}>{cat.count}</span>
+              <span style={{ background: cat.bg, color: cat.text, borderRadius: 6, padding: "5px 14px", fontSize: 13, fontWeight: 600 }}>{cat.label}</span>
+              <span style={{ color: "#f97316", fontWeight: 700, fontSize: 15 }}>{cat.count}</span>
             </div>
           ))}
         </div>
-        <div style={{ marginTop: 10, paddingTop: 10, borderTop: "1px solid #2a2a2a", display: "flex", justifyContent: "space-between" }}>
+        <div style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid #2a2a2a", display: "flex", justifyContent: "space-between" }}>
            <span style={S.statLabel}>Total Value</span>
-           <span style={{ color: "#f97316", fontWeight: 700, fontSize: 13 }}>{formatCurrency(totalCost)}</span>
+           <span style={{ color: "#f97316", fontWeight: 700, fontSize: 15 }}>{formatCurrency(totalCost)}</span>
          </div>
       </div>
 

@@ -19,13 +19,13 @@ const TABS = [
 ];
 
 const S = {
-  app:    { background: "#0f0f0f", minHeight: "100dvh", display: "flex", flexDirection: "column" },
-  header: { background: "#1a1a1a", borderBottom: "1px solid #2a2a2a", padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 40 },
-  title:  { color: "#f97316", fontWeight: 700, fontSize: 18, letterSpacing: "-0.02em" },
-  badge:  { background: "#242424", color: "#a3a3a3", fontSize: 11, fontWeight: 600, padding: "2px 8px", borderRadius: 2, border: "1px solid #2a2a2a" },
-  body:   { flex: 1, overflowY: "auto", paddingBottom: 80 },
-  nav:    { position: "fixed", bottom: 0, left: 0, right: 0, background: "#1a1a1a", borderTop: "1px solid #2a2a2a", display: "flex", zIndex: 40, height: 60 },
-  fab:    { position: "fixed", bottom: 72, right: 16, width: 44, height: 44, borderRadius: 3, background: "#f97316", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 35, fontSize: 24, fontWeight: 300, boxShadow: "0 4px 12px rgba(249,115,22,0.4)", border: "none", cursor: "pointer" },
+  app:    { background: "#0f0f0f", height: "100dvh", display: "flex", flexDirection: "column", maxWidth: 430, margin: "0 auto" },
+  header: { background: "#1a1a1a", borderBottom: "1px solid #2a2a2a", padding: "14px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", flexShrink: 0, minHeight: 52 },
+  title:  { color: "#f97316", fontWeight: 700, fontSize: 20, letterSpacing: "-0.02em" },
+  badge:  { background: "#242424", color: "#a3a3a3", fontSize: 12, fontWeight: 600, padding: "3px 10px", borderRadius: 2, border: "1px solid #2a2a2a" },
+  body:   { flex: 1, overflowY: "auto" },
+  nav:    { background: "#1a1a1a", borderTop: "1px solid #2a2a2a", display: "flex", flexShrink: 0, height: 72, paddingBottom: "env(safe-area-inset-bottom)" },
+  fab:    { position: "absolute", bottom: 88, right: 16, width: 48, height: 48, borderRadius: 6, background: "#f97316", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 35, fontSize: 28, fontWeight: 300, boxShadow: "0 4px 16px rgba(249,115,22,0.5)", border: "none", cursor: "pointer" },
 };
 
 export default function Home() {
@@ -101,13 +101,13 @@ export default function Home() {
         <span style={S.title}>
           {activeTab === "summary" ? "Armory Overview" : "TIWIG Count"}
         </span>
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 1 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 2 }}>
           {activeTab !== "summary" && <span style={S.badge}>{count} {count === 1 ? "item" : "items"}</span>}
           {user && (
-            <div style={{ textAlign: "right", lineHeight: 1.4 }}>
-              <div style={{ color: "#a3a3a3", fontSize: 10 }}>{user.full_name || user.email}</div>
-              <div style={{ color: "#6b7280", fontSize: 10 }}>{etDatetime}</div>
-              <button onClick={() => base44.auth.logout("/")} style={{ background: "none", border: "none", padding: 0, color: "#ef4444", fontSize: 10, cursor: "pointer", lineHeight: 1.4 }}>Sign Out</button>
+            <div style={{ textAlign: "right", lineHeight: 1.5 }}>
+              <div style={{ color: "#a3a3a3", fontSize: 11 }}>{user.full_name || user.email}</div>
+              <div style={{ color: "#525252", fontSize: 11 }}>{etDatetime}</div>
+              <button onClick={() => base44.auth.logout("/")} style={{ background: "none", border: "none", padding: "2px 0", color: "#ef4444", fontSize: 11, cursor: "pointer", lineHeight: 1.5 }}>Sign Out</button>
             </div>
           )}
         </div>
@@ -124,8 +124,23 @@ export default function Home() {
         {activeTab === "locations" && <LocationsTabNew onCountChange={setCount} />}
       </div>
 
-      {/* FAB */}
-      {activeTab !== "summary" && <button style={S.fab} onClick={handleFab}>+</button>}
+      {/* FAB — zero-height spacer so button is contained within the centered column */}
+      {activeTab !== "summary" && (
+        <div style={{ position: "relative", height: 0, flexShrink: 0, zIndex: 35 }}>
+          <button
+            onClick={handleFab}
+            style={{
+              position: "absolute", bottom: 16, right: 16,
+              width: 52, height: 52, borderRadius: 6,
+              background: "#f97316", color: "#fff",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              fontSize: 28, fontWeight: 300,
+              boxShadow: "0 4px 16px rgba(249,115,22,0.5)",
+              border: "none", cursor: "pointer",
+            }}
+          >+</button>
+        </div>
+      )}
 
       {/* Bottom Nav */}
       <nav style={S.nav}>
@@ -139,17 +154,17 @@ export default function Home() {
               style={{
                 flex: 1, display: "flex", flexDirection: "column",
                 alignItems: "center", justifyContent: "center",
-                gap: 2, border: "none", background: "transparent",
+                gap: 3, border: "none", background: "transparent",
                 cursor: "pointer", position: "relative",
                 color: active ? "#f97316" : "#a3a3a3",
-                paddingBottom: 4,
+                minHeight: 44,
               }}
             >
               {active && (
                 <div style={{ position: "absolute", top: 0, left: "20%", right: "20%", height: 2, background: "#f97316", borderRadius: "0 0 2px 2px" }} />
               )}
-              <Icon style={{ width: 20, height: 20 }} />
-              <span style={{ fontSize: 10, fontWeight: active ? 700 : 500 }}>{tab.label}</span>
+              <Icon style={{ width: 22, height: 22 }} />
+              <span style={{ fontSize: 11, fontWeight: active ? 700 : 500 }}>{tab.label}</span>
             </button>
           );
         })}

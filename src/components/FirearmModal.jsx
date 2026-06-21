@@ -7,18 +7,18 @@ import OpticPicker from "@/components/OpticPicker";
 import EditableCombobox from "@/components/EditableCombobox";
 
 const S = {
-  overlay: { position: "fixed", inset: 0, zIndex: 50, background: "#0f0f0f", display: "flex", flexDirection: "column" },
-  header: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 16px", borderBottom: "1px solid #2a2a2a", background: "#1a1a1a", flexShrink: 0 },
-  title: { color: "#f5f5f5", fontWeight: 700, fontSize: 15 },
-  saveBtn: { background: "#f97316", color: "#fff", border: "none", borderRadius: 3, padding: "7px 18px", fontWeight: 700, fontSize: 13, cursor: "pointer" },
-  body: { flex: 1, overflowY: "auto", padding: "16px" },
-  label: { display: "block", color: "#a3a3a3", fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 5 },
-  input: { width: "100%", background: "#242424", border: "1px solid #2a2a2a", borderRadius: 3, color: "#f5f5f5", padding: "9px 12px", fontSize: 13, outline: "none", boxSizing: "border-box" },
-  select: { width: "100%", background: "#242424", border: "1px solid #2a2a2a", borderRadius: 3, color: "#f5f5f5", padding: "9px 12px", fontSize: 13, outline: "none", appearance: "none", boxSizing: "border-box" },
-  section: { marginBottom: 16 },
-  grid2: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 16 },
-  sectionHeader: { color: "#a3a3a3", fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 12, paddingLeft: 10, borderLeft: "2px solid #f97316" },
-  divider: { borderTop: "1px solid #2a2a2a", marginBottom: 16 },
+  overlay: { position: "fixed", inset: 0, zIndex: 50, background: "#0f0f0f", display: "flex", flexDirection: "column", maxWidth: 430, margin: "0 auto" },
+  header: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 16px", borderBottom: "1px solid #2a2a2a", background: "#1a1a1a", flexShrink: 0, minHeight: 56 },
+  title: { color: "#f5f5f5", fontWeight: 700, fontSize: 17 },
+  saveBtn: { background: "#f97316", color: "#fff", border: "none", borderRadius: 4, padding: "10px 22px", fontWeight: 700, fontSize: 15, cursor: "pointer", minHeight: 44 },
+  body: { flex: 1, overflowY: "auto", padding: "20px 16px" },
+  label: { display: "block", color: "#a3a3a3", fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 7 },
+  input: { width: "100%", background: "#242424", border: "1px solid #2a2a2a", borderRadius: 4, color: "#f5f5f5", padding: "14px 12px", fontSize: 16, outline: "none", boxSizing: "border-box", minHeight: 48 },
+  select: { width: "100%", background: "#242424", border: "1px solid #2a2a2a", borderRadius: 4, color: "#f5f5f5", padding: "14px 12px", fontSize: 16, outline: "none", appearance: "none", boxSizing: "border-box", minHeight: 48 },
+  section: { marginBottom: 20 },
+  grid2: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginBottom: 20 },
+  sectionHeader: { color: "#a3a3a3", fontSize: 12, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 14, paddingLeft: 10, borderLeft: "2px solid #f97316" },
+  divider: { borderTop: "1px solid #2a2a2a", marginBottom: 20 },
 };
 
 const getETNow = () =>
@@ -84,8 +84,8 @@ export default function FirearmModal({ item, onClose, onSaved }) {
   return (
     <div style={S.overlay}>
       <div style={S.header}>
-        <button onClick={onClose} style={{ background: "none", border: "none", cursor: "pointer", color: "#a3a3a3", padding: 4 }}>
-          <X style={{ width: 20, height: 20 }} />
+        <button onClick={onClose} style={{ background: "none", border: "none", cursor: "pointer", color: "#a3a3a3", padding: 10, minWidth: 44, minHeight: 44, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <X style={{ width: 22, height: 22 }} />
         </button>
         <span style={S.title}>{item ? "Edit Firearm" : "Add Firearm"}</span>
         <button

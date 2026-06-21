@@ -105,7 +105,15 @@ export default function ComponentsTab({ search, onCountChange, initialCategory }
             <button
               key={cat.id}
               onClick={() => setActiveCategory(cat.id)}
-              style={{ padding: "4px 12px", fontSize: 11, fontWeight: 600, flexShrink: 0, background: isActive ? "#f97316" : "#242424", color: isActive ? "#fff" : "#6b7280", borderRadius: 2, border: isActive ? "1px solid #f97316" : "1px solid #2a2a2a", cursor: "pointer" }}
+              style={{
+                padding: "10px 16px", fontSize: 13, fontWeight: 600, flexShrink: 0,
+                minHeight: 44,
+                background: isActive ? "#f97316" : "#242424",
+                color: isActive ? "#ffffff" : "#6b7280",
+                borderRadius: "4px",
+                border: isActive ? "1px solid #f97316" : "1px solid #2a2a2a",
+                cursor: "pointer",
+              }}
             >
               {cat.label}
             </button>
@@ -113,9 +121,17 @@ export default function ComponentsTab({ search, onCountChange, initialCategory }
         })}
       </div>
 
-      {/* Count row */}
-      <div style={{ padding: "6px 16px", display: "flex", alignItems: "center" }}>
-        <span style={{ color: "#6b7280", fontSize: 11 }}>{filtered.length} item{filtered.length !== 1 ? "s" : ""}</span>
+      {/* Count + Export row */}
+      <div className="px-4 py-2" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", minHeight: 44 }}>
+        <span style={{ color: "#737373", fontSize: 13 }}>
+          {filtered.length} item{filtered.length !== 1 ? "s" : ""}
+        </span>
+        <ExportMenu
+          getData={() => filtered}
+          filename={`components-${activeCategory}`}
+          columns={COMPONENT_COLUMNS}
+          title={`Components — ${activeCategory.charAt(0).toUpperCase() + activeCategory.slice(1)}`}
+        />
       </div>
 
       {/* List */}

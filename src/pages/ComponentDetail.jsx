@@ -14,9 +14,9 @@ function Row({ label, value }) {
   if (value === null || value === undefined || value === "") return null;
   if (value === 0) return null;
   return (
-    <div style={{ display: "flex", justifyContent: "space-between", padding: "11px 0", borderBottom: "1px solid #2a2a2a" }}>
-      <span style={{ color: "#a3a3a3", fontSize: 12 }}>{label}</span>
-      <span style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 500, maxWidth: "60%", textAlign: "right" }}>{value}</span>
+    <div style={{ display: "flex", justifyContent: "space-between", padding: "14px 0", borderBottom: "1px solid #2a2a2a" }}>
+      <span style={{ color: "#a3a3a3", fontSize: 14 }}>{label}</span>
+      <span style={{ color: "#f5f5f5", fontSize: 15, fontWeight: 500, maxWidth: "60%", textAlign: "right" }}>{value}</span>
     </div>
   );
 }
@@ -100,17 +100,17 @@ export default function ComponentDetail() {
   return (
     <div style={{ background: "#0f0f0f", minHeight: "100dvh", display: "flex", flexDirection: "column" }}>
       {/* Header */}
-      <div style={{ background: "#1a1a1a", borderBottom: "1px solid #2a2a2a", padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 20 }}>
-        <button onClick={handleBackClick} style={{ background: "none", border: "none", cursor: "pointer", color: "#a3a3a3", padding: 4 }}>
-          <ArrowLeft style={{ width: 20, height: 20 }} />
+      <div style={{ background: "#1a1a1a", borderBottom: "1px solid #2a2a2a", padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 20, minHeight: 56 }}>
+        <button onClick={handleBackClick} style={{ background: "none", border: "none", cursor: "pointer", color: "#a3a3a3", padding: 10, minWidth: 44, minHeight: 44, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <ArrowLeft style={{ width: 22, height: 22 }} />
         </button>
-        <span style={{ color: "#f5f5f5", fontWeight: 700, fontSize: 15, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: "55%" }}>{item.name}</span>
-        <div style={{ display: "flex", gap: 8 }}>
-          <button onClick={() => setShowEdit(true)} style={{ background: "#242424", border: "1px solid #2a2a2a", borderRadius: 2, padding: "6px 8px", color: "#a3a3a3", cursor: "pointer" }}>
-            <Pencil style={{ width: 15, height: 15 }} />
+        <span style={{ color: "#f5f5f5", fontWeight: 700, fontSize: 16, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: "55%" }}>{item.name}</span>
+        <div style={{ display: "flex", gap: 6 }}>
+          <button onClick={() => setShowEdit(true)} style={{ background: "#242424", border: "1px solid #2a2a2a", borderRadius: 4, padding: "10px 12px", color: "#a3a3a3", cursor: "pointer", minWidth: 44, minHeight: 44, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <Pencil style={{ width: 17, height: 17 }} />
           </button>
-          <button onClick={handleDelete} style={{ background: "#242424", border: "1px solid #2a2a2a", borderRadius: 2, padding: "6px 8px", color: "#ef4444", cursor: "pointer" }}>
-            <Trash2 style={{ width: 15, height: 15 }} />
+          <button onClick={handleDelete} style={{ background: "#242424", border: "1px solid #2a2a2a", borderRadius: 4, padding: "10px 12px", color: "#ef4444", cursor: "pointer", minWidth: 44, minHeight: 44, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <Trash2 style={{ width: 17, height: 17 }} />
           </button>
         </div>
       </div>
@@ -141,16 +141,16 @@ export default function ComponentDetail() {
           );
         })()}
 
-        <div style={{ padding: "16px 16px 0" }}>
+        <div style={{ padding: "20px 16px 0" }}>
           {/* Title + badge */}
-          <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 8, marginBottom: 4 }}>
-            <h2 style={{ color: "#f5f5f5", fontWeight: 800, fontSize: 20, margin: 0 }}>{item.name}</h2>
+          <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 10, marginBottom: 6 }}>
+            <h2 style={{ color: "#f5f5f5", fontWeight: 800, fontSize: 22, margin: 0 }}>{item.name}</h2>
             <CategoryPill value={item.category} />
           </div>
-          {item.description && <p style={{ color: "#a3a3a3", fontSize: 13, marginBottom: 12 }}>{item.description}</p>}
+          {item.description && <p style={{ color: "#a3a3a3", fontSize: 14, marginBottom: 14 }}>{item.description}</p>}
 
           {/* Qty highlight — category-specific */}
-          <div style={{ background: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: 3, padding: "14px 16px", marginBottom: 12 }}>
+          <div style={{ background: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: 6, padding: "18px 20px", marginBottom: 14 }}>
             {item.category === "primers" && (
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                 <span style={{ color: "#a3a3a3", fontSize: 13 }}>In Stock</span>
@@ -202,7 +202,7 @@ export default function ComponentDetail() {
           </div>
 
           {/* Details card */}
-          <div style={{ background: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: 3, padding: "0 14px", marginBottom: 12 }}>
+          <div style={{ background: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: 6, padding: "0 16px", marginBottom: 14 }}>
             <Row label="Brand" value={item.brand} />
             <Row label="Caliber / Type" value={item.caliber} />
             <Row label="Lot #" value={item.lot_number} />
@@ -253,7 +253,7 @@ export default function ComponentDetail() {
           </div>
 
           {/* Timestamps */}
-          <div style={{ background: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: 3, padding: "0 14px" }}>
+          <div style={{ background: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: 6, padding: "0 16px" }}>
             <Row label="Created" value={item.created_et} />
             <Row label="Modified" value={item.modified_et} />
           </div>

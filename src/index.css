@@ -86,5 +86,18 @@
   html, body {
     background: #0f0f0f !important;
     @apply text-foreground;
+    overflow: hidden;
   }
+}
+
+/* Mobile-first centered layout — max 430px (iPhone 15 Pro Max width) */
+#root {
+  max-width: 430px;
+  margin: 0 auto;
+  min-height: 100dvh;
+}
+
+/* Prevent iOS auto-zoom on input focus (requires font-size >= 16px) */
+input, select, textarea {
+  font-size: 16px;
 }

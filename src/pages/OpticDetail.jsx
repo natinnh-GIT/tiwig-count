@@ -7,17 +7,18 @@ import OpticModal from "@/components/OpticModal";
 
 const S = {
   overlay: { background: "#0f0f0f", minHeight: "100dvh", display: "flex", flexDirection: "column" },
-  header: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 16px", borderBottom: "1px solid #2a2a2a", background: "#1a1a1a", flexShrink: 0 },
+  header: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 16px", borderBottom: "1px solid #2a2a2a", background: "#1a1a1a", flexShrink: 0, minHeight: 56 },
   headerLeft: { display: "flex", alignItems: "center", gap: 8 },
-  headerRight: { display: "flex", alignItems: "center", gap: 8 },
-  iconBtn: { background: "none", border: "none", cursor: "pointer", color: "#a3a3a3", padding: 8, display: "flex", alignItems: "center" },
-  deleteBtn: { background: "none", border: "none", cursor: "pointer", padding: 8, display: "flex", alignItems: "center", color: "#ef4444" },
-  body: { flex: 1, overflowY: "auto", padding: "16px" },
-  section: { marginBottom: 20 },
-  sectionTitle: { color: "#a3a3a3", fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 8, paddingLeft: 10, paddingTop: 4, borderLeft: "2px solid #f97316" },
-  row: { paddingTop: 8, paddingBottom: 10, display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #2a2a2a" },
-  label: { color: "#6b7280", fontSize: 12, flexShrink: 0 },
-  value: { color: "#f5f5f5", fontSize: 13, fontWeight: 600, textAlign: "right", flex: 1, paddingLeft: 12 },
+  headerRight: { display: "flex", alignItems: "center", gap: 6 },
+  iconBtn: { background: "#242424", border: "1px solid #2a2a2a", borderRadius: 4, cursor: "pointer", color: "#a3a3a3", padding: 10, display: "flex", alignItems: "center", justifyContent: "center", minWidth: 44, minHeight: 44 },
+  deleteBtn: { background: "#242424", border: "1px solid #2a2a2a", borderRadius: 4, cursor: "pointer", padding: 10, display: "flex", alignItems: "center", justifyContent: "center", color: "#ef4444", minWidth: 44, minHeight: 44 },
+  body: { flex: 1, overflowY: "auto", padding: "20px 16px" },
+  photo: { width: "100%", borderRadius: 8, overflow: "hidden", background: "#242424", marginBottom: 20, border: "1px solid #2a2a2a" },
+  section: { marginBottom: 24 },
+  sectionTitle: { color: "#a3a3a3", fontSize: 12, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 10, paddingLeft: 10, paddingTop: 4, borderLeft: "2px solid #f97316" },
+  row: { paddingBottom: 14, paddingTop: 2, display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #2a2a2a" },
+  label: { color: "#6b7280", fontSize: 14, flexShrink: 0 },
+  value: { color: "#f5f5f5", fontSize: 15, fontWeight: 600, textAlign: "right", flex: 1, paddingLeft: 16 },
 };
 
 const TYPE_COLORS = {
@@ -121,7 +122,7 @@ export default function OpticDetail() {
           <button onClick={handleBack} style={S.iconBtn}>
             <ChevronLeft style={{ width: 20, height: 20 }} />
           </button>
-          <span style={{ color: "#f5f5f5", fontWeight: 700, fontSize: 15, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: "55vw" }}>
+          <span style={{ color: "#f5f5f5", fontWeight: 700, fontSize: 16, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: "55vw" }}>
             {optic.brand} {optic.model}
           </span>
         </div>
@@ -236,7 +237,7 @@ export default function OpticDetail() {
         {optic.notes && (
           <div style={S.section}>
             <div style={S.sectionTitle}>Notes</div>
-            <div style={{ background: "#242424", border: "1px solid #2a2a2a", borderRadius: 3, padding: 12, color: "#f5f5f5", fontSize: 13, lineHeight: 1.6, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
+            <div style={{ background: "#242424", border: "1px solid #2a2a2a", borderRadius: 6, padding: 16, color: "#f5f5f5", fontSize: 15, lineHeight: 1.7, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
               {optic.notes}
             </div>
           </div>
